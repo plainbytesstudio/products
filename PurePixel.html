@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PurePixel</title>
+  <meta name="description" content="Convert · Resize · Protect — 100% Offline. PurePixel is a privacy-first image converter with AVIF/HEIC support." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    :root {
+      --primary: #34A853;
+      --primary-2: #2FB24F;
+      --primary-3: #7FE8C4;
+      --primary-glow: rgba(52, 168, 83, 0.35);
+      --primary-glow-2: rgba(127, 232, 196, 0.18);
+      --primary-hover: #3BC25D;
+
+      --bg-deep: #08080C;
+      --bg-section: #0E0E14;
+      --bg-card: rgba(255, 255, 255, 0.04);
+      --bg-card-hover: rgba(255, 255, 255, 0.07);
+      --border-card: rgba(255, 255, 255, 0.08);
+      --border-card-hover: rgba(52, 168, 83, 0.45);
+      --text: #F5F5F7;
+      --text-secondary: #A1A1A6;
+      --text-muted: #6E6E73;
+      --green: #34A853;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg-deep);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 64px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .container-narrow {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    section + section { border-top: 1px solid rgba(255,255,255,0.05); }
+    .section-alt { background: #111116; }
+    .center { text-align: center; }
+
+    h1 {
+      font-size: clamp(36px, 4.8vw, 56px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+
+    h1 .accent {
+      background: linear-gradient(135deg, var(--primary), var(--primary-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(18px, 2.4vw, 24px);
+      color: #888;
+      font-weight: 400;
+      margin: 6px 0 0;
+    }
+
+    h2 {
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+      text-wrap: balance;
+    }
+
+    .subtitle.wide { max-width: 800px; }
+    .muted { color: var(--text-muted); }
+
+    .hero {
+      padding: 120px 0 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 900px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 68%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: -30% -10%;
+      background:
+        radial-gradient(600px 600px at 15% 20%, var(--primary-glow-2), transparent 60%),
+        radial-gradient(700px 700px at 85% 35%, rgba(52,168,83,0.10), transparent 60%);
+      pointer-events: none;
+      filter: blur(0px);
+      opacity: 0.95;
+    }
+
+    .hero .container { position: relative; z-index: 1; }
+
+    .hero-trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 24px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.2px;
+    }
+
+    .hero-trust span { display: inline-flex; align-items: center; gap: 4px; }
+
+    .hero .tagline {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      background: rgba(52, 168, 83, 0.10);
+      border: 1px solid rgba(52, 168, 83, 0.22);
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    .hero p.lead {
+      font-size: 16px;
+      color: #888;
+      max-width: 560px;
+      margin: 30px auto 0;
+      line-height: 1.7;
+    }
+
+    .workflow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid #333;
+      padding: 10px 24px;
+      border-radius: 100px;
+      margin-top: 20px;
+    }
+
+    .workflow span { color: var(--text-secondary); }
+    .workflow .arrow { color: var(--primary); font-weight: 700; }
+
+    .cta { margin-top: 40px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 14px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      border: none;
+      user-select: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      box-shadow:
+        0 0 18px rgba(52, 168, 83, 0.20),
+        0 12px 40px rgba(0,0,0,0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.03);
+      box-shadow:
+        0 0 28px rgba(52, 168, 83, 0.28),
+        0 18px 56px rgba(0,0,0,0.32);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-2px);
+    }
+
+    .grid { display: grid; gap: 32px; }
+    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 320px)); justify-content: center; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      padding: 32px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-card-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.2), 0 0 0 1px var(--border-card-hover);
+    }
+
+    .card .icon { font-size: 32px; margin-bottom: 16px; display: block; }
+    .card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+
+    .features-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 360px));
+      justify-content: center;
+      gap: 20px;
+      padding: 0;
+    }
+
+    .features-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+    }
+
+    .features-list li .check {
+      color: var(--green);
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .screenshot-hero {
+      margin-top: 48px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: var(--bg-card);
+      box-shadow:
+        0 24px 80px rgba(0,0,0,0.5),
+        0 8px 24px rgba(0,0,0,0.4),
+        0 0 60px rgba(52, 168, 83, 0.08);
+    }
+
+    .screenshot-hero img { width: 100%; display: block; }
+    .screenshot-hero .caption {
+      padding: 16px 24px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      background: #161618;
+      border-bottom: 1px solid #2A2A2D;
+      padding: 0 32px;
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .navbar-brand img {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+    }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .navbar-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .navbar-links a:hover { color: var(--text); }
+    .navbar-links .btn { padding: 8px 20px; font-size: 13px; border-radius: 10px; }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 64px 0 0;
+      font-size: 13px;
+      color: var(--text-muted);
+      background: var(--bg-deep);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 20px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .hero { padding: 84px 0 60px; }
+      section { padding: 64px 0; }
+      .navbar-brand span { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { white-space: normal; }
+      .cta { flex-direction: column; align-items: center; }
+      .btn { width: 100%; justify-content: center; }
+      .hero-trust { gap: 12px; font-size: 12px; }
+      .navbar-links a.nav-text { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ── Navbar ── -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="navbar-brand">
+        <img src="assets/pure-pixel/PurePixel_Logo.png" alt="PurePixel logo" />
+        <span>PurePixel</span>
+      </a>
+      <nav class="navbar-links">
+        <a class="nav-text" href="https://apps.microsoft.com/detail/9NBLH2HHHKT3">Microsoft Store</a>
+        <a href="https://apps.microsoft.com/detail/9NBLH2HHHKT3" class="btn btn-primary">Get on Microsoft Store</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="container center">
+      <div class="container-narrow">
+        <span class="tagline">Convert · Resize · Protect</span>
+        <h1><span class="accent">PurePixel</span></h1>
+        <p class="hero-sub">Convert · Resize · Protect — 100% Offline</p>
+        <p class="lead">
+          A privacy-first desktop image toolkit. No uploads. No accounts. Just fast batch processing — fully on your device.
+        </p>
+
+        <div class="workflow" aria-label="Workflow">
+          <span>Convert</span>
+          <span class="arrow">&rarr;</span>
+          <span>Resize</span>
+          <span class="arrow">&rarr;</span>
+          <span>Protect</span>
+        </div>
+
+        <div class="cta">
+          <a href="https://apps.microsoft.com/detail/9NBLH2HHHKT3" class="btn btn-primary">Get on Microsoft Store</a>
+          <a href="#features" class="btn btn-outline">See Features</a>
+        </div>
+
+        <div class="hero-trust">
+          <span>✔ 100% Offline</span>
+          <span>✔ Multi-threaded</span>
+          <span>✔ Privacy-first</span>
+          <span>✔ AVIF/HEIC</span>
+        </div>
+      </div>
+
+      <div class="screenshot-hero">
+        <img src="assets/pure-pixel/PurePixel_Offline_Hero.png" alt="PurePixel marketing screenshot with 100% Offline badge" />
+        <div class="caption">Convert · Resize · Protect — 100% Offline</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ── -->
+  <section id="features">
+    <div class="container">
+      <h2 class="center">Built for speed, designed for privacy</h2>
+      <p class="subtitle center">Professional-grade batch conversion without the cloud.</p>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <span class="icon">🖼️</span>
+          <h3>Blazing Fast Concurrent Engine</h3>
+          <p>Powered by .NET 8, convert hundreds of images in seconds using multi-threaded technology.</p>
+        </div>
+        <div class="card">
+          <span class="icon">🔒</span>
+          <h3>Zero Cloud, 100% Offline</h3>
+          <p>Your sensitive data never leaves your device. No uploads, no accounts, no tracking.</p>
+        </div>
+        <div class="card">
+          <span class="icon">⚡</span>
+          <h3>Lightweight & Native</h3>
+          <p>A seamless Windows 11 experience with Mica effects and zero bloatware.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Details ── -->
+  <section class="section-alt">
+    <div class="container">
+      <h2 class="center">Everything you need</h2>
+      <p class="subtitle center">Convert, resize, watermark, and export — all offline.</p>
+
+      <ul class="features-list">
+        <li><span class="check">✓</span>Batch convert with consistent naming</li>
+        <li><span class="check">✓</span>Resize with high-quality sampling</li>
+        <li><span class="check">✓</span>Watermark and protect assets locally</li>
+        <li><span class="check">✓</span>Export to JPG / PNG / WebP / BMP / TIFF / ICO / PDF</li>
+        <li><span class="check">✓</span>100% Private: No cloud, no uploads, strictly offline</li>
+        <li><span class="check">✓</span>Modern Formats: Full HEIC, AVIF, and WebP support</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        &copy; 2026 PurePixel. Convert · Resize · Protect — 100% Offline.
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
+
