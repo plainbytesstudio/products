@@ -1,1 +1,620 @@
-Hi, ...
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PlainBytes Studio</title>
+  <meta name="description" content="PlainBytes Studio — privacy-first Windows desktop tools." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --bg-2:#0f1118;
+      --card:rgba(255,255,255,.06);
+      --card-2:rgba(255,255,255,.085);
+      --stroke:rgba(255,255,255,.10);
+      --text:#f5f7ff;
+      --muted:rgba(245,247,255,.68);
+
+      --pp:#34A853;      /* PurePixel emerald */
+      --ppGlow:rgba(52,168,83,.28);
+
+      --plq:#3B82F6;     /* PrivateLabelQR tech blue */
+      --plqGlow:rgba(59,130,246,.28);
+
+      --radius:22px;
+      --radiusSm:16px;
+      --shadow:0 24px 80px rgba(0,0,0,.55);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(1200px 700px at 20% 0%, rgba(255,255,255,.06), transparent 60%),
+        radial-gradient(900px 600px at 80% 15%, rgba(255,255,255,.05), transparent 60%),
+        linear-gradient(180deg, var(--bg), #07080c 60%, #06070a);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      line-height:1.55;
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .wrap{max-width:1120px;margin:0 auto;padding:32px 20px 64px}
+    .top{
+      display:flex;justify-content:space-between;align-items:center;
+      gap:16px;margin-bottom:28px
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;
+      padding:10px 14px;border-radius:999px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(10px);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:99px;background:linear-gradient(135deg,#fff,rgba(255,255,255,.25));
+      box-shadow:0 0 18px rgba(255,255,255,.18);
+    }
+    .brand strong{font-size:14px;letter-spacing:.2px}
+    .pill{
+      font-size:12px;color:var(--muted);
+      padding:8px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.035);
+      backdrop-filter:blur(10px);
+      white-space:nowrap;
+    }
+
+    .nav{
+      display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    }
+
+    .nav a{
+      font-size:12px;
+      color:rgba(245,247,255,.72);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+      transition:background .18s ease, border-color .18s ease, transform .18s ease, filter .18s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .nav a:hover{
+      background:rgba(255,255,255,.04);
+      border-color:rgba(255,255,255,.10);
+      transform:translateY(-1px);
+      filter:brightness(1.02);
+    }
+
+    .nav .navCta{
+      border-color:rgba(255,255,255,.10);
+      background:rgba(255,255,255,.035);
+      backdrop-filter:blur(10px);
+    }
+
+    .nav .navCta:hover{
+      background:rgba(255,255,255,.05);
+    }
+
+    header{
+      padding:44px 0 18px;
+      text-align:center;
+    }
+    h1{
+      margin:0;
+      font-size:clamp(34px,4vw,54px);
+      letter-spacing:-.9px;
+      line-height:1.1;
+      font-weight:800;
+    }
+    .sub{
+      margin:14px auto 0;
+      max-width:820px;
+      color:var(--muted);
+      font-size:clamp(15px,1.6vw,18px);
+      text-wrap:balance;
+    }
+    .cnTag{
+      display:inline-flex;align-items:center;gap:8px;
+      margin-top:18px;
+      padding:8px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      backdrop-filter:blur(10px);
+      color:rgba(245,247,255,.78);
+      font-weight:600;
+      font-size:12px;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+    }
+
+    .grid{
+      margin-top:34px;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .sectionTitle{
+      margin:38px 0 8px;
+      text-align:center;
+      font-weight:800;
+      font-size:clamp(22px,2.6vw,30px);
+      letter-spacing:-.6px;
+    }
+
+    .sectionSub{
+      margin:0 auto 18px;
+      max-width:860px;
+      text-align:center;
+      color:var(--muted);
+      font-size:clamp(14px,1.5vw,16px);
+      text-wrap:balance;
+    }
+
+    .suite{
+      margin-top:22px;
+      display:grid;
+      gap:18px;
+    }
+
+    .suiteRow{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .suiteRow.alt{
+      grid-template-columns:.8fr 1.2fr;
+    }
+
+    .suiteSide{
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      backdrop-filter:blur(14px);
+    }
+
+    .suiteSide::before{
+      content:"";
+      position:absolute;inset:-2px;
+      background:
+        radial-gradient(520px 260px at 30% 10%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(520px 320px at 80% 0%, rgba(255,255,255,.08), transparent 55%);
+      opacity:.6;
+      pointer-events:none;
+    }
+
+    .suiteSide::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:radial-gradient(520px 300px at 50% 35%, var(--glow), transparent 60%);
+      opacity:.0;
+      transition:opacity .24s ease;
+      pointer-events:none;
+    }
+
+    .suiteSide:hover::after{opacity:1}
+
+    .suiteSide .inner{position:relative;padding:22px 22px 20px}
+
+    .kicker{
+      font-size:12px;
+      color:rgba(245,247,255,.78);
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      margin:0 0 10px;
+    }
+
+    .suiteHero{
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .suiteHeroTitle{
+      margin:0;
+      font-size:16px;
+      font-weight:800;
+      letter-spacing:-.2px;
+      color:rgba(245,247,255,.92);
+    }
+
+    .suiteHeroBody{
+      margin:0;
+      color:rgba(245,247,255,.70);
+      font-size:13px;
+      line-height:1.6;
+      text-wrap:balance;
+    }
+
+    .suiteChips{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .chip{
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      color:rgba(255,255,255,.86);
+      backdrop-filter:blur(10px);
+      white-space:nowrap;
+    }
+
+    .card{
+      position:relative;
+      border-radius:var(--radius);
+      border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      transition:transform .22s ease, border-color .22s ease, background .22s ease;
+      backdrop-filter:blur(14px);
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;inset:-2px;
+      background:
+        radial-gradient(420px 220px at 30% 10%, rgba(255,255,255,.11), transparent 60%),
+        radial-gradient(520px 320px at 80% 0%, rgba(255,255,255,.08), transparent 55%);
+      opacity:.65;
+      pointer-events:none;
+    }
+
+    .card .inner{
+      position:relative;
+      padding:22px 22px 20px;
+    }
+
+    .cardTop{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+      margin-bottom:10px;
+    }
+
+    .badge{
+      font-size:12px;font-weight:700;
+      padding:7px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      color:rgba(255,255,255,.86);
+      backdrop-filter:blur(10px);
+    }
+
+    .name{
+      font-size:22px;font-weight:800;margin:0;
+      letter-spacing:-.4px;
+    }
+
+    .tagline{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      text-wrap:balance;
+    }
+
+    .checks{
+      margin:16px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:10px;
+    }
+    .checks li{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:12px 12px;
+      border-radius:var(--radiusSm);
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      color:rgba(245,247,255,.80);
+      font-size:13px;
+    }
+
+    .tick{
+      width:18px;height:18px;border-radius:999px;flex:0 0 auto;
+      display:inline-flex;align-items:center;justify-content:center;
+      color:#0b0c10;font-weight:900;font-size:12px;
+      margin-top:1px;
+    }
+
+    .actions{
+      display:flex;flex-wrap:wrap;gap:10px;
+      margin-top:18px;
+    }
+
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:11px 14px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      color:rgba(255,255,255,.90);
+      font-weight:700;font-size:13px;
+      transition:transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.03)}
+    .btnPrimary{border:none;color:#07100a}
+    .btnGhost{background:transparent}
+
+    /* Themed cards */
+    .pp{ --accent: var(--pp); --glow: var(--ppGlow); }
+    .plq{ --accent: var(--plq); --glow: var(--plqGlow); }
+
+    .pp .name span,
+    .plq .name span{
+      background:linear-gradient(135deg, var(--accent), rgba(255,255,255,.75));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .pp .tick{background:linear-gradient(135deg, var(--pp), rgba(127,232,196,.85));}
+    .plq .tick{background:linear-gradient(135deg, var(--plq), rgba(147,197,253,.9));}
+
+    .pp .btnPrimary{background:linear-gradient(135deg, var(--pp), #2FB24F);}
+    .plq .btnPrimary{background:linear-gradient(135deg, var(--plq), #1D4ED8); color:#f8fbff;}
+
+    /* Hover glow requirement */
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:radial-gradient(500px 280px at 50% 35%, var(--glow), transparent 60%);
+      opacity:0;
+      transition:opacity .24s ease;
+      pointer-events:none;
+    }
+    .card:hover{
+      transform:translateY(-3px);
+      border-color:rgba(255,255,255,.16);
+      background:linear-gradient(180deg, rgba(255,255,255,.085), rgba(255,255,255,.045));
+    }
+    .card:hover::after{opacity:1}
+
+    footer{
+      margin-top:26px;
+      padding:26px 0 0;
+      text-align:center;
+      color:rgba(245,247,255,.55);
+      font-size:12px;
+    }
+
+    .footerLinks{
+      margin-top:10px;
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+    }
+
+    .footerLinks a{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.03);
+      color:rgba(245,247,255,.70);
+      transition:background .18s ease, transform .18s ease, filter .18s ease, border-color .18s ease;
+      white-space:nowrap;
+    }
+
+    .footerLinks a:hover{
+      background:rgba(255,255,255,.05);
+      border-color:rgba(255,255,255,.14);
+      transform:translateY(-1px);
+      filter:brightness(1.02);
+    }
+
+    /* Responsive */
+    @media (max-width: 880px){
+      .grid{grid-template-columns:1fr}
+      .suiteRow, .suiteRow.alt{grid-template-columns:1fr}
+      .top{flex-direction:column;align-items:flex-start}
+      header{padding-top:26px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a class="brand" href="#top" aria-label="PlainBytes Studio">
+        <span class="dot" aria-hidden="true"></span>
+        <strong>PlainBytes Studio</strong>
+      </a>
+      <nav class="nav" aria-label="Navigation">
+        <a href="#suite">Our Suite</a>
+        <a href="#philosophy">Philosophy</a>
+        <a href="https://github.com/plainbytesstudio" rel="noreferrer">GitHub</a>
+        <a class="navCta" href="#about">About Us</a>
+      </nav>
+    </div>
+
+    <header id="top">
+      <h1>Simple Tools. Absolute Privacy. Native Power.</h1>
+      <p class="sub" id="about">
+        PlainBytes Studio is an independent creative team dedicated to crafting elite Windows utilities. We specialize in building lightweight, high-performance applications that bridge the gap between powerful professional features and a pure, native desktop experience.
+      </p>
+      <div class="cnTag">No Cloud. No Tracking. 100% Local.</div>
+    </header>
+
+    <h2 class="sectionTitle" id="suite">Our Software Suite</h2>
+    <p class="sectionSub">
+      A small, focused suite of native Windows utilities — engineered to be fast, lightweight, and strictly offline.
+    </p>
+
+    <section class="suite" aria-label="Our Software Suite">
+      <!-- Product A: PurePixel (left content, right highlight) -->
+      <div class="suiteRow">
+        <article class="card pp">
+          <div class="inner">
+            <div class="cardTop">
+              <div>
+                <p class="name"><span>PurePixel</span></p>
+                <div class="badge">The Ultimate Offline Image Hub</div>
+              </div>
+            </div>
+
+            <p class="tagline">
+              A professional-grade image processing terminal. Convert, resize, and protect your photos with a blazing-fast multi-threaded engine—without ever uploading a single byte to the web.
+            </p>
+
+            <div class="suiteChips" aria-label="PurePixel keywords">
+              <span class="chip">HEIC/AVIF Support</span>
+              <span class="chip">Batch Processing</span>
+              <span class="chip">Custom Watermarks</span>
+            </div>
+
+            <div class="actions">
+              <a class="btn btnGhost" href="https://plainbytesstudio.github.io/products/PurePixel">View Details</a>
+              <a class="btn btnPrimary" href="https://apps.microsoft.com/detail/9NBLH2HHHKT3">Get on Microsoft Store</a>
+            </div>
+          </div>
+        </article>
+
+        <aside class="suiteSide pp" aria-label="PurePixel highlight">
+          <div class="inner suiteHero">
+            <div>
+              <p class="kicker">PurePixel</p>
+              <p class="suiteHeroTitle">The Ultimate Offline Image Hub.</p>
+              <p class="suiteHeroBody">
+                Convert · Resize · Protect — 100% Offline. No cloud workflows, no uploads, no accounts.
+              </p>
+            </div>
+            <div class="suiteChips" aria-hidden="true">
+              <span class="chip">100% Local</span>
+              <span class="chip">Multi-threaded</span>
+              <span class="chip">Privacy-by-Design</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Product B: PrivateLabelQR (right content, left highlight) -->
+      <div class="suiteRow alt">
+        <aside class="suiteSide plq" aria-label="PrivateLabelQR highlight">
+          <div class="inner suiteHero">
+            <div>
+              <p class="kicker">PrivateLabelQR</p>
+              <p class="suiteHeroTitle">Designer QR Generation for Professionals.</p>
+              <p class="suiteHeroBody">
+                Create beautiful, highly customizable QR codes locally — perfect for branding and creative marketing.
+              </p>
+            </div>
+            <div class="suiteChips" aria-hidden="true">
+              <span class="chip">Vector Export</span>
+              <span class="chip">Templates</span>
+              <span class="chip">Offline</span>
+            </div>
+          </div>
+        </aside>
+
+        <article class="card plq">
+          <div class="inner">
+            <div class="cardTop">
+              <div>
+                <p class="name"><span>PrivateLabelQR</span></p>
+                <div class="badge">Designer QR Generation for Professionals</div>
+              </div>
+            </div>
+
+            <p class="tagline">
+              Create beautiful, highly customizable QR codes locally. Perfect for branding and creative marketing, PrivateLabelQR ensures your links stay your own, handled entirely on your machine.
+            </p>
+
+            <div class="suiteChips" aria-label="PrivateLabelQR keywords">
+              <span class="chip">Vector Export</span>
+              <span class="chip">Custom Templates</span>
+              <span class="chip">Privacy First</span>
+            </div>
+
+            <div class="actions">
+              <a class="btn btnGhost" href="https://github.com/plainbytesstudio/PrivateLabelQR">View Details</a>
+              <a class="btn btnPrimary" href="https://apps.microsoft.com/search?query=PrivateLabelQR">Get on Microsoft Store</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <h2 class="sectionTitle" id="philosophy">Our Philosophy</h2>
+    <p class="sectionSub">
+      Three pillars that define every PlainBytes Studio product.
+    </p>
+
+    <section class="grid" aria-label="Our Philosophy">
+      <article class="card pp">
+        <div class="inner">
+          <div class="cardTop">
+            <div>
+              <p class="name"><span>Privacy-by-Design</span></p>
+              <div class="badge">隐私即设计</div>
+            </div>
+          </div>
+          <p class="tagline">
+            Your data is yours. Period. Our tools are engineered to work strictly offline, providing a sanctuary for your sensitive information in a world of cloud surveillance.
+          </p>
+        </div>
+      </article>
+
+      <article class="card plq">
+        <div class="inner">
+          <div class="cardTop">
+            <div>
+              <p class="name"><span>Performance First</span></p>
+              <div class="badge">性能优先</div>
+            </div>
+          </div>
+          <p class="tagline">
+            Utilizing the latest .NET technologies and asynchronous concurrency, our software is optimized to extract every drop of power from your local CPU, ensuring instant results.
+          </p>
+        </div>
+      </article>
+
+      <article class="card pp">
+        <div class="inner">
+          <div class="cardTop">
+            <div>
+              <p class="name"><span>Windows Native Aesthetics</span></p>
+              <div class="badge">原生审美</div>
+            </div>
+          </div>
+          <p class="tagline">
+            We are purists. Every application is meticulously designed to follow Fluent Design principles, featuring Mica material and a clean workflow that feels right at home on Windows 11.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <footer>
+      <div><strong>PlainBytes Studio</strong></div>
+      <div class="footerLinks" aria-label="Footer links">
+        <a href="#">Terms of Service</a>
+        <a href="https://github.com/plainbytesstudio/PurePixel/blob/main/PRIVACY.md">Privacy Policy</a>
+        <a href="mailto:plainbytes.studio@gmail.com">Contact Support</a>
+      </div>
+      <div style="margin-top:12px;">© 2025 PlainBytes Studio. All rights reserved.</div>
+    </footer>
+  </div>
+</body>
+</html>
