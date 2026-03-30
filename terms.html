@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terms of Service · PlainBytes Studio</title>
+  <meta name="description" content="PlainBytes Studio Terms of Service" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg:#0a0a0a;
+      --text:#d1d5db;
+      --muted:rgba(209,213,219,.72);
+      --stroke:rgba(255,255,255,.10);
+      --card:rgba(255,255,255,.04);
+      --brand:#34A853;
+      --brandGlow:rgba(52,168,83,.18);
+      --radius:14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a{color:inherit;text-decoration:none}
+    a:hover{color:#e5e7eb}
+
+    /* Elegant scrollbar (WebKit) */
+    ::-webkit-scrollbar{width:12px;height:12px}
+    ::-webkit-scrollbar-track{background:rgba(255,255,255,.04)}
+    ::-webkit-scrollbar-thumb{
+      background: linear-gradient(180deg, rgba(52,168,83,.55), rgba(52,168,83,.25));
+      border: 3px solid rgba(255,255,255,.04);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover{
+      background: linear-gradient(180deg, rgba(52,168,83,.70), rgba(52,168,83,.34));
+    }
+
+    /* Scrollbar (Firefox) */
+    *{scrollbar-width:thin; scrollbar-color: rgba(52,168,83,.55) rgba(255,255,255,.04);}
+
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(10,10,10,.72);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-inner{
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .logo-dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #9ff3c2, var(--brand));
+      box-shadow: 0 0 22px var(--brandGlow);
+      flex: 0 0 auto;
+    }
+
+    .brand span{
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: .2px;
+      color: rgba(229,231,235,.92);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .back{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(209,213,219,.85);
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease;
+      user-select: none;
+    }
+    .back:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      background: rgba(255,255,255,.05);
+      border-color: rgba(255,255,255,.14);
+    }
+
+    main{
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 34px 20px 72px;
+    }
+
+    .paper{
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 26px 22px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.45);
+    }
+
+    h1{
+      margin: 0;
+      font-size: clamp(26px, 3.2vw, 34px);
+      letter-spacing: -.6px;
+      line-height: 1.2;
+      color: rgba(229,231,235,.96);
+    }
+
+    .effective{
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .divider{
+      margin: 18px 0 22px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+      border: none;
+    }
+
+    p{margin: 14px 0; color: rgba(209,213,219,.92)}
+
+    h3{
+      margin: 22px 0 10px;
+      font-size: 16px;
+      line-height: 1.3;
+      letter-spacing: -.2px;
+      color: rgba(229,231,235,.92);
+      padding-left: 12px;
+      border-left: 2px solid rgba(52,168,83,.55);
+    }
+
+    strong{color: rgba(229,231,235,.96)}
+    em{color: rgba(229,231,235,.86)}
+
+    ul{
+      margin: 10px 0 10px 20px;
+      padding: 0;
+      color: rgba(209,213,219,.90);
+    }
+    li{margin: 8px 0}
+
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: rgba(229,231,235,.92);
+    }
+
+    .link{
+      color: rgba(52,168,83,.92);
+      font-weight: 700;
+    }
+    .link:hover{color: rgba(52,168,83,1)}
+
+    footer{
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px 34px;
+      color: rgba(209,213,219,.68);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .footlinks{
+      margin-top: 10px;
+      display: inline-flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footlinks a{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      transition: transform .18s ease, filter .18s ease, background .18s ease, border-color .18s ease;
+    }
+
+    .footlinks a:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      background: rgba(255,255,255,.05);
+      border-color: rgba(255,255,255,.14);
+    }
+
+    @media (max-width: 480px){
+      main{padding-top: 24px}
+      .paper{padding: 22px 16px}
+      body{line-height: 1.9}
+      ul{margin-left: 18px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand" aria-label="PlainBytes Studio">
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span>PlainBytes Studio</span>
+      </div>
+      <a class="back" href="PlainBytes.html" aria-label="Back to homepage">
+        <span aria-hidden="true">←</span>
+        <span>Back to Home</span>
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <article class="paper">
+      <h1><span style="color: var(--brand);">Terms</span> of Service</h1>
+      <p class="effective"><strong>Effective Date:</strong> March 29, 2025</p>
+
+      <p>
+        Welcome to PlainBytes Studio. By downloading or using our applications, including but not limited to PurePixel and PrivateLabelQR (the "Software"), you agree to be bound by these Terms of Service.
+      </p>
+
+      <hr class="divider" />
+
+      <h3>1. License Grant</h3>
+      <p>
+        PlainBytes Studio grants you a personal, non-exclusive, non-transferable license to use the Software on devices running validly licensed versions of Windows 10 or 11. The Software is licensed, not sold.
+      </p>
+
+      <h3>2. Freemium Model &amp; Purchases</h3>
+      <ul>
+        <li><strong>Free Version:</strong> We provide a version of the Software with limited features for trial purposes.</li>
+        <li><strong>Pro Version (IAP):</strong> Professional features are unlocked via a one-time In-App Purchase through the Microsoft Store.</li>
+        <li><strong>Transactions:</strong> All payments are processed and managed by Microsoft. We do not handle your billing information or credit card details.</li>
+      </ul>
+
+      <h3>3. Usage Restrictions</h3>
+      <p>You agree not to, and will not permit others to:</p>
+      <ul>
+        <li>Reverse engineer, decompile, or disassemble the Software.</li>
+        <li>Bypass or circumvent any trial limits or license validation mechanisms.</li>
+        <li>Distribute, rent, lease, or sell the Software to any third party.</li>
+        <li>Modify or create derivative works based on the Software.</li>
+      </ul>
+
+      <h3>4. Privacy &amp; Data Handling</h3>
+      <p>Our Software is designed with a "Privacy-First" philosophy.</p>
+      <ul>
+        <li><strong>Offline Processing:</strong> All core functions (image conversion, QR generation, etc.) are performed locally on your device.</li>
+        <li><strong>No Collection:</strong> We do not collect, store, or transmit your files or personal identifiers to our servers.</li>
+      </ul>
+
+      <h3>5. Intellectual Property</h3>
+      <p>
+        All titles, including but not limited to copyrights, in and to the Software and any copies thereof are owned by PlainBytes Studio. The Software is protected by copyright laws and international treaty provisions.
+      </p>
+
+      <h3>6. Disclaimer of Warranty</h3>
+      <p>
+        <strong>THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND.</strong> PLAINBYTES STUDIO DISCLAIMS ALL WARRANTIES, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+      </p>
+
+      <h3>7. Limitation of Liability</h3>
+      <p>
+        In no event shall PlainBytes Studio be liable for any damages whatsoever (including, without limitation, damages for loss of business profits, business interruption, or loss of data) arising out of the use of or inability to use this product.
+      </p>
+
+      <h3>8. Changes to Terms</h3>
+      <p>
+        We reserve the right to update these terms at any time. Your continued use of the Software following the posting of any changes constitutes acceptance of those changes.
+      </p>
+
+      <h3>9. Contact</h3>
+      <p>
+        If you have any questions regarding these terms, please contact us via our official GitHub repository:
+        <a class="link" href="https://github.com/plainbytesstudio">https://github.com/plainbytesstudio</a>
+      </p>
+    </article>
+  </main>
+
+  <footer>
+    <div>© 2025 PlainBytes Studio. All rights reserved.</div>
+    <div class="footlinks" aria-label="Footer links">
+      <a class="link" href="PlainBytes.html">Homepage</a>
+      <a class="link" href="https://plainbytesstudio.github.io/products/PurePixel">Official site</a>
+    </div>
+  </footer>
+</body>
+</html>
+
