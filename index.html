@@ -25,8 +25,8 @@
       --plq:#3B82F6;     /* PrivateLabelQR tech blue */
       --plqGlow:rgba(59,130,246,.28);
 
-      --radius:22px;
-      --radiusSm:16px;
+      --radius:16px;
+      --radiusSm:14px;
       --shadow:0 24px 80px rgba(0,0,0,.55);
     }
 
@@ -144,8 +144,12 @@
       gap:18px;
     }
 
+    .block{
+      padding:80px 0; /* py-20 */
+    }
+
     .sectionTitle{
-      margin:38px 0 8px;
+      margin:0 0 8px;
       text-align:center;
       font-weight:800;
       font-size:clamp(22px,2.6vw,30px);
@@ -153,113 +157,12 @@
     }
 
     .sectionSub{
-      margin:0 auto 18px;
+      margin:0 auto 24px;
       max-width:860px;
       text-align:center;
       color:var(--muted);
       font-size:clamp(14px,1.5vw,16px);
       text-wrap:balance;
-    }
-
-    .suite{
-      margin-top:22px;
-      display:grid;
-      gap:18px;
-    }
-
-    .suiteRow{
-      display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:18px;
-      align-items:stretch;
-    }
-
-    .suiteRow.alt{
-      grid-template-columns:.8fr 1.2fr;
-    }
-
-    .suiteSide{
-      border-radius:var(--radius);
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.03);
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-      backdrop-filter:blur(14px);
-    }
-
-    .suiteSide::before{
-      content:"";
-      position:absolute;inset:-2px;
-      background:
-        radial-gradient(520px 260px at 30% 10%, rgba(255,255,255,.10), transparent 60%),
-        radial-gradient(520px 320px at 80% 0%, rgba(255,255,255,.08), transparent 55%);
-      opacity:.6;
-      pointer-events:none;
-    }
-
-    .suiteSide::after{
-      content:"";
-      position:absolute;
-      inset:-40%;
-      background:radial-gradient(520px 300px at 50% 35%, var(--glow), transparent 60%);
-      opacity:.0;
-      transition:opacity .24s ease;
-      pointer-events:none;
-    }
-
-    .suiteSide:hover::after{opacity:1}
-
-    .suiteSide .inner{position:relative;padding:22px 22px 20px}
-
-    .kicker{
-      font-size:12px;
-      color:rgba(245,247,255,.78);
-      letter-spacing:.8px;
-      text-transform:uppercase;
-      margin:0 0 10px;
-    }
-
-    .suiteHero{
-      height:100%;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      gap:14px;
-    }
-
-    .suiteHeroTitle{
-      margin:0;
-      font-size:16px;
-      font-weight:800;
-      letter-spacing:-.2px;
-      color:rgba(245,247,255,.92);
-    }
-
-    .suiteHeroBody{
-      margin:0;
-      color:rgba(245,247,255,.70);
-      font-size:13px;
-      line-height:1.6;
-      text-wrap:balance;
-    }
-
-    .suiteChips{
-      margin-top:14px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    .chip{
-      font-size:12px;
-      padding:7px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.18);
-      color:rgba(255,255,255,.86);
-      backdrop-filter:blur(10px);
-      white-space:nowrap;
     }
 
     .card{
@@ -285,21 +188,12 @@
 
     .card .inner{
       position:relative;
-      padding:22px 22px 20px;
+      padding:20px;
     }
 
     .cardTop{
       display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
       margin-bottom:10px;
-    }
-
-    .badge{
-      font-size:12px;font-weight:700;
-      padding:7px 10px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(0,0,0,.18);
-      color:rgba(255,255,255,.86);
-      backdrop-filter:blur(10px);
     }
 
     .name{
@@ -428,7 +322,6 @@
     /* Responsive */
     @media (max-width: 880px){
       .grid{grid-template-columns:1fr}
-      .suiteRow, .suiteRow.alt{grid-template-columns:1fr}
       .top{flex-direction:column;align-items:flex-start}
       header{padding-top:26px}
     }
@@ -458,32 +351,32 @@
       <div class="cnTag">No Cloud. No Tracking. 100% Local.</div>
     </header>
 
-    <h2 class="sectionTitle" id="suite">Our Software Suite</h2>
-    <p class="sectionSub">
-      A small, focused suite of native Windows utilities — engineered to be fast, lightweight, and strictly offline.
-    </p>
+    <section class="block" aria-label="Our Software Suite">
+      <h2 class="sectionTitle" id="suite">Our Software Suite</h2>
+      <p class="sectionSub">
+        Two core products — native Windows utilities, built to be fast, lightweight, and strictly offline.
+      </p>
 
-    <section class="suite" aria-label="Our Software Suite">
-      <!-- Product A: PurePixel (left content, right highlight) -->
-      <div class="suiteRow">
+      <div class="grid" aria-label="Product cards">
+        <!-- PurePixel -->
         <article class="card pp">
           <div class="inner">
             <div class="cardTop">
               <div>
                 <p class="name"><span>PurePixel</span></p>
-                <div class="badge">The Ultimate Offline Image Hub</div>
               </div>
             </div>
 
+            <p class="tagline"><strong>The Ultimate Offline Image Hub.</strong></p>
             <p class="tagline">
               A professional-grade image processing terminal. Convert, resize, and protect your photos with a blazing-fast multi-threaded engine—without ever uploading a single byte to the web.
             </p>
 
-            <div class="suiteChips" aria-label="PurePixel keywords">
-              <span class="chip">HEIC/AVIF Support</span>
-              <span class="chip">Batch Processing</span>
-              <span class="chip">Custom Watermarks</span>
-            </div>
+            <ul class="checks" aria-label="PurePixel keywords">
+              <li><span class="tick">✓</span><span>HEIC/AVIF Support</span></li>
+              <li><span class="tick">✓</span><span>Batch Processing</span></li>
+              <li><span class="tick">✓</span><span>Custom Watermarks</span></li>
+            </ul>
 
             <div class="actions">
               <a class="btn btnGhost" href="https://plainbytesstudio.github.io/products/PurePixel">View Details</a>
@@ -492,61 +385,25 @@
           </div>
         </article>
 
-        <aside class="suiteSide pp" aria-label="PurePixel highlight">
-          <div class="inner suiteHero">
-            <div>
-              <p class="kicker">PurePixel</p>
-              <p class="suiteHeroTitle">The Ultimate Offline Image Hub.</p>
-              <p class="suiteHeroBody">
-                Convert · Resize · Protect — 100% Offline. No cloud workflows, no uploads, no accounts.
-              </p>
-            </div>
-            <div class="suiteChips" aria-hidden="true">
-              <span class="chip">100% Local</span>
-              <span class="chip">Multi-threaded</span>
-              <span class="chip">Privacy-by-Design</span>
-            </div>
-          </div>
-        </aside>
-      </div>
-
-      <!-- Product B: PrivateLabelQR (right content, left highlight) -->
-      <div class="suiteRow alt">
-        <aside class="suiteSide plq" aria-label="PrivateLabelQR highlight">
-          <div class="inner suiteHero">
-            <div>
-              <p class="kicker">PrivateLabelQR</p>
-              <p class="suiteHeroTitle">Designer QR Generation for Professionals.</p>
-              <p class="suiteHeroBody">
-                Create beautiful, highly customizable QR codes locally — perfect for branding and creative marketing.
-              </p>
-            </div>
-            <div class="suiteChips" aria-hidden="true">
-              <span class="chip">Vector Export</span>
-              <span class="chip">Templates</span>
-              <span class="chip">Offline</span>
-            </div>
-          </div>
-        </aside>
-
+        <!-- PrivateLabelQR -->
         <article class="card plq">
           <div class="inner">
             <div class="cardTop">
               <div>
                 <p class="name"><span>PrivateLabelQR</span></p>
-                <div class="badge">Designer QR Generation for Professionals</div>
               </div>
             </div>
 
+            <p class="tagline"><strong>Designer QR Generation for Professionals.</strong></p>
             <p class="tagline">
               Create beautiful, highly customizable QR codes locally. Perfect for branding and creative marketing, PrivateLabelQR ensures your links stay your own, handled entirely on your machine.
             </p>
 
-            <div class="suiteChips" aria-label="PrivateLabelQR keywords">
-              <span class="chip">Vector Export</span>
-              <span class="chip">Custom Templates</span>
-              <span class="chip">Privacy First</span>
-            </div>
+            <ul class="checks" aria-label="PrivateLabelQR keywords">
+              <li><span class="tick">✓</span><span>Vector Export</span></li>
+              <li><span class="tick">✓</span><span>Custom Templates</span></li>
+              <li><span class="tick">✓</span><span>Privacy First</span></li>
+            </ul>
 
             <div class="actions">
               <a class="btn btnGhost" href="https://github.com/plainbytesstudio/PrivateLabelQR">View Details</a>
@@ -557,59 +414,63 @@
       </div>
     </section>
 
-    <h2 class="sectionTitle" id="philosophy">Our Philosophy</h2>
-    <p class="sectionSub">
-      Three pillars that define every PlainBytes Studio product.
-    </p>
+    <section class="block" aria-label="Our Philosophy">
+      <h2 class="sectionTitle" id="philosophy">Our Philosophy</h2>
+      <p class="sectionSub">
+        Four pillars that define every PlainBytes Studio product.
+      </p>
 
-    <section class="grid" aria-label="Our Philosophy">
-      <article class="card pp">
-        <div class="inner">
-          <div class="cardTop">
-            <div>
-              <p class="name"><span>Privacy-by-Design</span></p>
-              <div class="badge">隐私即设计</div>
+      <div class="grid" aria-label="Philosophy cards">
+        <article class="card pp">
+          <div class="inner">
+            <div class="cardTop">
+              <div><p class="name"><span>Privacy-by-Design</span></p></div>
             </div>
+            <p class="tagline">
+              Your data is yours. Period. Our tools are engineered to work strictly offline, providing a sanctuary for your sensitive information in a world of cloud surveillance.
+            </p>
           </div>
-          <p class="tagline">
-            Your data is yours. Period. Our tools are engineered to work strictly offline, providing a sanctuary for your sensitive information in a world of cloud surveillance.
-          </p>
-        </div>
-      </article>
+        </article>
 
-      <article class="card plq">
-        <div class="inner">
-          <div class="cardTop">
-            <div>
-              <p class="name"><span>Performance First</span></p>
-              <div class="badge">性能优先</div>
+        <article class="card plq">
+          <div class="inner">
+            <div class="cardTop">
+              <div><p class="name"><span>Performance First</span></p></div>
             </div>
+            <p class="tagline">
+              Utilizing the latest .NET technologies and asynchronous concurrency, our software is optimized to extract every drop of power from your local CPU, ensuring instant results.
+            </p>
           </div>
-          <p class="tagline">
-            Utilizing the latest .NET technologies and asynchronous concurrency, our software is optimized to extract every drop of power from your local CPU, ensuring instant results.
-          </p>
-        </div>
-      </article>
+        </article>
 
-      <article class="card pp">
-        <div class="inner">
-          <div class="cardTop">
-            <div>
-              <p class="name"><span>Windows Native Aesthetics</span></p>
-              <div class="badge">原生审美</div>
+        <article class="card pp">
+          <div class="inner">
+            <div class="cardTop">
+              <div><p class="name"><span>Windows Native Aesthetics</span></p></div>
             </div>
+            <p class="tagline">
+              We are purists. Every application is meticulously designed to follow Fluent Design principles, featuring Mica material and a clean workflow that feels right at home on Windows 11.
+            </p>
           </div>
-          <p class="tagline">
-            We are purists. Every application is meticulously designed to follow Fluent Design principles, featuring Mica material and a clean workflow that feels right at home on Windows 11.
-          </p>
-        </div>
-      </article>
+        </article>
+
+        <article class="card plq">
+          <div class="inner">
+            <div class="cardTop">
+              <div><p class="name"><span>Transparent Value</span></p></div>
+            </div>
+            <p class="tagline">
+              No hidden fees, no subscriptions, and no unwanted bloat. We believe in fair, one-time pricing for software that stays useful for years.
+            </p>
+          </div>
+        </article>
+      </div>
     </section>
 
     <footer>
       <div><strong>PlainBytes Studio</strong></div>
       <div class="footerLinks" aria-label="Footer links">
-        <a href="./term">Terms of Service</a>
+        <a href="./terms">Terms of Service</a>
         <a href="./privacy">Privacy Policy</a>
         <a href="mailto:plainbytes.studio@gmail.com">Contact Support</a>
       </div>
