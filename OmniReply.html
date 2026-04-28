@@ -295,6 +295,22 @@
       gap: 0;
       margin-top: 8px;
     }
+    .workflow-video {
+      margin-top: 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 0 24px rgba(243, 118, 12, 0.10);
+    }
+    .workflow-video video {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      display: block;
+      background: #0a0a0a;
+      outline: 1px solid #1c1c1c;
+    }
     .wf-step {
       flex: 1 1 140px;
       min-width: 120px;
@@ -544,28 +560,12 @@
     <!-- 4. Workflow -->
     <section id="workflow">
       <div class="wrap">
-        <h2 class="section-title">Copy → Generate → Send</h2>
-        <p class="section-sub">A straight line from clipboard to conversation — no detours.</p>
-        <div class="workflow">
-          <div class="wf-step">
-            <div class="num">1</div>
-            Copy a message
-          </div>
-          <span class="wf-arrow" aria-hidden="true">→</span>
-          <div class="wf-step">
-            <div class="num">2</div>
-            Pick a reply style
-          </div>
-          <span class="wf-arrow" aria-hidden="true">→</span>
-          <div class="wf-step">
-            <div class="num">3</div>
-            Generate with AI
-          </div>
-          <span class="wf-arrow" aria-hidden="true">→</span>
-          <div class="wf-step">
-            <div class="num">4</div>
-            Paste or type it back
-          </div>
+        <h2 class="section-title">Copy. It replies. Done.</h2>
+        <div class="workflow-video">
+          <video width="1280" height="720" controls preload="auto" playsinline autoplay muted loop>
+            <source src="./assets/omni-reply/Tutorial.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
     </section>
