@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="AI-ClipFlow turns copied text into ready-to-send replies — customizable tone, platform rules, and language control for Windows." />
+  <title>AI-ClipFlow — Clipboard-driven AI replies for Windows</title>
+  <link rel="icon" type="image/x-icon" href="assets/OmniReply_Logo.ico">
+  <style>
+    :root {
+      --bg: #050505;
+      --panel: #111111;
+      --orange: #f3760c;
+      --orange-dim: #c45f0a;
+      --text: #f5f5f5;
+      --muted: #9a9a9a;
+      --border: #222;
+      --glow: rgba(243, 118, 12, 0.45);
+      --radius: 12px;
+      --max: 1120px;
+      --font: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--orange); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5, 5, 5, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .site-header .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px 24px;
+    }
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .logo img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .logo span { color: var(--orange); }
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      font-size: 0.9rem;
+    }
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: var(--orange);
+      color: #0a0a0a;
+      border-color: var(--orange);
+    }
+    .btn-primary:hover {
+      background: #ff942e;
+      border-color: #ff942e;
+      text-decoration: none;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border-color: #333;
+    }
+    .btn-ghost:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+      text-decoration: none;
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+
+    /* Hero */
+    .hero {
+      padding: 72px 0 88px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4.5vw, 2.85rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin: 0 0 18px;
+    }
+    .hero .lead {
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 34rem;
+      margin: 0 0 22px;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .tag {
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--panel);
+      border: 1px solid #1f1f1f;
+      color: var(--muted);
+    }
+
+    /* Hero visual — flow */
+    .hero-visual {
+      position: relative;
+      padding: 24px;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(243, 118, 12, 0.08), transparent 55%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background-color: var(--panel);
+    }
+    .flow-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+    .flow-node {
+      width: 100%;
+      padding: 14px 16px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      background: #0c0c0c;
+      color: var(--muted);
+    }
+    .flow-node strong { color: var(--text); font-weight: 600; }
+    .flow-node.panel {
+      border-color: rgba(243, 118, 12, 0.5);
+      box-shadow: 0 0 24px var(--glow);
+      color: var(--text);
+      background: linear-gradient(145deg, #141414, #0a0a0a);
+    }
+    .flow-connector {
+      width: 2px;
+      height: 28px;
+      background: linear-gradient(180deg, var(--orange), var(--orange-dim));
+      box-shadow: 0 0 12px var(--glow);
+      border-radius: 2px;
+    }
+
+    /* Sections */
+    section { padding: 72px 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+
+    .section-title {
+      font-size: clamp(1.65rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+    }
+    .section-sub {
+      color: var(--muted);
+      max-width: 40rem;
+      margin: 0 0 40px;
+      font-size: 1.05rem;
+    }
+
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 800px) {
+      .cards-3 { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: border-color 0.15s;
+    }
+    .card:hover { border-color: #2e2e2e; }
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .card p {
+      margin: 0;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .cards-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .cards-features { grid-template-columns: 1fr; }
+    }
+
+    /* Workflow */
+    .workflow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0;
+      margin-top: 8px;
+    }
+    .wf-step {
+      flex: 1 1 140px;
+      min-width: 120px;
+      max-width: 200px;
+      text-align: center;
+      padding: 20px 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .wf-step .num {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      border-radius: 50%;
+      background: rgba(243, 118, 12, 0.15);
+      color: var(--orange);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .wf-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      flex-shrink: 0;
+      color: var(--orange);
+      font-size: 1.25rem;
+      filter: drop-shadow(0 0 6px var(--glow));
+    }
+    @media (max-width: 700px) {
+      .workflow { flex-direction: column; align-items: center; }
+      .wf-arrow { transform: rotate(90deg); height: 28px; width: auto; }
+      .wf-step { max-width: 100%; width: 100%; }
+    }
+
+    /* Compare */
+    .compare-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+    table.compare {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      min-width: 520px;
+    }
+    .compare th, .compare td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare tr:last-child td { border-bottom: none; }
+    .compare th {
+      background: #0a0a0a;
+      color: var(--orange);
+      font-weight: 600;
+    }
+    .compare td:first-child { color: var(--muted); }
+    .compare td:last-child { color: var(--text); }
+
+    /* CTA */
+    .cta {
+      text-align: center;
+      padding: 88px 0 96px;
+      background: linear-gradient(180deg, var(--bg) 0%, #0a0a0a 100%);
+    }
+    .cta h2 { margin: 0 0 14px; font-size: clamp(1.75rem, 3.5vw, 2.25rem); }
+    .cta .lead { margin: 0 auto 28px; max-width: 36rem; color: var(--muted); }
+
+    footer {
+      padding: 28px 24px 40px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="inner">
+      <a class="logo" href="#"><img src="assets/OmniReply_Logo.png" alt="OmniReply" width="48" height="48" /><span>Omni</span>Reply</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#pain">Why</a>
+        <a href="#features">Features</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#compare">Compare</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. Hero -->
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div>
+          <h1>AI Replies, Right From Your Clipboard.</h1>
+          <p class="lead">
+            AI-ClipFlow turns copied text into ready-to-send replies instantly — with customizable tone, platform rules, and language control.
+          </p>
+          <div class="tags" aria-label="Highlights">
+            <span class="tag">Clipboard-Driven</span>
+            <span class="tag">Floating Reply Panel</span>
+            <span class="tag">Custom AI Rules</span>
+            <span class="tag">Multi-Platform Replies</span>
+          </div>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="https://github.com/plainbytesstudio/OmniReply/releases" rel="noopener noreferrer">Download for Windows</a>
+            <a class="btn btn-ghost" href="https://github.com/plainbytesstudio/OmniReply" rel="noopener noreferrer">View on GitHub</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="flow-stack">
+            <div class="flow-node"><strong>[Copied Message]</strong></div>
+            <div class="flow-connector"></div>
+            <div class="flow-node panel"><strong>AI-ClipFlow</strong> Floating Panel</div>
+            <div class="flow-connector"></div>
+            <div class="flow-node"><strong>[Ready-to-Send Reply]</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Pain Point -->
+    <section id="pain">
+      <div class="wrap">
+        <h2 class="section-title">Stop Writing Every Reply From Scratch.</h2>
+        <p class="section-sub">Less friction between reading and responding — keep your voice consistent without starting from zero every time.</p>
+        <div class="cards-3">
+          <article class="card">
+            <h3>Copy Less, Reply Faster</h3>
+            <p>Turn any message, comment, or post into a polished reply in seconds.</p>
+          </article>
+          <article class="card">
+            <h3>No More Prompt Rewriting</h3>
+            <p>Save your preferred tone, platform, goal, and language once.</p>
+          </article>
+          <article class="card">
+            <h3>Works Where You Work</h3>
+            <p>Use it with Reddit, YouTube, X, forums, support chats, and more.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Features -->
+    <section id="features">
+      <div class="wrap">
+        <h2 class="section-title">Built for Fast Social Replies</h2>
+        <p class="section-sub">A focused toolkit for people who answer messages all day — not a full chat workspace.</p>
+        <div class="cards-features">
+          <article class="card">
+            <h3>Clipboard Trigger</h3>
+            <p>Copy text from anywhere and let AI-ClipFlow prepare a reply.</p>
+          </article>
+          <article class="card">
+            <h3>Floating Reply Panel</h3>
+            <p>A lightweight desktop panel appears when you need it, stays hidden when you don’t.</p>
+          </article>
+          <article class="card">
+            <h3>Custom Reply Rules</h3>
+            <p>Define platform, persona, objective, language, and reply length.</p>
+          </article>
+          <article class="card">
+            <h3>Multi-Language Output</h3>
+            <p>Reply in English, Chinese, Japanese, German, French, Spanish, and more.</p>
+          </article>
+          <article class="card">
+            <h3>Simulated Typing Mode</h3>
+            <p>Send replies naturally with controlled typing behavior.</p>
+          </article>
+          <article class="card">
+            <h3>Local Presets</h3>
+            <p>Keep your reply styles and rules stored on your own device.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Workflow -->
+    <section id="workflow">
+      <div class="wrap">
+        <h2 class="section-title">Copy → Generate → Send</h2>
+        <p class="section-sub">A straight line from clipboard to conversation — no detours.</p>
+        <div class="workflow">
+          <div class="wf-step">
+            <div class="num">1</div>
+            Copy a message
+          </div>
+          <span class="wf-arrow" aria-hidden="true">→</span>
+          <div class="wf-step">
+            <div class="num">2</div>
+            Pick a reply style
+          </div>
+          <span class="wf-arrow" aria-hidden="true">→</span>
+          <div class="wf-step">
+            <div class="num">3</div>
+            Generate with AI
+          </div>
+          <span class="wf-arrow" aria-hidden="true">→</span>
+          <div class="wf-step">
+            <div class="num">4</div>
+            Paste or type it back
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Compare -->
+    <section id="compare">
+      <div class="wrap">
+        <h2 class="section-title">Not Another Chat Window.</h2>
+        <p class="section-sub">
+          AI-ClipFlow is designed for real reply workflows, not long conversations. It focuses on one thing: helping you respond faster, cleaner, and more naturally across platforms.
+        </p>
+        <div class="compare-wrap">
+          <table class="compare">
+            <thead>
+              <tr>
+                <th scope="col">Normal AI Chat</th>
+                <th scope="col">AI-ClipFlow</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Copy text manually</td>
+                <td>Clipboard-aware workflow</td>
+              </tr>
+              <tr>
+                <td>Rewrite prompts every time</td>
+                <td>Reusable reply rules</td>
+              </tr>
+              <tr>
+                <td>Long conversation UI</td>
+                <td>Compact floating panel</td>
+              </tr>
+              <tr>
+                <td>Generic answers</td>
+                <td>Platform-aware replies</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. CTA -->
+    <section class="cta" id="download">
+      <div class="wrap">
+        <h2>Reply Faster. Stay in Flow.</h2>
+        <p class="lead">A lightweight Windows AI assistant for creators, indie makers, marketers, and anyone who replies a lot.</p>
+        <div class="btn-row" style="justify-content:center;">
+          <a class="btn btn-primary" href="https://github.com/plainbytesstudio/OmniReply/releases" rel="noopener noreferrer">Download AI-ClipFlow</a>
+          <a class="btn btn-ghost" href="https://github.com/plainbytesstudio/OmniReply#readme" rel="noopener noreferrer">Learn More</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 PlainBytes Studio — professional, fast, and quietly technical.</p>
+    <p style="margin-top:8px;">Turn copied text into ready-to-send AI replies.</p>
+  </footer>
+</body>
+</html>
