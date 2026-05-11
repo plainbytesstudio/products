@@ -1,0 +1,549 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PlainBytes Redactor User Guide</title>
+  <style>
+    :root { --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8; --accent:#ffb74d; --border:#334155; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Segoe UI",system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.65; font-size:16px; }
+    .doc-layout { display:flex; gap:2rem; align-items:flex-start; max-width:72rem; margin:0 auto; padding:1.5rem 1.25rem 4rem; }
+    .doc-layout .toc { flex:0 0 18rem; position:sticky; top:1rem; align-self:flex-start; max-height:calc(100vh - 2rem); overflow-y:auto; margin-bottom:0; }
+    .doc-main { flex:1; min-width:0; font-weight:300; }
+    .doc-main h1 { font-weight:700; }
+    .doc-main h2 { font-weight:700; }
+    .doc-main h3 { font-weight:600; }
+    .doc-main .example h3 { font-weight:600; }
+    .doc-main table.compare th { font-weight:600; }
+    .doc-main strong { font-weight:600; }
+    .doc-main code { font-weight:400; }
+    .doc-main > section:first-child h2 { margin-top:0; }
+    @media (max-width: 900px) {
+      .doc-layout { flex-direction:column; gap:1.25rem; padding-top:1.25rem; }
+      .doc-layout .toc { position:relative; top:auto; flex:none; width:100%; max-height:none; }
+    }
+    h1 { font-size:1.85rem; font-weight:700; margin:0 0 0.5rem; color:var(--accent); }
+    .sub { color:var(--muted); font-size:0.95rem; margin-bottom:2rem; }
+    h2 { font-size:1.25rem; margin:2.25rem 0 0.75rem; padding-bottom:0.35rem; border-bottom:1px solid var(--border); color:#fff; scroll-margin-top:1rem; }
+    h3 { font-size:1.05rem; margin:1.25rem 0 0.5rem; color:#cbd5e1; scroll-margin-top:1rem; }
+    ul, ol { padding-left:1.35rem; }
+    li { margin:0.35rem 0; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .toc { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1rem 1.1rem; }
+    .toc h2 { margin-top:0; border:none; font-size:0.95rem; color:var(--accent); }
+    .toc-controls { display:flex; gap:0.45rem; margin:0 0 0.65rem; flex-wrap:wrap; }
+    .toc-controls button { font:inherit; font-size:0.78rem; cursor:pointer; background:#0b1220; color:var(--accent); border:1px solid var(--border); border-radius:6px; padding:0.28rem 0.55rem; }
+    .toc-controls button:hover { background:var(--card); }
+    .toc-chapters { margin-top:0.15rem; }
+    .toc-chapter { margin:0; padding:0.15rem 0; border-bottom:1px solid var(--border); }
+    .toc-chapter:last-child { border-bottom:none; }
+    .toc-chapter > summary { display:flex; align-items:flex-start; gap:0.35rem; cursor:pointer; list-style:none; font-size:0.88rem; font-weight:600; padding:0.25rem 0; line-height:1.4; color:var(--text); }
+    .toc-chapter > summary::-webkit-details-marker { display:none; }
+    .toc-caret { flex:0 0 0.75rem; text-align:center; color:var(--muted); font-size:0.65rem; line-height:1.6; transition:transform 0.15s ease; user-select:none; }
+    .toc-chapter[open] > summary .toc-caret { transform:rotate(90deg); }
+    .toc-chapter-link { font-weight:600; }
+    .toc-sublist { list-style:none; padding:0.25rem 0 0.45rem 0.15rem; margin:0 0 0 0.35rem; border-left:2px solid var(--border); }
+    .toc-sublist li { margin:0.22rem 0; padding-left:0.5rem; font-size:0.8rem; line-height:1.4; }
+    .note { background:rgba(255,183,77,.08); border-left:3px solid var(--accent); padding:0.75rem 1rem; margin:1rem 0; border-radius:0 8px 8px 0; font-size:0.95rem; }
+    code { font-family:ui-monospace,Consolas,monospace; font-size:0.88em; background:#0b1220; padding:0.12em 0.4em; border-radius:4px; color:#fde68a; }
+    table.compare { border-collapse:collapse; width:100%; margin:1rem 0; font-size:0.95rem; }
+    table.compare th, table.compare td { border:1px solid var(--border); padding:0.55rem 0.75rem; text-align:left; vertical-align:top; }
+    table.compare th { background:var(--card); color:var(--accent); width:22%; }
+    .example { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin:1rem 0; }
+    .example h3 { margin-top:0; color:var(--accent); font-size:1rem; }
+    .checklist { list-style:none; padding-left:0; }
+    .checklist li { padding-left:1.5rem; position:relative; }
+    .checklist li::before { content:"☐"; position:absolute; left:0; color:var(--accent); }
+    footer { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:0.9rem; }
+    .doc-main .doc-screenshot { margin:0 0 1.15rem; padding:0; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--card); }
+    .doc-main .doc-screenshot img { display:block; width:100%; height:auto; vertical-align:top; }
+    .doc-main .doc-screenshot figcaption { padding:0.45rem 0.7rem; font-size:0.82rem; color:var(--muted); font-weight:300; border-top:1px solid var(--border); }
+  </style>
+  <link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico">
+</head>
+<body>
+  <div class="doc-layout">
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <div class="toc-chapters">
+        <details class="toc-chapter" open>
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#positioning" class="toc-chapter-link">1. What this app is for</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#positioning-1-1">1.1 True redaction vs. draw-over preview</a></li>
+            <li><a href="#positioning-1-2">1.2 What we mean by “local and offline”</a></li>
+            <li><a href="#positioning-1-3">1.3 When it’s a good fit</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#concepts" class="toc-chapter-link">2. Core ideas</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#concepts-2-1">2.1 Redaction marks</a></li>
+            <li><a href="#concepts-2-2">2.2 What “confirm” means</a></li>
+            <li><a href="#concepts-2-3">2.3 Rules vs. on-device AI</a></li>
+            <li><a href="#concepts-2-4">2.4 The batch baseline</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#workflow" class="toc-chapter-link">3. End-to-end workflow</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#workflow-example">Walkthrough setup</a></li>
+            <li><a href="#workflow-step-a">Step A: Open the document</a></li>
+            <li><a href="#workflow-step-b">Step B: Region &amp; scenario</a></li>
+            <li><a href="#workflow-step-c">Step C: Run detection</a></li>
+            <li><a href="#workflow-step-d">Step D: Review in the audit list</a></li>
+            <li><a href="#workflow-step-e">Step E: Draw boxes for anything missed</a></li>
+            <li><a href="#workflow-step-f">Step F: Export</a></li>
+            <li><a href="#workflow-step-g">Step G (optional): Apply to more files</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#main-ui" class="toc-chapter-link">4. Main window tour</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#main-ui-4-1">4.1 Preview (left)</a></li>
+            <li><a href="#main-ui-4-4">4.2 Scan policy panel</a></li>
+            <li><a href="#main-ui-4-3">4.3 Selection appearance</a></li>
+            <li><a href="#main-ui-4-2">4.4 Audit trail list</a></li>
+            <li><a href="#main-ui-4-5">4.5 Toolbar buttons</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#rules" class="toc-chapter-link">5. Rules hub</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#rules-5-1">5.1 Region and business scenario</a></li>
+            <li><a href="#rules-5-2">5.2 Built-in vs. custom rules</a></li>
+            <li><a href="#rules-5-3">5.3 When to tweak rules</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#audit" class="toc-chapter-link">6. Audit sidebar</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#audit-6-1">6.1 Why confirmation works this way</a></li>
+            <li><a href="#audit-6-2">6.2 Filters and bulk confirm</a></li>
+            <li><a href="#audit-6-3">6.3 Risk levels</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#manual-box" class="toc-chapter-link">7. Manual selections</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#manual-box-7-1">7.1 When to draw your own boxes</a></li>
+            <li><a href="#manual-box-7-2">7.2 Working with auto-detected marks</a></li>
+            <li><a href="#manual-box-7-3">7.3 Keyboard shortcuts</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#export" class="toc-chapter-link">8. Export</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#export-8-1">8.1 Pre-export checklist</a></li>
+            <li><a href="#export-8-2">8.2 Why strip metadata</a></li>
+            <li><a href="#export-8-3">8.3 Reading the summary</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#batch" class="toc-chapter-link">9. Batch processing</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#batch-9-1">9.1 What batch mode actually does</a></li>
+            <li><a href="#batch-9-2">9.2 Good use cases</a></li>
+            <li><a href="#batch-9-3">9.3 Things to watch</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#faq" class="toc-chapter-link">10. FAQ</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#faq-false-positives">10.1 Why so many false positives?</a></li>
+            <li><a href="#faq-scanned-pdf">10.2 Scanned PDFs</a></li>
+            <li><a href="#faq-image-no-ocr">10.3 Images and OCR</a></li>
+            <li><a href="#faq-verify-export">10.4 Checking the export</a></li>
+          </ul>
+        </details>
+      </div>
+    </nav>
+
+    <div class="doc-main">
+    <h1>PlainBytes Redactor User Guide</h1>
+    <p class="sub">Written for the current Windows desktop app. If anything here disagrees with the build you have installed, trust the in-app UI.</p>
+
+    <section id="positioning">
+      <h2>1. What this app is for</h2>
+
+      <h3 id="positioning-1-1">1.1 True redaction vs. draw-over preview</h3>
+      <p>These two approaches mean very different things for compliance and security:</p>
+      <table class="compare">
+        <thead>
+          <tr><th>Aspect</th><th>Draw-over preview (the usual “black bar”)</th><th>True redaction (what this app aims for)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Inside the PDF</td>
+            <td>Text, vectors, or images can still be in the file—often just covered by another graphic.</td>
+            <td>Matching content is <strong>removed</strong> from the content stream so it isn’t recoverable through normal parsing.</td>
+          </tr>
+          <tr>
+            <td>Copy / search</td>
+            <td>Depending on the tool, “hidden” text might still copy out.</td>
+            <td>The goal is that selectable text no longer contains the sensitive strings (verify on your exported file).</td>
+          </tr>
+          <tr>
+            <td>Best for</td>
+            <td>On-screen reading or quick cover-ups.</td>
+            <td>Sharing externally, archiving, audits, diligence—anywhere you need content <strong>gone for good</strong>.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">PlainBytes Redactor is built around <strong>true redaction</strong>. Use <strong>Confirm</strong> so you’re clear which areas are actually removed at export.</div>
+
+      <h3 id="positioning-1-2">1.2 What we mean by “local and offline”</h3>
+      <ul>
+        <li><strong>Work stays on this PC</strong>: opening the PDF, rule matching, optional on-device AI, writing the redacted file, and validation all run locally.</li>
+        <li><strong>No document upload for redaction</strong>: the product isn’t designed to ship your files to the cloud as part of the redaction pipeline.</li>
+        <li><strong>Separate from Help / updates</strong>: when you open Help, Check for updates, and similar menu items, Windows may launch your browser or the Microsoft Store. That’s unrelated to keeping the redaction path offline.</li>
+      </ul>
+
+      <h3 id="positioning-1-3">1.3 When it’s a good fit</h3>
+      <ul>
+        <li>Workflows in legal, finance, healthcare, public sector, or audit where you want <strong>human review</strong> and a <strong>smaller blast radius</strong> for leaks.</li>
+        <li>You need to hand out a PDF but strip IDs, account numbers, contact details, and other <strong>identifying</strong> bits.</li>
+        <li>You have many PDFs with the <strong>same layout</strong>: after confirming on one “template” file, you can use <strong>Apply to multiple files</strong> to reuse the same geometry on the rest (see Step G in §3 and §9).</li>
+      </ul>
+    </section>
+
+    <section id="concepts">
+      <h2>2. Core ideas</h2>
+
+      <h3 id="concepts-2-1">2.1 Redaction marks (<code>RedactionMark</code>)</h3>
+      <p>Internally, each area you might redact is a <strong>redaction mark</strong>—think “a rectangle on a page plus metadata”:</p>
+      <ul>
+        <li><strong>Page and rectangle</strong>: position and size in PDF coordinates.</li>
+        <li><strong>State</strong>: <strong>Pending</strong> vs. <strong>Confirmed</strong>—only <strong>confirmed</strong> marks are removed when you export.</li>
+        <li><strong>Source</strong>: <strong>Rules (patterns/regex)</strong>, <strong>AI</strong>, or <strong>manual selection</strong>, so you can tell auto hits from things you drew.</li>
+        <li><strong>Category and risk</strong>: used to filter, sort, and bulk-act in the audit list.</li>
+      </ul>
+
+      <h3 id="concepts-2-2">2.2 What “confirm” means—and why it’s manual</h3>
+      <ul>
+        <li><strong>Automation isn’t the final say</strong>: both rules and AI can <strong>over-flag</strong> normal text or <strong>miss</strong> real sensitive bits, so the app never assumes “everything found should be deleted.”</li>
+        <li><strong>Confirm = you’re signing off</strong>: once confirmed, a mark is included in the export set; anything left pending is not treated as final.</li>
+        <li><strong>Fits real-world review</strong>: the extra step lines up with two-person review, audit trails, and avoiding one-click wipe of a whole page by mistake.</li>
+      </ul>
+
+      <h3 id="concepts-2-3">2.3 Rules vs. on-device AI</h3>
+      <table class="compare">
+        <thead>
+          <tr><th>Aspect</th><th>Rule engine</th><th>On-device AI</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Basis</td>
+            <td>Built-in or custom patterns (keywords, regex), driven by your region and scenario settings.</td>
+            <td>Local ONNX models for semantic / entity-style detection; quality depends on languages and training data.</td>
+          </tr>
+          <tr>
+            <td>Predictability</td>
+            <td>When patterns are clear, behavior is steady and easy to explain.</td>
+            <td>More forgiving with layout and wording; edge cases need a second look.</td>
+          </tr>
+          <tr>
+            <td>Typical use</td>
+            <td>Strongly structured fields—IDs, phones, emails.</td>
+            <td>Looser narrative text—names, addresses, orgs without a fixed format.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>In practice they often <strong>run together</strong>; the audit list shows everything as marks, and you choose what to confirm.</p>
+
+      <h3 id="concepts-2-4">2.4 The batch baseline</h3>
+      <ul>
+        <li>There’s <strong>no</strong> “save this as a named template file and pick it later” flow. What batch uses is an in-memory <strong>geometric baseline</strong>: when you go to batch via <strong>Apply to multiple files</strong>, the app turns every <strong>confirmed</strong> mark on the current document into a <strong>normalized rectangle</strong> (page + coordinates relative to page size) for <strong>that batch session only</strong>.</li>
+        <li>For <strong>each</strong> queued PDF, the batch engine <strong>only stamps those rectangles</strong>—it does <strong>not</strong> run a fresh full-document rule pass or AI pass per file.</li>
+        <li><strong>When that’s OK</strong>: multiple exports from the same system with the <strong>same layout and sensitive regions in the same places</strong> (e.g. uniform statements). If layouts drift, boxes can land on the wrong spot—spot-check early outputs.</li>
+        <li><strong>Rules in the hub</strong>: they help you <strong>find</strong> hits on the <strong>current</strong> single-file workflow; they are <strong>not</strong> automatically re-run for every file in the queue. Batch is driven by the <strong>confirmed positions</strong> you already locked in.</li>
+      </ul>
+    </section>
+
+    <section id="workflow">
+      <h2>3. End-to-end workflow</h2>
+
+      <div class="example">
+        <h3 id="workflow-example">Walkthrough setup</h3>
+        <p>In this example, a legal reviewer has an 8-page <strong>employee offboarding PDF</strong> to release externally. They need mobile numbers, partial bank-card snippets, and personal email addresses removed. The file is a real electronic PDF with selectable text (not a flat scan).</p>
+      </div>
+
+      <figure class="doc-screenshot doc-flowchart">
+        <img src="images/en/flowchart.jpg" alt="Single-file redaction flow: open document, configure rules and run detection, review and add manual boxes, export, and optional batch apply." loading="lazy" decoding="async" />
+        <figcaption>Workflow at a glance</figcaption>
+      </figure>
+
+      <h3 id="workflow-step-a">Step A: Open the document</h3>
+      <p>Use <strong>Open</strong> or drag-and-drop to load the PDF (common image formats are also supported; the path through the app may differ).<br>
+      Everything—preview, detection, and marks—is tied to this one source file, so open the version you actually intend to redact.</p>
+
+      <h3 id="workflow-step-b">Step B: Pick region and scenario in the rules hub</h3>
+      <p>Open <strong>Rules</strong>, choose a <strong>region</strong> (country/area), then a <strong>business scenario</strong> (general, financial, etc.). Turn built-in rules on or off, or add custom ones if needed.<br>
+      The effective rule set changes with region and scenario; picking the wrong scenario can leave useful rules off or invite extra noise. You can save preferences before closing so the next similar doc is quicker.</p>
+
+      <h3 id="workflow-step-c">Step C: Run detection</h3>
+      <p>On the right, under scan policy, click <strong>Start detection</strong> (or the equivalent control) and let the document model and full pass finish.<br>
+      That turns rule and on-device AI hits into a list of <strong>pending</strong> marks. If you change region, scenario, or rules, run detection again so the list matches.</p>
+
+      <h3 id="workflow-step-d">Step D: Review in the audit list</h3>
+      <p>In the <strong>audit trail</strong> on the right, walk items one by one or use filters. <strong>Confirm</strong> what must go; clear confirmation or remove rows for false positives (exact controls depend on the build). The yellow overlays in preview usually stay in sync—clicking can toggle confirm state.<br>
+      This step is what keeps you from deleting the wrong thing or leaving something behind; export only honors <strong>confirmed</strong> marks.</p>
+
+      <h3 id="workflow-step-e">Step E: Draw boxes for anything missed</h3>
+      <p>Drag rectangles on the left-hand preview over anything rules/AI didn’t catch but you know must be redacted. Adjust selection colors if it helps on busy backgrounds.<br>
+      Auto detection won’t catch everything; manual boxes are your <strong>safety net</strong>.</p>
+
+      <h3 id="workflow-step-f">Step F: Export</h3>
+      <p>Choose <strong>Export redacted</strong>, pick a save location, and read the completion summary (how many items removed, metadata cleanup, validation messages).<br>
+      You get a share-ready copy; the summary is a quick sanity check—if it flags warnings, open the exported PDF and spot-check.</p>
+
+      <h3 id="workflow-step-g">Step G (optional): Apply to multiple files</h3>
+      <p>After everything that should be redacted is <strong>confirmed</strong> on this PDF, use <strong>Apply to multiple files</strong> (or the equivalent entry). The app builds the <strong>normalized baseline</strong> described above and opens <strong>batch redaction</strong>. Add more PDFs with matching layout, set an output folder, choose whether to strip metadata, and run.<br>
+      When layouts truly match, you avoid redoing the same confirmations file by file; batch still <strong>physically removes</strong> the boxed regions.<br>
+      <strong>Important</strong>: this isn’t a reusable named template on disk—there’s <strong>no separate template file</strong>; the baseline comes from <strong>this</strong> confirmed document. Batch also <strong>doesn’t</strong> re-run rules/AI per queued file. If a file’s layout changed, go back through the single-file flow.</p>
+    </section>
+
+    <section id="main-ui">
+      <h2>4. Main window tour</h2>
+
+      <figure class="doc-screenshot">
+        <img src="images/en/PlainBytes.Redactor.jpg" alt="PlainBytes Redactor main window with document preview on the left and audit and policy panels on the right; layout may vary by version." loading="lazy" decoding="async" />
+        <figcaption>Main window</figcaption>
+      </figure>
+
+      <h3 id="main-ui-4-1">4.1 Preview (left)</h3>
+      <ul>
+        <li><strong>What it’s for</strong>: renders each page of the PDF (or image) so page numbers and layout match the file.</li>
+        <li><strong>Marks</strong>: auto and manual pending areas show as highlights; <strong>clicking</strong> a region often toggles confirm state together with the list (yellow cueing depends on the build).</li>
+        <li><strong>Manual boxes</strong>: click-drag on the preview to add a rectangular mark.</li>
+      </ul>
+      <h3 id="main-ui-4-4">4.2 Scan policy panel</h3>
+      <ul>
+        <li><strong>What it’s for</strong>: entry point for running detection (e.g. <strong>Start detection</strong>), aligned with region, scenario, and rule sets from the hub.</li>
+        <li><strong>Why it’s separate</strong>: keeps “when to scan the whole doc” distinct from “how to work the audit list,” which reduces confusion.</li>
+      </ul>
+
+      <h3 id="main-ui-4-3">4.3 Selection appearance</h3>
+      <ul>
+        <li><strong>What it’s for</strong>: tweak how manual selections look—<strong>border, fill, custom colors</strong>—so boxes stay visible on noisy backgrounds.</li>
+        <li><strong>Heads-up</strong>: this is <strong>visual help only</strong>; redaction still depends on confirmation and export.</li>
+      </ul>
+
+      <h3 id="main-ui-4-2">4.4 Audit trail list</h3>
+      <ul>
+        <li><strong>What it’s for</strong>: aggregated sensitive hits for the open document, with filters by category and risk, plus per-row or bulk confirm/clear actions.</li>
+        <li><strong>Sync with preview</strong>: selecting or acting on a row usually scrolls/highlights the page; clicking a mark in preview updates list state.</li>
+      </ul>
+
+      <h3 id="main-ui-4-5">4.5 Toolbar (top to bottom)</h3>
+      <ul>
+        <li><strong>Open</strong>: pick a local PDF or supported image.</li>
+        <li><strong>Close document</strong>: closes the current file.</li>
+        <li><strong>Previous / Next page</strong>: use the toolbar—<code>Page Up</code> / <code>Page Down</code> on the single-file page are handled separately for preview scrolling (see §7.3).</li>
+        <li><strong>Rules</strong>: opens the rules hub.</li>
+        <li><strong>Batch</strong>: opens batch redaction.</li>
+        <li><strong>Export redacted</strong>: available when there are confirmed marks.</li>
+        <li><strong>More (⋯)</strong>: language, Help, feedback, updates, About, etc.</li>
+      </ul>
+
+      <p>The status bar shows readiness, the current file name, and whether the on-device AI runtime is ready, among other hints.</p>
+    </section>
+
+    <section id="rules">
+      <h2>5. Rules hub</h2>
+
+      <h3 id="rules-5-1">5.1 Region and business scenario</h3>
+      <ul>
+        <li><strong>Region</strong>: country/area flavor—drives which built-in patterns apply (ID formats, phone rules, etc.).</li>
+        <li><strong>Business scenario</strong>: narrows or emphasizes rule bundles (general, financial, healthcare, legal/government) so defaults fit the document type.</li>
+        <li><strong>Together</strong>: set region first, then scenario; after changes, <strong>run detection again</strong> or you may still be looking at an old pass.</li>
+      </ul>
+
+      <h3 id="rules-5-2">5.2 Built-in vs. custom rules</h3>
+      <ul>
+        <li><strong>Built-in</strong>: shipped with the app, grouped (identity, finance, address, contact, …), toggle per rule, backed by local data—fully offline.</li>
+        <li><strong>Custom</strong>: your label plus a pattern—plain substring (case-insensitive) or <strong>.NET regular expression</strong>. Handy for internal codes the built-ins don’t know. There may be a cap on how many you can add.</li>
+      </ul>
+
+      <h3 id="rules-5-3">5.3 When to adjust rules</h3>
+      <ul>
+        <li><strong>Too much noise</strong>: temporarily disable overly broad rules or pick a closer scenario.</li>
+        <li><strong>Same pattern keeps appearing</strong> and nothing built-in matches: add a custom rule to cut down manual boxing.</li>
+        <li><strong>Config drift</strong>: <strong>Restore defaults</strong> clears local overrides (you’ll be asked to confirm).</li>
+      </ul>
+    </section>
+
+    <section id="audit">
+      <h2>6. Audit sidebar</h2>
+
+      <h3 id="audit-6-1">6.1 Why confirmation works this way</h3>
+      <ul>
+        <li>A row often groups multiple occurrences of the same sensitive type or key across pages; confirming it means you’re saying <strong>all of those spots should be removed</strong>.</li>
+        <li><strong>Pending</strong> keeps “model guess” separate from “human decision,” so nothing is bulk-written without review.</li>
+        <li>The export engine consumes <strong>confirmed</strong> marks only—by design.</li>
+      </ul>
+
+      <h3 id="audit-6-2">6.2 Filters and bulk confirm</h3>
+      <ul>
+        <li><strong>Filter</strong>: narrow by category or risk so you tackle high-risk or one field type first (e.g. contact only).</li>
+        <li><strong>Bulk</strong>: flip confirm state for everything visible under the current filter (wording depends on the build)—handy when a whole slice is clearly right or clearly wrong.</li>
+        <li><strong>Tip</strong>: glance at the active filter before a bulk action so you don’t sweep in rows you didn’t mean to.</li>
+      </ul>
+
+      <h3 id="audit-6-3">6.3 Risk levels</h3>
+      <p>Levels (e.g. critical, high, suspicious, medium, low) help you <strong>sort and filter</strong> so the riskiest hits surface first. They are <strong>not</strong> a mandate to confirm—you still decide what to redact.</p>
+    </section>
+
+    <section id="manual-box">
+      <h2>7. Manual selections</h2>
+
+      <h3 id="manual-box-7-1">7.1 When to draw your own boxes</h3>
+      <ul>
+        <li>Rules and AI <strong>missed</strong> something you know must go—handwritten photo annotations, odd layout pockets, etc.</li>
+        <li>Hits are <strong>fragmented</strong> or <strong>misaligned</strong>: remove the bad auto rows and draw a tighter box.</li>
+        <li><strong>Scan-only</strong> content handled as imagery: behavior differs from text PDFs; you’ll often lean on manual boxes (see FAQ).</li>
+      </ul>
+
+      <h3 id="manual-box-7-2">7.2 Working with auto-detected marks</h3>
+      <p>A practical order: <strong>run detection → use the audit list to clear obvious false positives and notice patterns → add a few manual boxes for real misses → skim the preview page by page</strong>. Manual and automatic marks are treated the same at export time—what matters is whether they’re <strong>confirmed</strong>.</p>
+
+      <h3 id="manual-box-7-3">7.3 Keyboard shortcuts (preview &amp; marks)</h3>
+      <p>While the single-file page is loaded, it hooks the main window’s <code>PreviewKeyDown</code>. The shortcuts below apply only with a document open and the app <strong>not busy</strong>. They are <strong>not</strong> wired to the toolbar previous/next page buttons.</p>
+      <table class="compare" aria-label="Keyboard shortcuts">
+        <thead>
+          <tr><th scope="col">Key</th><th scope="col">Action</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Tab</code></td><td>Next redaction mark.</td></tr>
+          <tr><td><code>Shift</code> + <code>Tab</code></td><td>Previous redaction mark.</td></tr>
+          <tr><td><code>←</code> <code>↑</code> <code>→</code> <code>↓</code></td><td>With <strong>no</strong> modifiers: <code>←</code><code>↑</code> previous mark, <code>→</code><code>↓</code> next. With <strong>any</strong> modifier held: only <code>↑</code><code>↓</code> nudge preview scroll by a fixed step; <code>←</code><code>→</code> are not handled in that branch.</td></tr>
+          <tr><td><code>Enter</code></td><td>No modifiers: toggle confirm on the selected mark.</td></tr>
+          <tr><td><code>Delete</code></td><td>No modifiers: remove the selected mark.</td></tr>
+          <tr><td><code>Page Up</code> / <code>Page Down</code></td><td>Scroll the preview stack by about one viewport height.</td></tr>
+          <tr><td><code>Home</code> / <code>End</code></td><td>Jump preview scroll to top / bottom.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="export">
+      <h2>8. Export</h2>
+
+      <h3 id="export-8-1">8.1 Pre-export checklist</h3>
+      <ul class="checklist">
+        <li>This is the <strong>file you mean to release</strong> (page count, attachments) checked.</li>
+        <li>Everything that should be redacted is <strong>confirmed</strong>; anything that must stay is cleared or removed from the list.</li>
+        <li>You’ve eyeballed key pages in preview, including scans or odd sections you boxed manually.</li>
+        <li>You know export writes a <strong>new file</strong> (or your chosen path) and typically doesn’t overwrite the original—behavior follows the save dialog.</li>
+      </ul>
+
+      <h3 id="export-8-2">8.2 Why strip metadata</h3>
+      <p>Beyond page content, PDFs carry author, producer, timestamps, XMP, and more. Redacting body text but leaving metadata can still leak internal accounts or edit history. This app can scrub that on export (and optionally in batch). For anything leaving the building, it’s usually best to <strong>leave metadata cleanup on</strong> when the UI offers it.</p>
+
+      <h3 id="export-8-3">8.3 Reading the summary</h3>
+      <ul>
+        <li>Does the <strong>count of physically removed items</strong> feel right for what you saw?</li>
+        <li>Does it say <strong>metadata was cleared</strong>?</li>
+        <li>If you see <strong>text validation warnings</strong>, automated sampling found something odd—open the exported PDF and check; don’t treat the summary alone as proof of zero residue.</li>
+      </ul>
+    </section>
+
+    <section id="batch">
+      <h2>9. Batch processing</h2>
+
+      <h3 id="batch-9-1">9.1 What batch mode actually does</h3>
+      <p>After you enter through <strong>Apply to multiple files</strong> with a baseline, each queued PDF follows a <strong>stamp-only</strong> path: normalized rectangles are mapped to absolute coordinates per page, marks are created, content is physically removed, and metadata can optionally be cleared. It does <strong>not</strong> run rule detection or AI again per file.</p>
+      <div class="note">So the rules and AI you used in single-file mode helped you <strong>find</strong> and <strong>confirm</strong> on the template; batch simply copies <strong>where you confirmed</strong> onto other files that share the same geometry.</div>
+
+      <h3 id="batch-9-2">9.2 Good use cases</h3>
+      <ul>
+        <li>Many PDFs from one system with the <strong>same layout</strong> and sensitive regions in the <strong>same relative positions</strong>.</li>
+        <li>You already finished detection and confirmation on <strong>one exemplar</strong> and want to skip repeating that work on near-identical copies.</li>
+      </ul>
+
+      <h3 id="batch-9-3">9.3 Things to watch</h3>
+      <ul>
+        <li><strong>No saved template file</strong>: closing the batch window drops the in-memory baseline; next time, seed it again from <strong>Apply to multiple files</strong>.</li>
+        <li>Opening <strong>Batch</strong> from the toolbar without that path may leave you without a baseline—<strong>Start</strong> might stay disabled.</li>
+        <li>Small layout shifts can mean missed or wrong regions; <strong>spot-check</strong> first outputs.</li>
+        <li>Turn on <strong>clear properties and hidden data</strong> when offered for external sharing.</li>
+        <li>Some document types or license tiers may limit batch; if <strong>Apply to multiple files</strong> is greyed out, that’s the signal.</li>
+      </ul>
+    </section>
+
+    <section id="faq">
+      <h2>10. FAQ</h2>
+
+      <h3 id="faq-false-positives">10.1 Why are there so many false positives?</h3>
+      <p>Both rules and AI lean on heuristics: strings that <strong>look</strong> sensitive, place names colliding with person names, table fragments, and so on. Tuning scenario/rules, turning off a noisy rule, or clearing confirmation in the list usually gets it under control. Manual confirmation is intentional—it lowers the odds of one-click deleting something you still need.</p>
+
+      <h3 id="faq-scanned-pdf">10.2 What about scanned PDFs?</h3>
+      <p>If the PDF is effectively a page image with no real text layer, rules and AI have less to work with, so you’ll lean more on <strong>manual boxes</strong> or whatever raster-specific flow the build exposes (follow on-screen hints). It helps to know whether you’re dealing with a born-digital PDF or a scan up front.</p>
+
+      <h3 id="faq-image-no-ocr">10.3 Can I redact images? Why isn’t text in photos recognized?</h3>
+      <p>Yes—common image formats can be opened like a document; you still preview, mark, and export. To keep installer size and runtime cost reasonable, this version <strong>doesn’t ship OCR</strong>: text in photos doesn’t become selectable, so <strong>rule-based and AI text detection barely apply</strong>. Redact sensitive areas by <strong>drawing boxes</strong> (and using keyboard shortcuts to move between marks). If you need “recognize then match,” OCR elsewhere first or supply a text-layer PDF.</p>
+
+      <h3 id="faq-verify-export">10.4 How do I sanity-check an export?</h3>
+      <ul>
+        <li>In any PDF reader, try <strong>select all / copy</strong> and <strong>search</strong> for strings you know were sensitive.</li>
+        <li><strong>Visually scan</strong> headers, footers, footnotes.</li>
+        <li>Read the app’s <strong>export validation summary</strong>; if it warns, revisit those pages first.</li>
+        <li>For very high stakes, layer your org’s usual controls—second tool, print review, etc.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>© PlainBytes Studio · Updated as the product evolves; your installed build remains the source of truth.</p>
+    </footer>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var nav = document.querySelector('nav.toc');
+      if (!nav) return;
+
+      function tocNavigateToId(id) {
+        if (!id) return false;
+        var el = document.getElementById(id);
+        if (!el) return false;
+        el.scrollIntoView({ block: 'start' });
+        try {
+          history.replaceState(null, '', '#' + id);
+        } catch (_) {
+          location.hash = id;
+        }
+        return true;
+      }
+
+      nav.addEventListener('click', function (e) {
+        var t = e.target;
+        if (t.nodeType === Node.TEXT_NODE) t = t.parentElement;
+        var a = t && t.closest ? t.closest('a[href^="#"]') : null;
+        if (!a || !nav.contains(a)) return;
+        var raw = a.getAttribute('href');
+        if (!raw || raw === '#') return;
+        var id = decodeURIComponent(raw.slice(1));
+        if (!tocNavigateToId(id)) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var d = a.closest('details.toc-chapter');
+        if (d) d.open = true;
+      }, true);
+
+      var expand = document.getElementById('toc-expand-all');
+      var collapse = document.getElementById('toc-collapse-all');
+      if (expand) expand.addEventListener('click', function () {
+        nav.querySelectorAll('details.toc-chapter').forEach(function (d) { d.open = true; });
+      });
+      if (collapse) collapse.addEventListener('click', function () {
+        nav.querySelectorAll('details.toc-chapter').forEach(function (d) { d.open = false; });
+      });
+
+      if (location.hash.length > 1) {
+        var hid = decodeURIComponent(location.hash.slice(1));
+        requestAnimationFrame(function () { tocNavigateToId(hid); });
+      }
+    })();
+  </script>
+</body>
+</html>

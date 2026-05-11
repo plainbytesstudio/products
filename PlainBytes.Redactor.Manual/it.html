@@ -1,0 +1,549 @@
+﻿<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guida utente di PlainBytes Redactor</title>
+  <style>
+    :root { --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8; --accent:#ffb74d; --border:#334155; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Segoe UI",system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.65; font-size:16px; }
+    .doc-layout { display:flex; gap:2rem; align-items:flex-start; max-width:72rem; margin:0 auto; padding:1.5rem 1.25rem 4rem; }
+    .doc-layout .toc { flex:0 0 18rem; position:sticky; top:1rem; align-self:flex-start; max-height:calc(100vh - 2rem); overflow-y:auto; margin-bottom:0; }
+    .doc-main { flex:1; min-width:0; font-weight:300; }
+    .doc-main h1 { font-weight:700; }
+    .doc-main h2 { font-weight:700; }
+    .doc-main h3 { font-weight:600; }
+    .doc-main .example h3 { font-weight:600; }
+    .doc-main table.compare th { font-weight:600; }
+    .doc-main strong { font-weight:600; }
+    .doc-main code { font-weight:400; }
+    .doc-main > section:first-child h2 { margin-top:0; }
+    @media (max-width: 900px) {
+      .doc-layout { flex-direction:column; gap:1.25rem; padding-top:1.25rem; }
+      .doc-layout .toc { position:relative; top:auto; flex:none; width:100%; max-height:none; }
+    }
+    h1 { font-size:1.85rem; font-weight:700; margin:0 0 0.5rem; color:var(--accent); }
+    .sub { color:var(--muted); font-size:0.95rem; margin-bottom:2rem; }
+    h2 { font-size:1.25rem; margin:2.25rem 0 0.75rem; padding-bottom:0.35rem; border-bottom:1px solid var(--border); color:#fff; scroll-margin-top:1rem; }
+    h3 { font-size:1.05rem; margin:1.25rem 0 0.5rem; color:#cbd5e1; scroll-margin-top:1rem; }
+    ul, ol { padding-left:1.35rem; }
+    li { margin:0.35rem 0; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .toc { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1rem 1.1rem; }
+    .toc h2 { margin-top:0; border:none; font-size:0.95rem; color:var(--accent); }
+    .toc-controls { display:flex; gap:0.45rem; margin:0 0 0.65rem; flex-wrap:wrap; }
+    .toc-controls button { font:inherit; font-size:0.78rem; cursor:pointer; background:#0b1220; color:var(--accent); border:1px solid var(--border); border-radius:6px; padding:0.28rem 0.55rem; }
+    .toc-controls button:hover { background:var(--card); }
+    .toc-chapters { margin-top:0.15rem; }
+    .toc-chapter { margin:0; padding:0.15rem 0; border-bottom:1px solid var(--border); }
+    .toc-chapter:last-child { border-bottom:none; }
+    .toc-chapter > summary { display:flex; align-items:flex-start; gap:0.35rem; cursor:pointer; list-style:none; font-size:0.88rem; font-weight:600; padding:0.25rem 0; line-height:1.4; color:var(--text); }
+    .toc-chapter > summary::-webkit-details-marker { display:none; }
+    .toc-caret { flex:0 0 0.75rem; text-align:center; color:var(--muted); font-size:0.65rem; line-height:1.6; transition:transform 0.15s ease; user-select:none; }
+    .toc-chapter[open] > summary .toc-caret { transform:rotate(90deg); }
+    .toc-chapter-link { font-weight:600; }
+    .toc-sublist { list-style:none; padding:0.25rem 0 0.45rem 0.15rem; margin:0 0 0 0.35rem; border-left:2px solid var(--border); }
+    .toc-sublist li { margin:0.22rem 0; padding-left:0.5rem; font-size:0.8rem; line-height:1.4; }
+    .note { background:rgba(255,183,77,.08); border-left:3px solid var(--accent); padding:0.75rem 1rem; margin:1rem 0; border-radius:0 8px 8px 0; font-size:0.95rem; }
+    code { font-family:ui-monospace,Consolas,monospace; font-size:0.88em; background:#0b1220; padding:0.12em 0.4em; border-radius:4px; color:#fde68a; }
+    table.compare { border-collapse:collapse; width:100%; margin:1rem 0; font-size:0.95rem; }
+    table.compare th, table.compare td { border:1px solid var(--border); padding:0.55rem 0.75rem; text-align:left; vertical-align:top; }
+    table.compare th { background:var(--card); color:var(--accent); width:22%; }
+    .example { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1rem 1.15rem; margin:1rem 0; }
+    .example h3 { margin-top:0; color:var(--accent); font-size:1rem; }
+    .checklist { list-style:none; padding-left:0; }
+    .checklist li { padding-left:1.5rem; position:relative; }
+    .checklist li::before { content:"☐"; position:absolute; left:0; color:var(--accent); }
+    footer { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:0.9rem; }
+    .doc-main .doc-screenshot { margin:0 0 1.15rem; padding:0; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--card); }
+    .doc-main .doc-screenshot img { display:block; width:100%; height:auto; vertical-align:top; }
+    .doc-main .doc-screenshot figcaption { padding:0.45rem 0.7rem; font-size:0.82rem; color:var(--muted); font-weight:300; border-top:1px solid var(--border); }
+  </style>
+  <link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico">
+</head>
+<body>
+  <div class="doc-layout">
+    <nav class="toc" aria-label="Indice">
+      <h2>Indice</h2>
+      <div class="toc-chapters">
+        <details class="toc-chapter" open>
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#positioning" class="toc-chapter-link">1. A cosa serve questa app</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#positioning-1-1">1.1 Redazione reale vs copertura visiva</a></li>
+            <li><a href="#positioning-1-2">1.2 Cosa intendiamo per “locale e offline”</a></li>
+            <li><a href="#positioning-1-3">1.3 Quando è adatta</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#concepts" class="toc-chapter-link">2. Concetti chiave</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#concepts-2-1">2.1 Marcature di redazione</a></li>
+            <li><a href="#concepts-2-2">2.2 Cosa significa “confermare”</a></li>
+            <li><a href="#concepts-2-3">2.3 Regole vs IA locale</a></li>
+            <li><a href="#concepts-2-4">2.4 La base geometrica per il batch</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#workflow" class="toc-chapter-link">3. Flusso di lavoro completo</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#workflow-example">Scenario di esempio</a></li>
+            <li><a href="#workflow-step-a">Passaggio A: aprire il documento</a></li>
+            <li><a href="#workflow-step-b">Passaggio B: area e scenario</a></li>
+            <li><a href="#workflow-step-c">Passaggio C: avviare il rilevamento</a></li>
+            <li><a href="#workflow-step-d">Passaggio D: controllare nell’elenco di audit</a></li>
+            <li><a href="#workflow-step-e">Passaggio E: tracciare riquadri per ciò che manca</a></li>
+            <li><a href="#workflow-step-f">Passaggio F: esportare</a></li>
+            <li><a href="#workflow-step-g">Passaggio G (facoltativo): applicare ad altri file</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#main-ui" class="toc-chapter-link">4. Panoramica della finestra principale</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#main-ui-4-1">4.1 Anteprima (a sinistra)</a></li>
+            <li><a href="#main-ui-4-4">4.2 Pannello della strategia di scansione</a></li>
+            <li><a href="#main-ui-4-3">4.3 Aspetto delle selezioni</a></li>
+            <li><a href="#main-ui-4-2">4.4 Elenco di audit</a></li>
+            <li><a href="#main-ui-4-5">4.5 Pulsanti della barra strumenti</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#rules" class="toc-chapter-link">5. Centro regole</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#rules-5-1">5.1 Area e scenario aziendale</a></li>
+            <li><a href="#rules-5-2">5.2 Regole integrate vs personalizzate</a></li>
+            <li><a href="#rules-5-3">5.3 Quando modificare le regole</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#audit" class="toc-chapter-link">6. Barra laterale di audit</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#audit-6-1">6.1 Perché la conferma funziona così</a></li>
+            <li><a href="#audit-6-2">6.2 Filtri e conferma in blocco</a></li>
+            <li><a href="#audit-6-3">6.3 Livelli di rischio</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#manual-box" class="toc-chapter-link">7. Selezioni manuali</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#manual-box-7-1">7.1 Quando tracciare riquadri manuali</a></li>
+            <li><a href="#manual-box-7-2">7.2 Lavorare con le marcature rilevate automaticamente</a></li>
+            <li><a href="#manual-box-7-3">7.3 Scorciatoie da tastiera</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#export" class="toc-chapter-link">8. Esportazione</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#export-8-1">8.1 Controlli prima dell’esportazione</a></li>
+            <li><a href="#export-8-2">8.2 Perché rimuovere i metadati</a></li>
+            <li><a href="#export-8-3">8.3 Leggere il riepilogo</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#batch" class="toc-chapter-link">9. Elaborazione batch</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#batch-9-1">9.1 Cosa fa davvero la modalità batch</a></li>
+            <li><a href="#batch-9-2">9.2 Casi d’uso adatti</a></li>
+            <li><a href="#batch-9-3">9.3 Aspetti da controllare</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter">
+          <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#faq" class="toc-chapter-link">10. Domande frequenti</a></summary>
+          <ul class="toc-sublist">
+            <li><a href="#faq-false-positives">10.1 Perché ci sono tanti falsi positivi?</a></li>
+            <li><a href="#faq-scanned-pdf">10.2 PDF scansionati</a></li>
+            <li><a href="#faq-image-no-ocr">10.3 Immagini e OCR</a></li>
+            <li><a href="#faq-verify-export">10.4 Controllare l’esportazione</a></li>
+          </ul>
+        </details>
+      </div>
+    </nav>
+
+    <div class="doc-main">
+    <h1>Guida utente di PlainBytes Redactor</h1>
+    <p class="sub">Scritta per l’attuale app desktop per Windows. Se qualcosa non coincide con la versione installata, fa fede l’interfaccia dell’app.</p>
+
+    <section id="positioning">
+      <h2>1. A cosa serve questa app</h2>
+
+      <h3 id="positioning-1-1">1.1 Redazione reale vs copertura visiva</h3>
+      <p>Questi due approcci hanno implicazioni molto diverse per conformità e sicurezza:</p>
+      <table class="compare">
+        <thead>
+          <tr><th>Aspetto</th><th>Copertura visiva (la classica “barra nera”)</th><th>Redazione reale (l’obiettivo di questa app)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dentro il PDF</td>
+            <td>Testo, vettori o immagini possono rimanere nel file, spesso soltanto coperti da un altro elemento grafico.</td>
+            <td>Il contenuto corrispondente viene <strong>rimosso</strong> dal flusso del documento, così non è recuperabile tramite una normale analisi del PDF.</td>
+          </tr>
+          <tr>
+            <td>Copia / ricerca</td>
+            <td>A seconda dello strumento, il testo “nascosto” potrebbe ancora essere copiabile.</td>
+            <td>L’obiettivo è che il testo selezionabile non contenga più le stringhe sensibili (da verificare sul file esportato).</td>
+          </tr>
+          <tr>
+            <td>Ideale per</td>
+            <td>Lettura a schermo o coperture temporanee.</td>
+            <td>Condivisione esterna, archiviazione, audit, due diligence: tutti i casi in cui il contenuto deve <strong>sparire definitivamente</strong>.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">PlainBytes Redactor è progettato per la <strong>redazione reale</strong>. Usate <strong>Conferma</strong> per indicare con precisione quali aree verranno effettivamente rimosse all’esportazione.</div>
+
+      <h3 id="positioning-1-2">1.2 Cosa intendiamo per “locale e offline”</h3>
+      <ul>
+        <li><strong>Il lavoro resta su questo PC</strong>: apertura del PDF, corrispondenza delle regole, IA locale facoltativa, scrittura del file redatto e convalida avvengono in locale.</li>
+        <li><strong>Nessun caricamento del documento per la redazione</strong>: il prodotto non è progettato per inviare i vostri file al cloud durante il flusso di redazione.</li>
+        <li><strong>Da distinguere da guida e aggiornamenti</strong>: quando aprite Guida, Controlla aggiornamenti o voci simili, Windows può avviare il browser o Microsoft Store. Questo è separato dal mantenere offline il percorso di redazione.</li>
+      </ul>
+
+      <h3 id="positioning-1-3">1.3 Quando è adatta</h3>
+      <ul>
+        <li>Flussi di lavoro legali, finanziari, sanitari, pubblici o di audit in cui servono <strong>revisione umana</strong> e una <strong>superficie di esposizione ridotta</strong>.</li>
+        <li>Dovete distribuire un PDF ma rimuovere documenti d’identità, numeri di conto, recapiti e altri dati <strong>identificativi</strong>.</li>
+        <li>Avete molti PDF con la <strong>stessa impaginazione</strong>: dopo la conferma su un file “modello”, potete usare <strong>Applica a più file</strong> per riutilizzare la stessa geometria sugli altri (vedere il passaggio G nel §3 e il §9).</li>
+      </ul>
+    </section>
+
+    <section id="concepts">
+      <h2>2. Concetti chiave</h2>
+
+      <h3 id="concepts-2-1">2.1 Marcature di redazione (<code>RedactionMark</code>)</h3>
+      <p>Internamente, ogni area che potreste redigere è una <strong>marcatura di redazione</strong>: in pratica, un rettangolo su una pagina con alcuni metadati.</p>
+      <ul>
+        <li><strong>Pagina e rettangolo</strong>: posizione e dimensioni nelle coordinate del PDF.</li>
+        <li><strong>Stato</strong>: <strong>in sospeso</strong> o <strong>confermata</strong>. Solo le marcature <strong>confermate</strong> vengono rimosse all’esportazione.</li>
+        <li><strong>Origine</strong>: <strong>regole (pattern/regex)</strong>, <strong>IA</strong> o <strong>selezione manuale</strong>, per distinguere i risultati automatici dai riquadri tracciati a mano.</li>
+        <li><strong>Categoria e rischio</strong>: usati per filtrare, ordinare e applicare azioni in blocco nell’elenco di audit.</li>
+      </ul>
+
+      <h3 id="concepts-2-2">2.2 Cosa significa “confermare” e perché è manuale</h3>
+      <ul>
+        <li><strong>L’automazione non decide da sola</strong>: sia le regole sia l’IA possono <strong>segnalare troppo</strong> testo normale o <strong>mancare</strong> dati sensibili reali. L’app quindi non presume mai che “tutto ciò che è stato trovato vada eliminato”.</li>
+        <li><strong>Confermare = approvare dopo la revisione</strong>: una volta confermata, la marcatura entra nell’insieme da esportare; ciò che resta in sospeso non viene trattato come definitivo.</li>
+        <li><strong>Allineato alla revisione reale</strong>: questo passaggio aggiuntivo rispecchia controlli a due persone, tracciabilità di audit ed evita di cancellare per errore un’intera pagina con un clic.</li>
+      </ul>
+
+      <h3 id="concepts-2-3">2.3 Regole vs IA locale</h3>
+      <table class="compare">
+        <thead>
+          <tr><th>Aspetto</th><th>Motore di regole</th><th>IA locale</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Base</td>
+            <td>Pattern integrati o personalizzati (parole chiave, regex), guidati dalle impostazioni di area e scenario.</td>
+            <td>Modelli ONNX locali per rilevamento semantico o di entità; la qualità dipende da lingue e dati di addestramento.</td>
+          </tr>
+          <tr>
+            <td>Prevedibilità</td>
+            <td>Quando i pattern sono chiari, il comportamento è stabile e facile da spiegare.</td>
+            <td>Più flessibile con impaginazione e formulazioni; i casi limite richiedono una seconda verifica.</td>
+          </tr>
+          <tr>
+            <td>Uso tipico</td>
+            <td>Campi molto strutturati: ID, telefoni, e-mail.</td>
+            <td>Testo narrativo meno strutturato: nomi, indirizzi, organizzazioni senza formato fisso.</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>In pratica spesso <strong>girano insieme</strong>; l’elenco di audit mostra tutto come marcature, e voi scegliete cosa confermare.</p>
+
+      <h3 id="concepts-2-4">2.4 La base geometrica per il batch</h3>
+      <ul>
+        <li>Non esiste un flusso del tipo “salva come modello nominato e sceglilo più tardi”. Il batch usa una <strong>base geometrica</strong> in memoria: quando si passa al batch tramite <strong>Applica a più file</strong>, l’app trasforma ogni marcatura <strong>confermata</strong> del documento corrente in un <strong>rettangolo normalizzato</strong> (pagina + coordinate relative alla dimensione della pagina), solo per <strong>quella sessione batch</strong>.</li>
+        <li>Per <strong>ogni</strong> PDF in coda, il motore batch <strong>applica solo quei rettangoli</strong>: non esegue <strong>né</strong> un nuovo passaggio completo di regole né un passaggio IA per ogni file.</li>
+        <li><strong>Quando va bene</strong>: più esportazioni dallo stesso sistema con la <strong>stessa impaginazione e le aree sensibili negli stessi punti</strong> (per esempio estratti uniformi). Se l’impaginazione cambia, i riquadri possono finire nel punto sbagliato: controllate i primi risultati.</li>
+        <li><strong>Regole nel centro</strong>: aiutano a <strong>trovare</strong> corrispondenze nel flusso a file singolo <strong>corrente</strong>; non vengono rieseguite automaticamente per ogni file in coda. Il batch usa le <strong>posizioni confermate</strong> che avete già fissato.</li>
+      </ul>
+    </section>
+
+    <section id="workflow">
+      <h2>3. Flusso di lavoro completo</h2>
+
+      <div class="example">
+        <h3 id="workflow-example">Scenario di esempio</h3>
+        <p>In questo esempio, un revisore legale deve distribuire all’esterno un <strong>PDF di offboarding di un dipendente</strong> di 8 pagine. Devono essere rimossi numeri di cellulare, frammenti di carte bancarie e indirizzi e-mail personali. Il file è un vero PDF elettronico con testo selezionabile, non una scansione piatta.</p>
+      </div>
+
+      <figure class="doc-screenshot doc-flowchart">
+        <img src="images/it/flowchart.jpg" alt="Flusso di redazione per un file: aprire il documento, configurare le regole e avviare il rilevamento, controllare e aggiungere riquadri manuali, esportare ed eventualmente applicare in batch." loading="lazy" decoding="async" />
+        <figcaption>Panoramica del flusso</figcaption>
+      </figure>
+
+      <h3 id="workflow-step-a">Passaggio A: aprire il documento</h3>
+      <p>Usate <strong>Apri</strong> o il trascinamento per caricare il PDF (sono supportati anche i formati immagine comuni; il percorso nell’app può variare).<br>
+      Tutto — anteprima, rilevamento e marcature — è legato a questo file sorgente, quindi aprite la versione che intendete davvero redigere.</p>
+
+      <h3 id="workflow-step-b">Passaggio B: scegliere area e scenario nel centro regole</h3>
+      <p>Aprite <strong>Regole</strong>, scegliete un’<strong>area</strong> (paese/zona), poi uno <strong>scenario aziendale</strong> (generico, finanziario, ecc.). Attivate o disattivate le regole integrate, oppure aggiungete regole personalizzate se serve.<br>
+      L’insieme effettivo di regole cambia con area e scenario; scegliere lo scenario sbagliato può lasciare disattivate regole utili o generare più rumore. Potete salvare le preferenze prima di chiudere, così il prossimo documento simile sarà più rapido.</p>
+
+      <h3 id="workflow-step-c">Passaggio C: avviare il rilevamento</h3>
+      <p>A destra, nella strategia di scansione, fate clic su <strong>Avvia rilevamento</strong> (o sul controllo equivalente) e attendete che il modello del documento e l’analisi completa finiscano.<br>
+      I risultati di regole e IA locale diventano un elenco di marcature <strong>in sospeso</strong>. Se cambiate area, scenario o regole, avviate di nuovo il rilevamento per aggiornare l’elenco.</p>
+
+      <h3 id="workflow-step-d">Passaggio D: controllare nell’elenco di audit</h3>
+      <p>Nel <strong>tracciato di audit</strong> a destra, esaminate gli elementi uno per uno o usate i filtri. <strong>Confermate</strong> ciò che deve sparire; annullate la conferma o rimuovete le righe per i falsi positivi (i controlli esatti dipendono dalla versione). Le sovrapposizioni gialle nell’anteprima di solito restano sincronizzate: un clic può cambiare lo stato di conferma.<br>
+      Questo passaggio evita di eliminare la cosa sbagliata o lasciare dati indietro; l’esportazione considera solo le marcature <strong>confermate</strong>.</p>
+
+      <h3 id="workflow-step-e">Passaggio E: tracciare riquadri per ciò che manca</h3>
+      <p>Trascinate rettangoli nell’anteprima a sinistra su ciò che regole o IA non hanno trovato, ma che sapete debba essere redatto. Regolate i colori della selezione se aiuta su sfondi complessi.<br>
+      Il rilevamento automatico non trova tutto; i riquadri manuali sono la vostra <strong>rete di sicurezza</strong>.</p>
+
+      <h3 id="workflow-step-f">Passaggio F: esportare</h3>
+      <p>Scegliete <strong>Esporta redatto</strong>, indicate dove salvare e leggete il riepilogo finale (quanti elementi sono stati rimossi, pulizia dei metadati, messaggi di convalida).<br>
+      Otterrete una copia pronta da condividere; il riepilogo è un controllo rapido. Se segnala avvisi, aprite il PDF esportato e fate una verifica a campione.</p>
+
+      <h3 id="workflow-step-g">Passaggio G (facoltativo): applicare ad altri file</h3>
+      <p>Dopo aver <strong>confermato</strong> in questo PDF tutto ciò che deve essere redatto, usate <strong>Applica a più file</strong> (o la voce equivalente). L’app costruisce la <strong>base normalizzata</strong> descritta sopra e apre la <strong>redazione batch</strong>. Aggiungete altri PDF con la stessa impaginazione, impostate una cartella di output, scegliete se rimuovere i metadati e avviate.<br>
+      Quando le impaginazioni coincidono davvero, evitate di rifare le stesse conferme file per file; il batch <strong>rimuove fisicamente</strong> comunque le aree nei riquadri.<br>
+      <strong>Importante</strong>: non è un modello nominato riutilizzabile su disco. Non esiste un <strong>file modello separato</strong>; la base deriva da <strong>questo</strong> documento confermato. Il batch inoltre <strong>non</strong> riesegue regole o IA per ogni file in coda. Se l’impaginazione di un file è cambiata, tornate al flusso a file singolo.</p>
+    </section>
+
+    <section id="main-ui">
+      <h2>4. Panoramica della finestra principale</h2>
+
+      <figure class="doc-screenshot">
+        <img src="images/it/PlainBytes.Redactor.jpg" alt="Finestra principale di PlainBytes Redactor con anteprima del documento a sinistra e pannelli di audit e strategia a destra; il layout può variare in base alla versione." loading="lazy" decoding="async" />
+        <figcaption>Finestra principale</figcaption>
+      </figure>
+
+      <h3 id="main-ui-4-1">4.1 Anteprima (a sinistra)</h3>
+      <ul>
+        <li><strong>A cosa serve</strong>: visualizza ogni pagina del PDF (o immagine), così numeri di pagina e impaginazione corrispondono al file.</li>
+        <li><strong>Marcature</strong>: le aree in sospeso, automatiche o manuali, appaiono evidenziate; <strong>facendo clic</strong> su un’area spesso si cambia lo stato di conferma insieme all’elenco (il segnale giallo dipende dalla versione).</li>
+        <li><strong>Riquadri manuali</strong>: fate clic e trascinate sull’anteprima per aggiungere una marcatura rettangolare.</li>
+      </ul>
+      <h3 id="main-ui-4-4">4.2 Pannello della strategia di scansione</h3>
+      <ul>
+        <li><strong>A cosa serve</strong>: punto di ingresso per avviare il rilevamento (ad esempio <strong>Avvia rilevamento</strong>), coerente con area, scenario e set di regole del centro.</li>
+        <li><strong>Perché è separato</strong>: distingue “quando analizzare tutto il documento” da “come lavorare sull’elenco di audit”, riducendo la confusione.</li>
+      </ul>
+
+      <h3 id="main-ui-4-3">4.3 Aspetto delle selezioni</h3>
+      <ul>
+        <li><strong>A cosa serve</strong>: regolare l’aspetto delle selezioni manuali — <strong>bordo, riempimento, colori personalizzati</strong> — in modo che i riquadri restino visibili su sfondi complessi.</li>
+        <li><strong>Nota</strong>: è solo un <strong>aiuto visivo</strong>; la redazione dipende comunque da conferma ed esportazione.</li>
+      </ul>
+
+      <h3 id="main-ui-4-2">4.4 Elenco di audit</h3>
+      <ul>
+        <li><strong>A cosa serve</strong>: raggruppa i risultati sensibili del documento aperto, con filtri per categoria e rischio, più azioni di conferma o annullamento per riga o in blocco.</li>
+        <li><strong>Sincronizzazione con l’anteprima</strong>: selezionare o modificare una riga di solito scorre/evidenzia la pagina; facendo clic su una marcatura nell’anteprima si aggiorna lo stato nell’elenco.</li>
+      </ul>
+
+      <h3 id="main-ui-4-5">4.5 Barra strumenti (dall’alto verso il basso)</h3>
+      <ul>
+        <li><strong>Apri</strong>: scegliete un PDF locale o un’immagine supportata.</li>
+        <li><strong>Chiudi documento</strong>: chiude il file corrente.</li>
+        <li><strong>Pagina precedente / successiva</strong>: usate la barra strumenti. Nella pagina a file singolo, <code>Page Up</code> / <code>Page Down</code> sono gestiti separatamente per scorrere l’anteprima (vedere §7.3).</li>
+        <li><strong>Regole</strong>: apre il centro regole.</li>
+        <li><strong>Batch</strong>: apre la redazione batch.</li>
+        <li><strong>Esporta redatto</strong>: disponibile quando esistono marcature confermate.</li>
+        <li><strong>Altro (⋯)</strong>: lingua, guida, feedback, aggiornamenti, informazioni e così via.</li>
+      </ul>
+
+      <p>La barra di stato mostra, tra le altre indicazioni, se l’app è pronta, il nome del file corrente e se il runtime di IA locale è disponibile.</p>
+    </section>
+
+    <section id="rules">
+      <h2>5. Centro regole</h2>
+
+      <h3 id="rules-5-1">5.1 Area e scenario aziendale</h3>
+      <ul>
+        <li><strong>Area</strong>: paese/zona; determina quali pattern integrati si applicano (formati ID, regole telefoniche, ecc.).</li>
+        <li><strong>Scenario aziendale</strong>: restringe o mette in evidenza gruppi di regole (generico, finanziario, sanitario, legale/governativo), così i valori predefiniti si adattano al tipo di documento.</li>
+        <li><strong>Insieme</strong>: impostate prima l’area, poi lo scenario; dopo le modifiche, <strong>eseguite di nuovo il rilevamento</strong>, altrimenti potreste vedere ancora risultati vecchi.</li>
+      </ul>
+
+      <h3 id="rules-5-2">5.2 Regole integrate vs personalizzate</h3>
+      <ul>
+        <li><strong>Integrate</strong>: fornite con l’app, raggruppate per tipo (identità, finanza, indirizzi, contatti, …), attivabili regola per regola, basate su dati locali e completamente offline.</li>
+        <li><strong>Personalizzate</strong>: un’etichetta e un pattern, come sottostringa semplice (senza distinzione maiuscole/minuscole) o <strong>espressione regolare .NET</strong>. Utili per codici interni non conosciuti dalle regole integrate. Potrebbe esserci un limite al numero di regole aggiungibili.</li>
+      </ul>
+
+      <h3 id="rules-5-3">5.3 Quando modificare le regole</h3>
+      <ul>
+        <li><strong>Troppo rumore</strong>: disattivate temporaneamente regole troppo ampie o scegliete uno scenario più vicino.</li>
+        <li><strong>Lo stesso pattern ricompare spesso</strong> e nessuna regola integrata corrisponde: aggiungete una regola personalizzata per ridurre i riquadri manuali.</li>
+        <li><strong>Configurazione alterata</strong>: <strong>Ripristina predefiniti</strong> elimina le modifiche locali (verrà richiesta conferma).</li>
+      </ul>
+    </section>
+
+    <section id="audit">
+      <h2>6. Barra laterale di audit</h2>
+
+      <h3 id="audit-6-1">6.1 Perché la conferma funziona così</h3>
+      <ul>
+        <li>Una riga spesso raggruppa più occorrenze dello stesso tipo sensibile o della stessa chiave su più pagine; confermarla significa dire che <strong>tutti quei punti devono essere rimossi</strong>.</li>
+        <li><strong>In sospeso</strong> separa la “stima del modello” dalla “decisione umana”, così nulla viene scritto in blocco senza revisione.</li>
+        <li>Per scelta progettuale, il motore di esportazione usa solo le marcature <strong>confermate</strong>.</li>
+      </ul>
+
+      <h3 id="audit-6-2">6.2 Filtri e conferma in blocco</h3>
+      <ul>
+        <li><strong>Filtro</strong>: restringete per categoria o rischio, così potete affrontare prima gli elementi ad alto rischio o un tipo di campo (ad esempio solo i contatti).</li>
+        <li><strong>In blocco</strong>: cambia lo stato di conferma per tutto ciò che è visibile con il filtro corrente (il testo dipende dalla versione). È utile quando un intero gruppo è chiaramente corretto o chiaramente sbagliato.</li>
+        <li><strong>Suggerimento</strong>: controllate il filtro attivo prima di un’azione in blocco, per non includere righe che non intendevate trattare.</li>
+      </ul>
+
+      <h3 id="audit-6-3">6.3 Livelli di rischio</h3>
+      <p>I livelli (per esempio critico, alto, sospetto, medio, basso) aiutano a <strong>ordinare e filtrare</strong> per far emergere prima i risultati più rischiosi. <strong>Non</strong> obbligano a confermare: decidete comunque voi cosa redigere.</p>
+    </section>
+
+    <section id="manual-box">
+      <h2>7. Selezioni manuali</h2>
+
+      <h3 id="manual-box-7-1">7.1 Quando tracciare riquadri manuali</h3>
+      <ul>
+        <li>Regole e IA hanno <strong>mancato</strong> qualcosa che sapete di dover rimuovere: annotazioni manoscritte in foto, aree con layout insolito, ecc.</li>
+        <li>I risultati sono <strong>frammentati</strong> o <strong>disallineati</strong>: rimuovete le righe automatiche errate e tracciate un riquadro più preciso.</li>
+        <li>Contenuto <strong>solo scansionato</strong> trattato come immagine: il comportamento differisce dai PDF testuali; spesso userete riquadri manuali (vedere le FAQ).</li>
+      </ul>
+
+      <h3 id="manual-box-7-2">7.2 Lavorare con le marcature rilevate automaticamente</h3>
+      <p>Ordine pratico: <strong>avviare il rilevamento → usare l’elenco di audit per eliminare i falsi positivi evidenti e notare pattern → aggiungere alcuni riquadri manuali per le vere mancanze → scorrere rapidamente l’anteprima pagina per pagina</strong>. Le marcature manuali e automatiche sono trattate allo stesso modo all’esportazione: conta solo se sono <strong>confermate</strong>.</p>
+
+      <h3 id="manual-box-7-3">7.3 Scorciatoie da tastiera (anteprima e marcature)</h3>
+      <p>Quando la pagina a file singolo è caricata, registra <code>PreviewKeyDown</code> sulla finestra principale. Le scorciatoie qui sotto funzionano solo con un documento aperto e con l’app <strong>non occupata</strong>. <strong>Non</strong> sono collegate ai pulsanti pagina precedente/successiva della barra strumenti.</p>
+      <table class="compare" aria-label="Scorciatoie da tastiera">
+        <thead>
+          <tr><th scope="col">Tasto</th><th scope="col">Azione</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Tab</code></td><td>Marcatura di redazione successiva.</td></tr>
+          <tr><td><code>Shift</code> + <code>Tab</code></td><td>Marcatura di redazione precedente.</td></tr>
+          <tr><td><code>←</code> <code>↑</code> <code>→</code> <code>↓</code></td><td>Senza modificatori: <code>←</code><code>↑</code> selezionano la marcatura precedente, <code>→</code><code>↓</code> quella successiva. Con un modificatore premuto: solo <code>↑</code><code>↓</code> fanno scorrere l’anteprima di un passo fisso; <code>←</code><code>→</code> non sono gestiti in quel ramo.</td></tr>
+          <tr><td><code>Enter</code></td><td>Senza modificatori: attiva/disattiva la conferma sulla marcatura selezionata.</td></tr>
+          <tr><td><code>Delete</code></td><td>Senza modificatori: rimuove la marcatura selezionata.</td></tr>
+          <tr><td><code>Page Up</code> / <code>Page Down</code></td><td>Scorre la pila di anteprima di circa un’altezza di viewport.</td></tr>
+          <tr><td><code>Home</code> / <code>End</code></td><td>Porta lo scorrimento dell’anteprima in alto / in basso.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="export">
+      <h2>8. Esportazione</h2>
+
+      <h3 id="export-8-1">8.1 Controlli prima dell’esportazione</h3>
+      <ul class="checklist">
+        <li>Verificate che sia il <strong>file che intendete distribuire</strong> (numero di pagine, allegati).</li>
+        <li>Tutto ciò che deve essere redatto è <strong>confermato</strong>; ciò che deve restare visibile è annullato o rimosso dall’elenco.</li>
+        <li>Avete controllato visivamente le pagine chiave nell’anteprima, comprese scansioni o sezioni insolite incorniciate manualmente.</li>
+        <li>Sapete che l’esportazione scrive un <strong>nuovo file</strong> (o nel percorso scelto) e di solito non sovrascrive l’originale: il comportamento segue la finestra di salvataggio.</li>
+      </ul>
+
+      <h3 id="export-8-2">8.2 Perché rimuovere i metadati</h3>
+      <p>Oltre al contenuto delle pagine, i PDF possono contenere autore, produttore, timestamp, XMP e altro. Redigere il testo ma lasciare i metadati può ancora rivelare account interni o cronologia di modifica. L’app può pulirli in esportazione (e opzionalmente in batch). Per qualunque documento destinato all’esterno, di solito è meglio <strong>lasciare attiva la pulizia dei metadati</strong> quando l’interfaccia la offre.</p>
+
+      <h3 id="export-8-3">8.3 Leggere il riepilogo</h3>
+      <ul>
+        <li>Il <strong>numero di elementi rimossi fisicamente</strong> è coerente con ciò che avete visto?</li>
+        <li>Il riepilogo indica che i <strong>metadati sono stati puliti</strong>?</li>
+        <li>Se vedete <strong>avvisi di convalida del testo</strong>, il campionamento automatico ha trovato qualcosa di insolito: aprite il PDF esportato e controllate. Non considerate il solo riepilogo come prova di assenza totale di residui.</li>
+      </ul>
+    </section>
+
+    <section id="batch">
+      <h2>9. Elaborazione batch</h2>
+
+      <h3 id="batch-9-1">9.1 Cosa fa davvero la modalità batch</h3>
+      <p>Dopo l’accesso tramite <strong>Applica a più file</strong> con una base, ogni PDF in coda segue un percorso <strong>solo a rettangoli</strong>: i rettangoli normalizzati vengono convertiti in coordinate assolute per pagina, le marcature vengono create, il contenuto viene rimosso fisicamente e i metadati possono essere puliti opzionalmente. Non esegue <strong>di nuovo</strong> il rilevamento regole o IA per ogni file.</p>
+      <div class="note">Le regole e l’IA usate in modalità file singolo vi hanno quindi aiutato a <strong>trovare</strong> e <strong>confermare</strong> sul modello; il batch copia semplicemente <strong>le posizioni confermate</strong> sugli altri file con la stessa geometria.</div>
+
+      <h3 id="batch-9-2">9.2 Casi d’uso adatti</h3>
+      <ul>
+        <li>Molti PDF dallo stesso sistema con la <strong>stessa impaginazione</strong> e aree sensibili nelle <strong>stesse posizioni relative</strong>.</li>
+        <li>Avete già completato rilevamento e conferma su <strong>un esemplare</strong> e volete evitare di ripetere lo stesso lavoro su copie quasi identiche.</li>
+      </ul>
+
+      <h3 id="batch-9-3">9.3 Aspetti da controllare</h3>
+      <ul>
+        <li><strong>Nessun file modello salvato</strong>: chiudendo la finestra batch si perde la base in memoria; la prossima volta va ricreata da <strong>Applica a più file</strong>.</li>
+        <li>Aprire <strong>Batch</strong> dalla barra strumenti senza quel percorso può lasciarvi senza base: <strong>Avvia</strong> potrebbe restare disabilitato.</li>
+        <li>Piccoli spostamenti dell’impaginazione possono causare mancate redazioni o aree sbagliate; <strong>controllate a campione</strong> i primi output.</li>
+        <li>Attivate <strong>cancella proprietà e dati nascosti</strong> quando disponibile per la condivisione esterna.</li>
+        <li>Alcuni tipi di documento o livelli di licenza possono limitare il batch; se <strong>Applica a più file</strong> è disattivato, quello è il segnale.</li>
+      </ul>
+    </section>
+
+    <section id="faq">
+      <h2>10. Domande frequenti</h2>
+
+      <h3 id="faq-false-positives">10.1 Perché ci sono così tanti falsi positivi?</h3>
+      <p>Sia le regole sia l’IA usano euristiche: stringhe che <strong>sembrano</strong> sensibili, nomi di luoghi confusi con nomi di persone, frammenti di tabella e così via. Regolare scenario/regole, disattivare una regola rumorosa o annullare la conferma nell’elenco di solito basta a controllare il problema. La conferma manuale è intenzionale: riduce il rischio di eliminare con un clic qualcosa che serve ancora.</p>
+
+      <h3 id="faq-scanned-pdf">10.2 E i PDF scansionati?</h3>
+      <p>Se il PDF è di fatto un’immagine di pagina senza un vero livello di testo, regole e IA hanno meno materiale su cui lavorare; userete quindi più spesso i <strong>riquadri manuali</strong> o il flusso specifico per raster esposto dalla versione (seguite i suggerimenti a schermo). È utile capire subito se si tratta di un PDF nato digitale o di una scansione.</p>
+
+      <h3 id="faq-image-no-ocr">10.3 Posso redigere immagini? Perché il testo nelle foto non viene riconosciuto?</h3>
+      <p>Sì. I formati immagine comuni possono essere aperti come documenti; continuerete a usare anteprima, marcature ed esportazione. Per mantenere ragionevoli dimensioni dell’installer e costo di esecuzione, questa versione <strong>non include OCR</strong>: il testo nelle foto non diventa selezionabile, quindi la <strong>rilevazione testuale basata su regole o IA si applica pochissimo</strong>. Redigete le aree sensibili <strong>tracciando riquadri</strong> (e usando le scorciatoie da tastiera per spostarvi tra le marcature). Se vi serve “riconoscere e poi confrontare”, eseguite prima l’OCR altrove o fornite un PDF con livello di testo.</p>
+
+      <h3 id="faq-verify-export">10.4 Come controllare rapidamente un’esportazione?</h3>
+      <ul>
+        <li>In un lettore PDF, provate <strong>seleziona tutto / copia</strong> e <strong>cerca</strong> le stringhe che sapete essere sensibili.</li>
+        <li><strong>Controllate visivamente</strong> intestazioni, piè di pagina e note.</li>
+        <li>Leggete il <strong>riepilogo di convalida dell’esportazione</strong> dell’app; se mostra avvisi, ricontrollate prima quelle pagine.</li>
+        <li>Per casi ad altissimo rischio, aggiungete i controlli abituali della vostra organizzazione: secondo strumento, revisione stampata, ecc.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>© PlainBytes Studio · Documento aggiornato con l’evoluzione del prodotto; la versione installata resta la fonte di riferimento.</p>
+    </footer>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var nav = document.querySelector('nav.toc');
+      if (!nav) return;
+
+      function tocNavigateToId(id) {
+        if (!id) return false;
+        var el = document.getElementById(id);
+        if (!el) return false;
+        el.scrollIntoView({ block: 'start' });
+        try {
+          history.replaceState(null, '', '#' + id);
+        } catch (_) {
+          location.hash = id;
+        }
+        return true;
+      }
+
+      nav.addEventListener('click', function (e) {
+        var t = e.target;
+        if (t.nodeType === Node.TEXT_NODE) t = t.parentElement;
+        var a = t && t.closest ? t.closest('a[href^="#"]') : null;
+        if (!a || !nav.contains(a)) return;
+        var raw = a.getAttribute('href');
+        if (!raw || raw === '#') return;
+        var id = decodeURIComponent(raw.slice(1));
+        if (!tocNavigateToId(id)) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var d = a.closest('details.toc-chapter');
+        if (d) d.open = true;
+      }, true);
+
+      var expand = document.getElementById('toc-expand-all');
+      var collapse = document.getElementById('toc-collapse-all');
+      if (expand) expand.addEventListener('click', function () {
+        nav.querySelectorAll('details.toc-chapter').forEach(function (d) { d.open = true; });
+      });
+      if (collapse) collapse.addEventListener('click', function () {
+        nav.querySelectorAll('details.toc-chapter').forEach(function (d) { d.open = false; });
+      });
+
+      if (location.hash.length > 1) {
+        var hid = decodeURIComponent(location.hash.slice(1));
+        requestAnimationFrame(function () { tocNavigateToId(hid); });
+      }
+    })();
+  </script>
+</body>
+</html>
