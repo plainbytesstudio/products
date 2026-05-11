@@ -269,6 +269,11 @@
         <p>法务小王收到一份 8 页的<strong>员工离职交接 PDF</strong>，需对外提供副本，但必须去掉<strong>手机号、银行卡号片段、个人邮箱</strong>等。文档为可选中文字的电子 PDF（非纯扫描图）。</p>
       </div>
 
+      <figure class="doc-screenshot doc-flowchart">
+        <img src="images/Zh-Hans/flowchart.svg" alt="单文件脱敏工作流程：从打开文档、配置规则与识别、复核与补框到导出及可选批量套打。" loading="lazy" decoding="async" />
+        <figcaption>工作流程概览</figcaption>
+      </figure>
+
       <h3 id="workflow-step-a">步骤 A：打开文档</h3>
       <p>通过「打开文件」或拖入，加载该 PDF（亦支持常见图片格式，处理路径可能不同）。<br>
       后续所有预览、识别与标记都绑定到这一份源文件；先确保打开的是最终待脱敏版本，避免做错文件。</p>
@@ -303,7 +308,7 @@
       <h2>4. 主界面说明</h2>
 
       <figure class="doc-screenshot">
-        <img src="images/PlainBytes.Redactor.jpg" alt="PlainBytes Redactor 主界面：左侧为文档预览区，右侧为审计与策略等面板，具体以已安装版本为准。" loading="lazy" decoding="async" />
+        <img src="images/zh-Hans/PlainBytes.Redactor.jpg" alt="PlainBytes Redactor 主界面：左侧为文档预览区，右侧为审计与策略等面板，具体以已安装版本为准。" loading="lazy" decoding="async" />
         <figcaption>主界面概览</figcaption>
       </figure>
 
@@ -496,9 +501,35 @@
     (function () {
       var nav = document.querySelector('nav.toc');
       if (!nav) return;
-      nav.querySelectorAll('.toc-chapter-link').forEach(function (a) {
-        a.addEventListener('click', function (e) { e.stopPropagation(); });
-      });
+
+      function tocNavigateToId(id) {
+        if (!id) return false;
+        var el = document.getElementById(id);
+        if (!el) return false;
+        el.scrollIntoView({ block: 'start' });
+        try {
+          history.replaceState(null, '', '#' + id);
+        } catch (_) {
+          location.hash = id;
+        }
+        return true;
+      }
+
+      nav.addEventListener('click', function (e) {
+        var t = e.target;
+        if (t.nodeType === Node.TEXT_NODE) t = t.parentElement;
+        var a = t && t.closest ? t.closest('a[href^="#"]') : null;
+        if (!a || !nav.contains(a)) return;
+        var raw = a.getAttribute('href');
+        if (!raw || raw === '#') return;
+        var id = decodeURIComponent(raw.slice(1));
+        if (!tocNavigateToId(id)) return;
+        e.preventDefault();
+        e.stopPropagation();
+        var d = a.closest('details.toc-chapter');
+        if (d) d.open = true;
+      }, true);
+
       var expand = document.getElementById('toc-expand-all');
       var collapse = document.getElementById('toc-collapse-all');
       if (expand) expand.addEventListener('click', function () {
@@ -507,6 +538,11 @@
       if (collapse) collapse.addEventListener('click', function () {
         nav.querySelectorAll('details.toc-chapter').forEach(function (d) { d.open = false; });
       });
+
+      if (location.hash.length > 1) {
+        var hid = decodeURIComponent(location.hash.slice(1));
+        requestAnimationFrame(function () { tocNavigateToId(hid); });
+      }
     })();
   </script>
 </body>
