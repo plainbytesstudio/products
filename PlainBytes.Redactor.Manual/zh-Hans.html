@@ -104,7 +104,7 @@
             <li><a href="#main-ui-4-1">4.1 左侧预览区</a></li>
             <li><a href="#main-ui-4-2">4.2 「扫描策略」面板</a></li>
             <li><a href="#main-ui-4-3">4.3 「框选外观」面板</a></li>
-            <li><a href="#main-ui-4-4">4.4 「扫描策略」面板</a></li>
+            <li><a href="#main-ui-4-4">4.4 「审计追踪」面板</a></li>
             <li><a href="#main-ui-4-5">4.5 工具栏各按钮</a></li>
           </ul>
         </details>
@@ -151,9 +151,9 @@
         <details class="toc-chapter">
           <summary><span class="toc-caret" aria-hidden="true">▸</span><a href="#faq" class="toc-chapter-link">10. 常见问题</a></summary>
           <ul class="toc-sublist">
-            <li><a href="#faq-false-positives">10.1 为什么有误报？</a></li>
+            <li><a href="#faq-false-positives">10.1 为什么检测结果里有误报？</a></li>
             <li><a href="#faq-scanned-pdf">10.2 扫描件怎么处理？</a></li>
-            <li><a href="#faq-image-no-ocr">10.3 图片脱敏与 OCR</a></li>
+            <li><a href="#faq-image-no-ocr">10.3 图片脱敏与OCR</a></li>
             <li><a href="#faq-verify-export">10.4 导出后如何验证？</a></li>
           </ul>
         </details>
@@ -253,7 +253,6 @@
       <p>实际扫描中二者常<strong>同时参与</strong>；最终在审计侧栏统一以「标记」形式呈现，由您决定是否确认。</p>
 
       <h3 id="concepts-2-4">2.4 「批量基准」是什么</h3>
-      <p>当前版本<strong>不提供</strong>将脱敏方案另存为命名模板文件、再在批量里挑选文件的流程。与批量相关的是软件在内存里使用的一份<strong>几何基准</strong>：</p>
       <ul>
         <li>当您在单文件中完成确认后，通过<strong>应用到多个文件</strong>进入批量对话框时，程序会把<strong>当前文档上每一个已确认标记</strong>换算成相对页面宽高的<strong>归一化矩形</strong>（页码 + 相对坐标），仅用于<strong>本次批量会话</strong>。</li>
         <li>对队列里的<strong>每一份</strong>目标 PDF，批量引擎<strong>只按这些矩形去套打脱敏</strong>，<strong>不会</strong>对每份文件重新执行一遍规则扫描或 AI 全文档识别。</li>
@@ -489,7 +488,6 @@
     </section>
 
     <footer>
-      <p>更多产品信息：<a href="https://plainbytesstudio.github.io/products/PlainBytes.Redactor" rel="noopener noreferrer">PlainBytes Redactor 产品页</a></p>
       <p>© PlainBytes Studio · 文档随产品迭代更新，请以最新软件为准。</p>
     </footer>
     </div>
