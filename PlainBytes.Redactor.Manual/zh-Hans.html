@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PlainBytes Redactor 使用手册</title>
+  <style>
+    :root { --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8; --accent:#ffb74d; --border:#334155; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:"Segoe UI",system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.65; font-size:16px; }
+    .wrap { max-width:52rem; margin:0 auto; padding:2rem 1.25rem 4rem; }
+    h1 { font-size:1.85rem; font-weight:700; margin:0 0 0.5rem; color:var(--accent); }
+    .sub { color:var(--muted); font-size:0.95rem; margin-bottom:2rem; }
+    h2 { font-size:1.25rem; margin:2.25rem 0 0.75rem; padding-bottom:0.35rem; border-bottom:1px solid var(--border); color:#fff; }
+    h3 { font-size:1.05rem; margin:1.25rem 0 0.5rem; color:#cbd5e1; }
+    ul, ol { padding-left:1.35rem; }
+    li { margin:0.35rem 0; }
+    a { color:var(--accent); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .toc { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1rem 1.25rem; margin-bottom:2rem; }
+    .toc h2 { margin-top:0; border:none; font-size:1rem; }
+    .toc ul { list-style:none; padding-left:0; margin:0; }
+    .note { background:rgba(255,183,77,.08); border-left:3px solid var(--accent); padding:0.75rem 1rem; margin:1rem 0; border-radius:0 8px 8px 0; font-size:0.95rem; }
+    code { font-family:ui-monospace,Consolas,monospace; font-size:0.9em; background:#0b1220; padding:0.12em 0.4em; border-radius:4px; color:#fde68a; }
+    .flow { counter-reset:step; margin:1rem 0; padding:0; list-style:none; }
+    .flow li { position:relative; padding-left:2.25rem; margin:0.5rem 0; min-height:1.5rem; }
+    .flow li::before { counter-increment:step; content:counter(step); position:absolute; left:0; top:0; width:1.5rem; height:1.5rem; background:var(--accent); color:#0f172a; font-size:0.8rem; font-weight:700; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+    footer { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>PlainBytes Redactor 使用手册</h1>
+    <p class="sub">基于当前 Windows 客户端功能整理 · 本地优先、物理脱敏 · 界面支持多语言（本页为简体中文说明）</p>
+
+    <nav class="toc" aria-label="目录">
+      <h2>目录</h2>
+      <ul>
+        <li><a href="#overview">1. 产品定位与安全原则</a></li>
+        <li><a href="#edition">2. 版本与可用功能</a></li>
+        <li><a href="#ui">3. 主界面与工具栏</a></li>
+        <li><a href="#flow">4. 推荐工作流程（单文件）</a></li>
+        <li><a href="#rules">5. 本地规则中心</a></li>
+        <li><a href="#audit">6. 审计侧栏与确认逻辑</a></li>
+        <li><a href="#manual">7. 手动框选脱敏</a></li>
+        <li><a href="#export">8. 导出已脱敏 PDF</a></li>
+        <li><a href="#template-batch">9. 模板与批量脱敏</a></li>
+        <li><a href="#menu">10. 更多选项菜单</a></li>
+        <li><a href="#refs">11. 相关链接</a></li>
+      </ul>
+    </nav>
+
+    <section id="overview">
+      <h2>1. 产品定位与安全原则</h2>
+      <p>PlainBytes Redactor 面向法律、金融、审计及高隐私场景，在<strong>本机离线</strong>完成 PDF 的检测、复核与<strong>物理脱敏</strong>。</p>
+      <ul>
+        <li><strong>离线安全</strong>：规则匹配、可选本地 AI 推理与 PDF 处理均在当前电脑执行，应用自身不发起网络上传。</li>
+        <li><strong>物理脱敏</strong>：敏感内容从 PDF 内容流中移除，而非仅视觉遮盖。</li>
+        <li><strong>设备端 AI</strong>：可选 ONNX 模型在本地运行；不向云端传输文档内容。</li>
+        <li><strong>元数据</strong>：导出时可配合清理文档属性与隐藏数据，降低通过文件属性泄露身份的风险（批量任务中亦有对应选项）。</li>
+      </ul>
+      <div class="note">打开网页、应用商店或邮件链接时，由<strong>系统默认浏览器/客户端</strong>处理；该行为与应用内处理 PDF 时的离线原则相互独立。</div>
+    </section>
+
+    <section id="edition">
+      <h2>2. 版本与可用功能</h2>
+      <p>应用可能以<strong>试用</strong>、<strong>专业版（Pro）</strong>或试用结束等状态运行。</p>
+      <ul>
+        <li><strong>导出已脱敏</strong>、<strong>批量处理</strong>、<strong>识别/重新识别</strong>等是否可用以软件内实际状态为准。</li>
+        <li>试用结束后可通过 Microsoft Store 购买 Pro（以商店与软件内说明为准）。</li>
+      </ul>
+    </section>
+
+    <section id="ui">
+      <h2>3. 主界面与工具栏</h2>
+      <ul>
+        <li><strong>打开文件</strong>：本地 PDF 或常见图片格式。</li>
+        <li><strong>关闭文档</strong>。</li>
+        <li><strong>上一页 / 下一页</strong>：预览翻页。</li>
+        <li><strong>本地规则</strong>：规则中心（区域、场景、规则开关与自定义规则）。</li>
+        <li><strong>批量</strong>：批量脱敏控制台。</li>
+        <li><strong>导出已脱敏</strong>：导出 PDF。</li>
+        <li><strong>更多选项</strong>：语言、使用帮助、反馈与支持、检查更新、关于等。</li>
+      </ul>
+      <p>布局为左侧预览、右侧审计侧栏；状态栏显示就绪与 AI 引擎状态等。</p>
+    </section>
+
+    <section id="flow">
+      <h2>4. 推荐工作流程（单文件）</h2>
+      <ol class="flow">
+        <li>拖入或<strong>打开文件</strong>加载 PDF/图片。</li>
+        <li>在<strong>本地规则中心</strong>设置<strong>区域</strong>与<strong>业务场景</strong>，在单页中点击<strong>开始识别</strong>（规则 + 可选本地 AI）。策略变更后可再次识别。</li>
+        <li>在<strong>审计侧栏</strong>复核列表；<strong>仅已确认</strong>项参与导出。预览中黄色区域可点击切换确认。</li>
+        <li>必要时<strong>手动框选</strong>补充区域。</li>
+        <li><strong>导出已脱敏</strong>并查看完成摘要。</li>
+        <li>同质文档多时可<strong>另存为通用模板</strong>并配合<strong>批量</strong>处理。</li>
+      </ol>
+    </section>
+
+    <section id="rules">
+      <h2>5. 本地规则中心</h2>
+      <h3>5.1 区域与场景</h3>
+      <p>选择区域与业务场景（通用、金融、医疗、法律政务等）。规则来自本地数据（如 <code>LocalPatterns.json</code>），可完全离线使用。</p>
+      <h3>5.2 分类与开关</h3>
+      <p>按页签浏览身份、金融、地址、联系方式、技术/其他、自定义等，单独启用或关闭规则。</p>
+      <h3>5.3 自定义规则</h3>
+      <p>名称 + 匹配模式；可为纯文本子串（不区分大小写）或 .NET 正则。删除前有确认；数量可能有上限。</p>
+      <h3>5.4 恢复默认</h3>
+      <p>清除本地覆盖，还原内置预设（需确认）。</p>
+    </section>
+
+    <section id="audit">
+      <h2>6. 审计侧栏与确认逻辑</h2>
+      <ul>
+        <li>按类别、风险等级筛选。</li>
+        <li>对聚合项确认/取消确认；支持批量切换当前筛选下可见项（见界面提示）。</li>
+        <li>可从列表移除条目。</li>
+        <li>无自动结果时可用手动框选。</li>
+      </ul>
+      <div class="note">只有<strong>已确认</strong>区域会在导出时物理删除，导出前请务必复核。</div>
+    </section>
+
+    <section id="manual">
+      <h2>7. 手动框选脱敏</h2>
+      <p>在预览上拖拽矩形添加手动标记；可在<strong>选区外观</strong>中调整描边与填充颜色。</p>
+    </section>
+
+    <section id="export">
+      <h2>8. 导出已脱敏 PDF</h2>
+      <ul>
+        <li>至少确认一项区域后方可导出。</li>
+        <li>完成对话框含物理移除数量、元数据清理及可选文本校验摘要；有警告时请人工复查导出文件。</li>
+        <li>栅格类文档与矢量 PDF 路径可能不同，以提示为准。</li>
+      </ul>
+    </section>
+
+    <section id="template-batch">
+      <h2>9. 模板与批量脱敏</h2>
+      <h3>9.1 另存为通用模板</h3>
+      <p>将当前已确认区域保存为命名模板，供批量任务选择。</p>
+      <h3>9.2 批量控制台</h3>
+      <ul>
+        <li>拖入文件夹或多份 PDF，或浏览添加队列。</li>
+        <li>选择输出文件夹与<strong>脱敏模板</strong>（可选用当前文档标记同步）。</li>
+        <li>可选<strong>清除文件属性与隐藏数据</strong>（作者、时间戳、XMP 等）。</li>
+        <li>查看完成统计、校验摘要与审计报告（若生成失败会有提示）。</li>
+      </ul>
+      <div class="note">「应用到多个文件」等对文档类型与版本状态有要求，以按钮是否可用为准。</div>
+    </section>
+
+    <section id="menu">
+      <h2>10. 更多选项菜单</h2>
+      <ul>
+        <li><strong>语言</strong></li>
+        <li><strong>使用帮助</strong>（系统浏览器打开在线说明）</li>
+        <li><strong>反馈与支持</strong>（邮件客户端）</li>
+        <li><strong>检查更新</strong>（Microsoft Store）</li>
+        <li><strong>关于</strong></li>
+      </ul>
+    </section>
+
+    <section id="refs">
+      <h2>11. 相关链接</h2>
+      <ul>
+        <li>产品页：<a href="https://plainbytesstudio.github.io/products/PlainBytes.Redactor" rel="noopener noreferrer">plainbytesstudio.github.io/products/PlainBytes.Redactor</a></li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>本文档依据当前客户端功能与资源文案整理，与具体安装版本不一致时以软件为准。</p>
+      <p>© PlainBytes Studio</p>
+    </footer>
+  </div>
+</body>
+</html>
+
