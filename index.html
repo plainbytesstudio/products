@@ -25,6 +25,12 @@
       --plq:#3B82F6;     /* PrivateLabelQR tech blue */
       --plqGlow:rgba(59,130,246,.28);
 
+      --pbr:#9a0412;     /* PlainBytes Redactor */
+      --pbrGlow:rgba(154,4,18,.28);
+
+      --omr:#f3760d;     /* OmniReply */
+      --omrGlow:rgba(243,118,13,.28);
+
       --radius:16px;
       --radiusSm:14px;
       --shadow:0 24px 80px rgba(0,0,0,.55);
@@ -65,10 +71,12 @@
     }
     .brand strong{font-size:14px;letter-spacing:.2px}
     .brand img{
-      height: 64px;
+      height: 34px;
       width: auto;
+      max-width: 160px;
       object-fit: contain;
       display: block;
+      filter: drop-shadow(0 0 14px rgba(255,255,255,.10));
     }
     .pill{
       font-size:12px;color:var(--muted);
@@ -261,9 +269,13 @@
     /* Themed cards */
     .pp{ --accent: var(--pp); --glow: var(--ppGlow); }
     .plq{ --accent: var(--plq); --glow: var(--plqGlow); }
+    .pbr{ --accent: var(--pbr); --glow: var(--pbrGlow); }
+    .omr{ --accent: var(--omr); --glow: var(--omrGlow); }
 
     .pp .name span,
-    .plq .name span{
+    .plq .name span,
+    .pbr .name span,
+    .omr .name span{
       background:linear-gradient(135deg, var(--accent), rgba(255,255,255,.75));
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
@@ -272,9 +284,13 @@
 
     .pp .tick{background:linear-gradient(135deg, var(--pp), rgba(127,232,196,.85));}
     .plq .tick{background:linear-gradient(135deg, var(--plq), rgba(147,197,253,.9));}
+    .pbr .tick{background:linear-gradient(135deg, var(--pbr), rgba(255,120,130,.88));}
+    .omr .tick{background:linear-gradient(135deg, var(--omr), rgba(255,200,140,.92));}
 
     .pp .btnPrimary{background:linear-gradient(135deg, var(--pp), #2FB24F);}
     .plq .btnPrimary{background:linear-gradient(135deg, var(--plq), #1D4ED8); color:#f8fbff;}
+    .pbr .btnPrimary{background:linear-gradient(135deg, var(--pbr), #c0081a); color:#fff8f8;}
+    .omr .btnPrimary{background:linear-gradient(135deg, var(--omr), #ff9a3c); color:#1a0c02;}
 
     /* Hover glow requirement */
     .card::after{
@@ -360,7 +376,7 @@
     <section class="block" aria-label="Our Software Suite">
       <h2 class="sectionTitle" id="suite">Our Software Suite</h2>
       <p class="sectionSub">
-        Two core products — native Windows utilities, built to be fast, lightweight, and strictly offline.
+        Four powerful products — native Windows utilities, built to be fast, lightweight, and privacy-first.
       </p>
 
       <div class="grid" aria-label="Product cards">
@@ -375,7 +391,7 @@
 
             <p class="tagline"><strong>The Ultimate Offline Image Hub.</strong></p>
             <p class="tagline">
-              A professional-grade image processing terminal. Convert, resize, and protect your photos with a blazing-fast multi-threaded engine—without ever uploading a single byte to the web.
+              A professional-grade image processing terminal for photographers, designers, and business teams. Batch convert, resize, and watermark hundreds of images using a blazing-fast multi-threaded engine—supporting modern formats like HEIC and AVIF, entirely on your machine.
             </p>
 
             <ul class="checks" aria-label="PurePixel keywords">
@@ -386,7 +402,7 @@
 
             <div class="actions">
               <a class="btn btnGhost" href="https://plainbytesstudio.github.io/products/PurePixel">View Details</a>
-              <a class="btn btnPrimary" href="https://apps.microsoft.com/detail/9NBLH2HHHKT3">Get on Microsoft Store</a>
+              <a class="btn btnPrimary" href="https://apps.microsoft.com/detail/9NR9QKWJ6QJQ">Get on Microsoft Store</a>
             </div>
           </div>
         </article>
@@ -400,20 +416,74 @@
               </div>
             </div>
 
-            <p class="tagline"><strong>Designer QR Generation for Professionals.</strong></p>
+            <p class="tagline"><strong>Bulk QR &amp; Barcode Label Generation for Operations Teams.</strong></p>
             <p class="tagline">
-              Create beautiful, highly customizable QR codes locally. Perfect for branding and creative marketing, PrivateLabelQR ensures your links stay your own, handled entirely on your machine.
+              A local-first label generation powerhouse for warehouse, retail, and asset management teams. Import Excel or CSV files and generate hundreds of QR codes, Code 128, or EAN-13 barcode labels instantly—exported as print-ready PDFs, entirely on your machine.
             </p>
 
             <ul class="checks" aria-label="PrivateLabelQR keywords">
-              <li><span class="tick">✓</span><span>Pro Vector Export</span></li>
-              <li><span class="tick">✓</span><span>Custom Templates</span></li>
+              <li><span class="tick">✓</span><span>Bulk Excel/CSV Import</span></li>
+              <li><span class="tick">✓</span><span>Print-Ready PDF Export</span></li>
               <li><span class="tick">✓</span><span>Privacy First</span></li>
             </ul>
 
             <div class="actions">
-              <a class="btn btnGhost" href="https://plainbytesstudio.github.io/products/PrivateLabelQR">View Details</a>
+              <a class="btn btnGhost" href="https://github.com/plainbytesstudio/PrivateLabelQR">View Details</a>
               <a class="btn btnPrimary" href="https://apps.microsoft.com/search?query=PrivateLabelQR">Get on Microsoft Store</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- PlainBytes Redactor -->
+        <article class="card pbr">
+          <div class="inner">
+            <div class="cardTop">
+              <div>
+                <p class="name"><span>PlainBytes Redactor</span></p>
+              </div>
+            </div>
+
+            <p class="tagline"><strong>The Professional Offline PDF Redaction Suite.</strong></p>
+            <p class="tagline">
+              A precision redaction terminal for legal, finance, and compliance professionals. Permanently remove sensitive content from PDF documents using on-device AI and 145+ built-in detection rules—without sending a single page to the cloud.
+            </p>
+
+            <ul class="checks" aria-label="PlainBytes Redactor keywords">
+              <li><span class="tick">✓</span><span>On-Device AI Detection</span></li>
+              <li><span class="tick">✓</span><span>145+ Redaction Rules</span></li>
+              <li><span class="tick">✓</span><span>Physical Redaction</span></li>
+            </ul>
+
+            <div class="actions">
+              <a class="btn btnGhost" href="https://plainbytesstudio.github.io/products/PlainBytes.Redactor">View Details</a>
+              <a class="btn btnPrimary" href="https://apps.microsoft.com/detail/9n2vlpn4wdk1">Get on Microsoft Store</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- OmniReply -->
+        <article class="card omr">
+          <div class="inner">
+            <div class="cardTop">
+              <div>
+                <p class="name"><span>OmniReply</span></p>
+              </div>
+            </div>
+
+            <p class="tagline"><strong>The Intelligent Reply Assistant for Power Users.</strong></p>
+            <p class="tagline">
+              A clipboard-driven AI reply engine that lives on your desktop. Define your tone, persona, and platform rules once—then generate consistent, on-brand replies across Reddit, YouTube, X, and more, instantly from your clipboard.
+            </p>
+
+            <ul class="checks" aria-label="OmniReply keywords">
+              <li><span class="tick">✓</span><span>Clipboard-Triggered Workflow</span></li>
+              <li><span class="tick">✓</span><span>Custom Reply Presets</span></li>
+              <li><span class="tick">✓</span><span>Multi-Platform Support</span></li>
+            </ul>
+
+            <div class="actions">
+              <a class="btn btnGhost" href="https://plainbytesstudio.github.io/products/OmniReply">View Details</a>
+              <a class="btn btnPrimary" href="https://apps.microsoft.com/detail/9N9GDZPV40XR">Get on Microsoft Store</a>
             </div>
           </div>
         </article>
