@@ -1,0 +1,1754 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OmniReply 使用帮助</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #1f2937;
+      --muted: #667085;
+      --soft: #eef4ff;
+      --soft-2: #f8fafc;
+      --line: #d9e2ef;
+      --brand: #2f74d0;
+      --brand-2: #1859ad;
+      --ok: #0f8a5f;
+      --warn: #b45309;
+      --shadow: 0 18px 50px rgba(31, 41, 55, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(47, 116, 208, 0.14), transparent 34rem),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 30rem);
+      font-family: "Microsoft YaHei UI", "Segoe UI", Arial, sans-serif;
+      line-height: 1.75;
+    }
+
+    a {
+      color: var(--brand-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      padding: 22px;
+      border: 1px solid rgba(217, 226, 239, 0.9);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 12px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #4a90e2, #2368bd);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toc-title {
+      margin: 22px 0 10px;
+      color: #475467;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .toc {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .toc a {
+      display: block;
+      padding: 7px 10px;
+      border-radius: 9px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .toc a:hover {
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .content .hero,
+    .content .section {
+      margin-top: 0;
+    }
+
+    .hero,
+    .section {
+      border: 1px solid rgba(217, 226, 239, 0.95);
+      border-radius: 22px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 42px;
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--brand-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0;
+      line-height: 1.35;
+      color: #111827;
+    }
+
+    h1 {
+      max-width: 780px;
+      font-size: clamp(32px, 5vw, 54px);
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 28px;
+    }
+
+    h3 {
+      margin-top: 26px;
+      font-size: 19px;
+    }
+
+    h4 {
+      font-size: 16px;
+    }
+
+    section[id],
+    h3[id],
+    details[id] {
+      scroll-margin-top: 1.25rem;
+    }
+
+    p {
+      margin: 10px 0 0;
+    }
+
+    .section {
+      padding: 36px 38px;
+      scroll-margin-top: 24px;
+    }
+
+    .content .section > h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      margin-bottom: 2px;
+      border-bottom: 1px solid var(--line);
+      font-size: clamp(22px, 2.4vw, 26px);
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+
+    .content .section > h2::before {
+      content: "";
+      flex-shrink: 0;
+      width: 4px;
+      height: 1.05em;
+      border-radius: 99px;
+      background: linear-gradient(180deg, var(--brand), var(--brand-2));
+    }
+
+    .content h3 {
+      position: relative;
+      margin-top: 32px;
+      padding-left: 14px;
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+
+    .content h3::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.42em;
+      width: 3px;
+      height: 0.88em;
+      border-radius: 99px;
+      background: rgba(47, 116, 208, 0.55);
+    }
+
+    .content h3:first-of-type {
+      margin-top: 20px;
+    }
+
+    .section-intro {
+      max-width: 720px;
+      margin-top: 12px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .lead {
+      max-width: 680px;
+      margin-top: 14px;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #475467;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 12px;
+      border: 1px solid #c9d8ef;
+      border-radius: 999px;
+      color: #1d4f91;
+      background: #f3f8ff;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--soft-2);
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .content .card h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .card p {
+      margin: 0;
+      color: #4b5563;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      counter-reset: steps;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .step::before {
+      counter-increment: steps;
+      content: counter(steps);
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #4a90e2, #2368bd);
+      font-weight: 800;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+      margin-bottom: 4px;
+    }
+
+    .flow span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 11px;
+      border: 1px solid #cfe0f7;
+      border-radius: 999px;
+      background: #f3f8ff;
+      color: #1d4f91;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .note,
+    .warning,
+    .image-placeholder {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 14px;
+    }
+
+    .note {
+      border: 1px solid #b7dfcf;
+      background: #effaf5;
+      color: #095c40;
+    }
+
+    .warning {
+      border: 1px solid #f3d7a6;
+      background: #fff7ed;
+      color: #7c3f06;
+    }
+
+    .image-placeholder {
+      border: 1px dashed #a8b8d0;
+      background:
+        linear-gradient(135deg, rgba(47, 116, 208, 0.07), rgba(47, 116, 208, 0)),
+        #f8fafc;
+      color: #5d6b7e;
+      text-align: center;
+    }
+
+    .image-placeholder strong {
+      display: block;
+      color: #344054;
+    }
+
+    .doc-figure {
+      margin-top: 18px;
+      border: 1px solid rgba(217, 226, 239, 0.95);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .doc-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+
+    .doc-figure figcaption {
+      margin: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid rgba(217, 226, 239, 0.85);
+      background: rgba(248, 250, 252, 0.96);
+    }
+
+    .doc-flow-steps {
+      margin-top: 24px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(248, 250, 252, 0.6);
+    }
+
+    .doc-flow-steps-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: flow-step;
+      display: grid;
+      gap: 10px;
+      color: #344054;
+    }
+
+    .doc-flow-steps-list > li {
+      position: relative;
+      margin: 0;
+      padding: 14px 16px 14px 52px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--paper);
+    }
+
+    .doc-flow-steps-list > li::before {
+      counter-increment: flow-step;
+      content: counter(flow-step);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border-radius: 8px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #4a90e2, #2368bd);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .doc-flow-steps-list strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #111827;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .doc-flow-steps-list p {
+      margin: 0;
+      color: #5d6b7e;
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      font-size: 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 0 rgba(31, 41, 55, 0.04);
+    }
+
+    th,
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    th {
+      color: #344054;
+      background: #f3f6fb;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: rgba(248, 250, 252, 0.85);
+    }
+
+    .content ul:not(.toc):not(.toc-sub),
+    .content ol:not(.doc-flow-steps-list):not(.toc):not(.toc-sub) {
+      margin: 14px 0 0;
+      padding-left: 1.35em;
+    }
+
+    .content li + li {
+      margin-top: 8px;
+    }
+
+    .faq {
+      display: grid;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .faq details {
+      overflow: hidden;
+    }
+
+    .faq summary {
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.55;
+      color: #111827;
+    }
+
+    .faq summary::marker {
+      color: var(--brand-2);
+    }
+
+    .faq summary:hover {
+      color: var(--brand-2);
+    }
+
+    .faq details[open] > summary {
+      color: var(--brand-2);
+    }
+
+    .content footer {
+      margin-top: 8px;
+      padding: 20px 4px 8px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef2f7;
+      color: #243b53;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 0.94em;
+    }
+
+    kbd {
+      display: inline-block;
+      min-width: 1.8em;
+      padding: 2px 7px;
+      border: 1px solid #c8d1df;
+      border-bottom-width: 2px;
+      border-radius: 7px;
+      background: #ffffff;
+      color: #1f2937;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 0.9em;
+      line-height: 1.45;
+    }
+
+    ul,
+    ol {
+      margin: 10px 0 0;
+      padding-left: 22px;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    details:not(.toc-chapter) {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 15px 18px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    details div {
+      padding: 0 18px 18px;
+      color: var(--muted);
+    }
+
+    footer {
+      margin: 24px 0 0;
+      padding: 22px 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .shell {
+        display: block;
+        padding: 16px;
+      }
+
+      .sidebar {
+        position: static;
+        max-height: none;
+        margin-bottom: 18px;
+      }
+
+      .grid.two,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .hero,
+      .section {
+        padding: 22px 20px;
+      }
+
+      .content {
+        gap: 14px;
+      }
+
+      .content .section > h2 {
+        font-size: 20px;
+        padding-bottom: 12px;
+      }
+    }
+    /* Website-aligned dark visual theme */
+    :root {
+      --bg: #050505;
+      --paper: #111111;
+      --ink: #f5f5f5;
+      --muted: #9a9a9a;
+      --soft: rgba(243, 118, 12, 0.12);
+      --soft-2: #1a1a1a;
+      --line: rgba(255, 255, 255, 0.10);
+      --brand: #f3760c;
+      --brand-2: #ff942e;
+      --ok: #ff942e;
+      --warn: #f3760c;
+      --shadow: 0 18px 70px rgba(0, 0, 0, 0.55), 0 0 70px rgba(243, 118, 12, 0.08);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 900px 560px at 18% -10%, rgba(243, 118, 12, 0.16), transparent 62%),
+        radial-gradient(ellipse 720px 460px at 88% 8%, rgba(243, 118, 12, 0.08), transparent 58%),
+        linear-gradient(180deg, #050505 0%, #080808 42%, #050505 100%);
+      font-family: "Segoe UI", "Segoe UI Variable", "Microsoft YaHei UI", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--brand);
+    }
+
+    .shell {
+      max-width: 1180px;
+    }
+
+    .sidebar,
+    .hero,
+    .section {
+      border-color: var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.08)),
+        var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar {
+      background: rgba(17, 17, 17, 0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand-mark {
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 26px rgba(243, 118, 12, 0.28);
+    }
+
+    .brand strong,
+    h1,
+    h2,
+    h3,
+    h4,
+    summary,
+    .image-placeholder strong {
+      color: var(--ink);
+    }
+
+    .brand span,
+    .toc-title,
+    .lead,
+    .section-intro,
+    .card p,
+    details div,
+    footer {
+      color: var(--muted);
+    }
+
+    .toc a {
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+
+    .toc a:hover {
+      color: var(--ink);
+      background: rgba(243, 118, 12, 0.10);
+      border-color: rgba(243, 118, 12, 0.24);
+    }
+
+    .toc-title {
+      margin: 18px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .toc-chapters {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    details.toc-chapter {
+      margin: 0;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.028);
+      overflow: hidden;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    details.toc-chapter:hover {
+      border-color: rgba(243, 118, 12, 0.22);
+    }
+
+    details.toc-chapter[open] {
+      border-color: rgba(243, 118, 12, 0.28);
+      box-shadow: 0 0 0 1px rgba(243, 118, 12, 0.08);
+    }
+
+    details.toc-chapter > summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 0;
+      font-size: 13.5px;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      user-select: none;
+      transition: background 0.16s ease, color 0.16s ease;
+    }
+
+    details.toc-chapter > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.toc-chapter > summary::marker {
+      content: "";
+    }
+
+    details.toc-chapter > summary::before {
+      content: "";
+      flex-shrink: 0;
+      width: 0;
+      height: 0;
+      margin-top: 1px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--muted);
+      opacity: 0.85;
+      transform: rotate(-90deg);
+      transform-origin: 50% 45%;
+      transition: transform 0.22s ease, border-top-color 0.16s ease, opacity 0.16s ease;
+    }
+
+    details.toc-chapter[open] > summary::before {
+      transform: rotate(0deg);
+      border-top-color: var(--brand);
+      opacity: 1;
+    }
+
+    details.toc-chapter > summary:hover {
+      background: rgba(243, 118, 12, 0.09);
+    }
+
+    details.toc-chapter[open] > summary {
+      background: rgba(243, 118, 12, 0.07);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .toc-sub {
+      margin: 0;
+      padding: 6px 10px 10px 14px;
+      list-style: none;
+      border-left: 2px solid rgba(243, 118, 12, 0.4);
+      margin-left: 18px;
+      margin-right: 8px;
+      margin-bottom: 4px;
+    }
+
+    .toc-sub li {
+      margin: 0;
+    }
+
+    .toc-sub li + li {
+      margin-top: 1px;
+    }
+
+    .toc-sub a {
+      display: block;
+      padding: 7px 10px;
+      font-size: 13px;
+      line-height: 1.45;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease, transform 0.14s ease;
+    }
+
+    .toc-sub a:hover {
+      transform: translateX(2px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 68% 44% at 50% 0%, rgba(243, 118, 12, 0.15), transparent 62%),
+        linear-gradient(180deg, rgba(243, 118, 12, 0.06), transparent 46%);
+    }
+
+    .hero > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      color: var(--brand);
+    }
+
+    .pill,
+    .flow span {
+      color: var(--brand-2);
+      background: rgba(243, 118, 12, 0.10);
+      border-color: rgba(243, 118, 12, 0.34);
+      box-shadow: inset 0 0 16px rgba(243, 118, 12, 0.03);
+    }
+
+    .card,
+    .step,
+    details {
+      border-color: var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.08)),
+        #1a1a1a;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    }
+
+    .card:hover,
+    details:not(.toc-chapter):hover {
+      border-color: rgba(243, 118, 12, 0.40);
+      box-shadow: inset 0 0 16px rgba(243, 118, 12, 0.04);
+    }
+
+    .step::before {
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 24px rgba(243, 118, 12, 0.30);
+    }
+
+    .note {
+      color: #ffd9bc;
+      border-color: rgba(243, 118, 12, 0.35);
+      background: rgba(243, 118, 12, 0.10);
+    }
+
+    .warning {
+      color: #ffd9bc;
+      border-color: rgba(243, 118, 12, 0.42);
+      background:
+        linear-gradient(180deg, rgba(243, 118, 12, 0.13), rgba(243, 118, 12, 0.06)),
+        #111111;
+    }
+
+    .image-placeholder {
+      color: var(--muted);
+      border-color: rgba(243, 118, 12, 0.35);
+      background:
+        radial-gradient(ellipse 60% 80% at 50% 0%, rgba(243, 118, 12, 0.12), transparent 65%),
+        #0c0c0c;
+    }
+
+    .doc-figure {
+      border-color: var(--line);
+      background: #111111;
+      box-shadow: var(--shadow);
+    }
+
+    .doc-figure figcaption {
+      border-top-color: rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--muted);
+    }
+
+    .doc-flow-steps-list {
+      color: var(--muted);
+    }
+
+    .doc-flow-steps-list strong {
+      color: var(--ink);
+    }
+
+    .doc-flow-steps-list p {
+      color: var(--muted);
+    }
+
+    .doc-flow-steps {
+      border-color: var(--line);
+      background: rgba(0, 0, 0, 0.32);
+    }
+
+    .doc-flow-steps-list > li {
+      border-color: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .doc-flow-steps-list > li::before {
+      color: #0a0a0a;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 0 16px rgba(243, 118, 12, 0.25);
+    }
+
+    .content .hero h1 {
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .content .section > h2 {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .content h3::before {
+      background: rgba(243, 118, 12, 0.62);
+    }
+
+    .content .card h4 {
+      color: var(--brand-2);
+    }
+
+    .content .step h3 {
+      margin-top: 0;
+      padding-left: 0;
+      font-size: 16px;
+    }
+
+    .content .step h3::before {
+      content: none;
+    }
+
+    .faq details[open] {
+      border-color: rgba(243, 118, 12, 0.32);
+    }
+
+    .content .faq > details {
+      border-color: var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.12)),
+        #161616;
+    }
+
+    .content .faq > details > summary {
+      color: #ffead4;
+      background: rgba(255, 255, 255, 0.02);
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .content .faq > details > summary::marker {
+      color: var(--brand);
+    }
+
+    .content .faq > details > summary:hover {
+      color: var(--brand-2);
+      background: rgba(243, 118, 12, 0.08);
+    }
+
+    .content .faq > details[open] > summary {
+      color: var(--brand-2);
+      background: rgba(243, 118, 12, 0.12);
+      border-bottom: 1px solid rgba(243, 118, 12, 0.22);
+    }
+
+    .content .faq > details > div {
+      color: #c4c4c4;
+      background: rgba(0, 0, 0, 0.28);
+    }
+
+    .content .faq > details > div p,
+    .content .faq > details > div li {
+      color: #c4c4c4;
+    }
+
+    .content footer {
+      border-top-color: rgba(255, 255, 255, 0.08);
+    }
+
+    table {
+      border-color: var(--line);
+      background: #111111;
+    }
+
+    th,
+    td {
+      border-bottom-color: rgba(255, 255, 255, 0.07);
+    }
+
+    th {
+      color: var(--ink);
+      background: #1f1f1f;
+    }
+
+    td {
+      color: #d8d8d8;
+      background: transparent;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    tbody tr:hover td {
+      background: rgba(243, 118, 12, 0.045);
+    }
+
+    code {
+      color: #ffbd82;
+      background: rgba(243, 118, 12, 0.12);
+      border: 1px solid rgba(243, 118, 12, 0.20);
+    }
+
+    kbd {
+      color: var(--ink);
+      background: #191919;
+      border-color: #333333;
+      border-bottom-color: #4a4a4a;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    details:not(.toc-chapter) {
+      background: #111111;
+    }
+
+    summary {
+      list-style-position: inside;
+    }
+
+    summary::marker {
+      color: var(--brand);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="帮助目录">
+      <div class="brand">
+        <div class="brand-mark">OR</div>
+        <div>
+          <strong>OmniReply</strong>
+          <span>使用帮助</span>
+        </div>
+      </div>
+      <p class="toc-title">目录</p>
+      <div class="toc-chapters">
+        <details class="toc-chapter" open data-chapter="overview">
+          <summary>1. 认识 OmniReply</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-1-1">1.1 OmniReply 是什么</a></li>
+            <li><a href="#sec-1-2">1.2 适合哪些场景</a></li>
+            <li><a href="#sec-1-3">1.3 基本工作流</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="ui">
+          <summary>2. 界面与功能概览</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-2-1">2.1 主窗口结构</a></li>
+            <li><a href="#sec-2-2">2.2 悬浮球状态</a></li>
+            <li><a href="#sec-2-3">2.3 设置窗口</a></li>
+            <li><a href="#sec-2-4">2.4 产品管理窗口</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="quickstart">
+          <summary>3. 快速上手</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-3-1">添加 API Key</a></li>
+            <li><a href="#sec-3-2">设置回复规则</a></li>
+            <li><a href="#sec-3-3">启动剪贴板监控</a></li>
+            <li><a href="#sec-3-4">复制或输入原文</a></li>
+            <li><a href="#sec-3-5">生成 AI 回复</a></li>
+            <li><a href="#sec-3-6">检查并修改回复</a></li>
+            <li><a href="#sec-3-7">回写到目标输入框</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="features">
+          <summary>4. 功能说明</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-4-1">4.1 AI 模型与 API Key</a></li>
+            <li><a href="#sec-4-2">4.2 回复规则</a></li>
+            <li><a href="#sec-4-3">4.3 产品推荐资料</a></li>
+            <li><a href="#sec-4-4">4.4 剪贴板监控</a></li>
+            <li><a href="#sec-4-5">4.5 回复编辑与表情</a></li>
+            <li><a href="#sec-4-6">4.6 回写与快捷键</a></li>
+            <li><a href="#sec-4-7">4.7 历史记录</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="privacy">
+          <summary>5. 数据、隐私与授权</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-5-1">5.1 本地保存的数据</a></li>
+            <li><a href="#sec-5-2">5.2 AI 请求会发送哪些内容</a></li>
+            <li><a href="#sec-5-3">5.3 API Key 与隐私安全</a></li>
+            <li><a href="#sec-5-4">5.4 Free / Pro 版本区别</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="faq">
+          <summary>6. 常见问题与故障排查</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#faq-6-1">6.1 复制后没有反应</a></li>
+            <li><a href="#faq-6-2">6.2 提示未配置 API Key</a></li>
+            <li><a href="#faq-6-3">6.3 AI 请求失败或超时</a></li>
+            <li><a href="#faq-6-4">6.4 回复语言或风格不符合预期</a></li>
+            <li><a href="#faq-6-5">6.5 回写到了错误位置</a></li>
+            <li><a href="#faq-6-6">6.6 快捷键无效</a></li>
+            <li><a href="#faq-6-7">6.7 表情显示异常</a></li>
+            <li><a href="#faq-6-8">6.8 历史记录没有保存</a></li>
+            <li><a href="#faq-6-9">6.9 反馈问题时需要提供什么</a></li>
+          </ol>
+        </details>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="hero">
+        <p class="eyebrow">Clipboard-driven AI reply assistant</p>
+        <h1>OmniReply 使用帮助</h1>
+        <p class="lead">
+          本文档帮助你了解 OmniReply 的界面、配置方式、AI 回复生成流程和回写机制。你可以先按快速上手跑通一次，再回到功能说明查看细节。
+        </p>
+        <div class="hero-actions">
+          <span class="pill">剪贴板监控</span>
+          <span class="pill">多模型回复</span>
+          <span class="pill">可编辑回复框</span>
+          <span class="pill">模拟键盘回写</span>
+          <span class="pill">本地配置</span>
+        </div>
+      </header>
+
+      <section class="section" id="overview">
+        <h2>1. 认识 OmniReply</h2>
+        <p class="section-intro">
+          OmniReply 的目标不是替你自动发送消息，而是把“理解原文、生成候选回复、人工确认、输入到目标应用”这条流程变快。
+        </p>
+
+        <h3 id="sec-1-1">1.1 OmniReply 是什么</h3>
+        <p>
+          OmniReply 是一款 Windows 桌面 AI 快速回复工具。它可以监听剪贴板中的文本，结合你选择的模型、场景、语言、风格、回复目的和回复长度生成回复。生成结果会显示在可编辑的回复框中，你确认后再回写到目标应用的输入框。
+        </p>
+
+        <h3 id="sec-1-2">1.2 适合哪些场景</h3>
+        <div class="grid three" style="margin-top: 20px;">
+          <div class="card">
+            <h4>社交媒体互动</h4>
+            <p>为评论、私信、帖子回复准备自然、有语境的内容。</p>
+          </div>
+          <div class="card">
+            <h4>客户支持</h4>
+            <p>根据用户问题快速整理解释、安抚、建议或下一步操作。</p>
+          </div>
+          <div class="card">
+            <h4>产品推荐</h4>
+            <p>结合产品资料生成简短推荐、功能说明和对比回复。</p> s sensitive text, detects names and IDs automatically, and ev
+          </div>
+        </div>
+
+        <h3 id="sec-1-3">1.3 基本工作流</h3>
+        <div class="flow" aria-label="基本使用流程">
+          <span>配置 API Key</span>
+          <span>设置回复规则</span>
+          <span>启动剪贴板监控</span>
+          <span>复制或输入原文</span>
+          <span>生成回复</span>
+          <span>检查修改</span>
+          <span>回写到目标输入框</span>
+        </div>
+        <figure class="doc-figure">
+          <img src="Images/zh-Hans/flowchart.jpg" alt="OmniReply 基本工作流：从配置与监听、捕获原文、生成与编辑回复到回写目标输入框的流程示意" loading="lazy" decoding="async" />
+          <figcaption>图：整体工作流示意</figcaption>
+        </figure>
+        <div class="doc-flow-steps" aria-label="流程图步骤说明">
+          <ol class="doc-flow-steps-list">
+            <li>
+              <strong>配置 API Key</strong>
+              <p>在设置中填写要使用的 AI 服务 API Key。</p>
+            </li>
+            <li>
+              <strong>设置回复规则</strong>
+              <p>选择AI模型、场景、回复语言类型、回复语言风格、回复目的和回复长度。</p>
+            </li>
+            <li>
+              <strong>启动剪贴板监控</strong>
+              <p>打开剪贴板监控（Ctrl+Shift+X）。悬浮球变为彩色，表示正在工作。</p>
+            </li>
+            <li>
+              <strong>复制或输入原文</strong>
+              <p>复制问题（Ctrl+C）、评论或消息，也可以直接输入原文内容。</p>
+            </li>
+            <li>
+              <strong>生成 AI 回复</strong>
+              <p>OmniReply 根据原文和回复规则生成回复草稿。</p>
+            </li>
+            <li>
+              <strong>检查并修改</strong>
+              <p>查看生成结果，按需要调整措辞、细节或表情。</p>
+            </li>
+            <li>
+              <strong>回写到目标输入框</strong>
+              <p>先点击目标输入框，再点击回写，或按（Ctrl+Shift+Enter）。</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section" id="ui">
+        <h2>2. 界面与功能概览</h2>
+        <p class="section-intro">
+          OmniReply 的日常操作主要集中在悬浮主窗口，设置窗口和产品管理窗口只在配置时使用。
+        </p>
+        <figure class="doc-figure">
+          <img src="Images/zh-Hans/ui.jpg" alt="OmniReply 主窗口界面：标题栏、配置区、原文区、回复区、表情栏与底部状态栏等区域示意" loading="lazy" decoding="async" />
+          <figcaption>图：主窗口结构示意</figcaption>
+        </figure>
+
+        <h3 id="sec-2-1">2.1 主窗口结构</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>区域</th>
+              <th>作用</th>
+              <th>使用建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>标题栏</td>
+              <td>显示应用名称和当前授权状态，可折叠为悬浮球。</td>
+              <td>窗口占用空间时可收起，等待复制内容自动生成。</td>
+            </tr>
+            <tr>
+              <td>配置区</td>
+              <td>选择模型、场景、语言、风格、目的、长度和产品。</td>
+              <td>切换规则后可手动重新生成，避免沿用旧回复。</td>
+            </tr>
+            <tr>
+              <td>原文区</td>
+              <td>显示剪贴板捕获到的内容，也可手动输入。</td>
+              <td>适合在不方便复制时直接粘贴或编辑问题内容。</td>
+            </tr>
+            <tr>
+              <td>回复区</td>
+              <td>显示 AI 生成的回复，并允许继续编辑。</td>
+              <td>发送或回写前务必检查事实、语气和敏感信息。</td>
+            </tr>
+            <tr>
+              <td>表情栏</td>
+              <td>快速插入常用表情字符。</td>
+              <td>表情会作为文本插入，仍可编辑和删除。</td>
+            </tr>
+            <tr>
+              <td>底部状态栏</td>
+              <td>控制剪贴板监控、语言切换、设置、关于和退出。</td>
+              <td>首次使用时先打开剪贴板监控开关。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-2-2">2.2 悬浮球状态</h3>
+        <p>
+          窗口收起后会变成悬浮球。悬浮球可拖动，可双击展开，也会表现当前服务状态：工作状态为彩色，表示剪贴板监控已开启；非工作状态为灰色，表示监控未开启。启用剪贴板监控后，复制新的文本会触发捕获；等待模型返回时，悬浮球会呈现请求中的状态。
+        </p>
+
+        <h3 id="sec-2-3">2.3 设置窗口</h3>
+        <div class="grid two" style="margin-top: 20px;">
+          <div class="card">
+            <h4>模型设置</h4>
+            <p>维护 OpenAI、Gemini、Grok、DeepSeek 的 API Key、基础地址和模型名称。</p>
+          </div>
+          <div class="card">
+            <h4>网络设置（未开放）</h4>
+            <p>按需启用手动 HTTP 代理。未启用时，应用会使用系统默认代理。</p>
+          </div>
+          <div class="card">
+            <h4>快捷键设置</h4>
+            <p>修改显示窗口、启动服务、刷新回复和回写的全局快捷键。</p>
+          </div>
+          <div class="card">
+            <h4>文件设置</h4>
+            <p>设置历史记录保存目录。留空时不会保存历史记录。</p>
+          </div>
+        </div>
+        <h3 id="sec-2-4">2.4 产品管理窗口</h3>
+        <p>
+          产品管理窗口用于维护当前配置档中的产品名称和产品描述。当回复目的选择为产品推荐时，当前选中的产品资料会作为上下文发送给 AI，让回复更贴近产品特点。
+        </p>
+        <figure class="doc-figure">
+          <img src="Images/zh-Hans/pm.jpg" alt="OmniReply 产品管理窗口界面" loading="lazy" decoding="async" />
+          <figcaption>图：产品管理</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="quickstart">
+        <h2>3. 快速上手</h2>
+        <p class="section-intro">
+          第一次使用时，建议按下面顺序完成。只要跑通一次，后续通常只需要复制原文、检查回复和回写。
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div>
+              <h3 id="sec-3-1">添加 API Key</h3>
+              <p>打开设置窗口，在模型设置中填写你要使用的 AI 服务 API Key。不使用的服务可以留空。至少需要为当前选择的模型配置有效 Key。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-2">设置回复规则</h3>
+              <p>在主窗口选择模型、场景、语言、风格、回复目的和回复长度。如果是产品推荐场景，也请选择合适的产品资料。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-3">启动剪贴板监控</h3>
+              <p>打开底部状态栏的剪贴板监控开关，或使用 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> 启动服务。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-4">复制或输入原文</h3>
+              <p>在外部应用中复制问题、评论或消息。也可以直接在原文区输入内容，然后手动刷新生成。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-5">生成 AI 回复</h3>
+              <p>复制新内容后，OmniReply 会读取原文并调用当前模型。需要重新生成时，点击刷新按钮或按 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-6">检查并修改回复</h3>
+              <p>回复框是可编辑的。你可以修改语气、删减内容、补充信息或插入表情。AI 生成内容不应跳过人工确认。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-7">回写到目标输入框</h3>
+              <p>先点击目标应用中的输入框，让光标停在要输入的位置，再点击回写按钮，或按 <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>。</p>
+            </div>
+          </div>
+        </div>
+        <div class="warning">
+          回写是模拟键盘输入，不是直接发送消息。请在回写前确认目标输入框已经获得焦点，并在目标应用中自行确认是否发送。
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2>4. 功能说明</h2>
+        <p class="section-intro">
+          本章按实际功能解释每个设置项的作用，以及它们如何影响最终回复。
+        </p>
+
+        <h3 id="sec-4-1">4.1 AI 模型与 API Key</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>模型选项</th>
+              <th>需要配置</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ChatGPT (OpenAI)</td>
+              <td><code>OpenAI_Key</code></td>
+              <td>使用 OpenAI 兼容的 Chat Completions 接口，可配置基础地址和模型名称。</td>
+            </tr>
+            <tr>
+              <td>Gemini (Google)</td>
+              <td><code>Gemini_Key</code></td>
+              <td>使用 Google Gemini 服务，可配置 Gemini 基础地址和模型名称。</td>
+            </tr>
+            <tr>
+              <td>Grok (xAI)</td>
+              <td><code>Grok_Key</code></td>
+              <td>使用 xAI Grok 服务，可配置基础地址、模型名称和系统消息。</td>
+            </tr>
+            <tr>
+              <td>DeepSeek (DeepSeek)</td>
+              <td><code>Deepseek_Key</code></td>
+              <td>支持 OpenAI 兼容请求或 DeepSeek reasoning 请求配置。</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">
+          当前选择哪个模型，就需要该模型对应的 Key。未使用的服务可以不填写。
+        </p>
+
+        <h3 id="sec-4-2">4.2 回复规则</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>规则</th>
+              <th>影响</th>
+              <th>建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>场景</td>
+              <td>决定回复所处平台或上下文，例如社交平台、论坛、客服。</td>
+              <td>尽量选择最接近真实使用环境的场景。</td>
+            </tr>
+            <tr>
+              <td>语言</td>
+              <td>控制输出语言。自动语言会尽量跟随上下文。</td>
+              <td>需要固定语言时，不要使用自动语言。</td>
+            </tr>
+            <tr>
+              <td>风格</td>
+              <td>控制语气、人设和表达方式。</td>
+              <td>公开评论建议使用自然、友好、不过度营销的风格。</td>
+            </tr>
+            <tr>
+              <td>回复目的</td>
+              <td>决定回复目标，例如推荐、支持、解释、反驳。</td>
+              <td>目的会强烈影响内容方向，生成前请先确认。</td>
+            </tr>
+            <tr>
+              <td>回复长度</td>
+              <td>控制输出是简短、中等还是详细。</td>
+              <td>社交平台通常优先使用短回复或自动长度。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-3">4.3 产品推荐资料</h3>
+        <p>
+          产品推荐资料包含产品名称和产品描述。选择推荐类目的时，OmniReply 会把当前选中的产品描述作为上下文交给 AI。建议产品描述包含：
+        </p>
+        <ul>
+          <li>产品主要解决什么问题。</li>
+          <li>核心功能和优势。</li>
+          <li>适合哪些用户或场景。</li>
+          <li>是否离线、是否上传数据、是否有明显限制。</li>
+          <li>避免夸大承诺，减少生成过度营销内容的概率。</li>
+        </ul>
+
+        <h3 id="sec-4-4">4.4 剪贴板监控</h3>
+        <p>
+          启用监控后，OmniReply 会监听系统剪贴板更新，并读取新的文本内容。为了避免误触发，应用会忽略空文本、重复文本，以及在 OmniReply 自身窗口活跃时发生的复制操作。
+        </p>
+        <div class="note">
+          如果你只是想手动输入原文，可以不依赖自动捕获。输入或粘贴原文后，使用刷新按钮重新请求模型即可。
+        </div>
+
+        <h3 id="sec-4-5">4.5 回复编辑与表情</h3>
+        <p>
+          回复内容区域是可编辑文本框。你可以直接改写 AI 生成的内容，也可以用表情栏或表情弹窗插入常用 Unicode 表情。部分系统或 WPF 控件可能不能把 emoji 显示成彩色，但插入的字符仍然是标准表情字符。
+        </p>
+
+        <h3 id="sec-4-6">4.6 回写与快捷键</h3>
+        <p>
+          回写会先隐藏 OmniReply 窗口，短暂等待目标输入框恢复焦点，然后逐字符模拟键盘输入。遇到换行时会使用模拟换行键。默认快捷键如下：
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>操作</th>
+              <th>默认快捷键</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>显示或收起主窗口</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd></td>
+            </tr>
+            <tr>
+              <td>启动或停止剪贴板监控</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></td>
+            </tr>
+            <tr>
+              <td>重新生成回复</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></td>
+            </tr>
+            <tr>
+              <td>回写回复内容</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-7">4.7 历史记录</h3>
+        <p>
+          在文件设置中指定历史记录目录后，OmniReply 会按 JSONL 格式保存原文、回复内容和请求时间。历史目录留空时不会写入历史记录。
+        </p>
+      </section>
+
+      <section class="section" id="privacy">
+        <h2>5. 数据、隐私与授权</h2>
+        <p class="section-intro">
+          OmniReply 的配置和资料保存在本机；模型请求会直接发往你选择的 AI 服务。
+        </p>
+
+        <h3 id="sec-5-1">5.1 本地保存的数据</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>数据</th>
+              <th>说明</th>
+              <th>用户可见管理方式</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>应用设置</td>
+              <td>模型地址、API Key、代理、快捷键、历史目录等。</td>
+              <td>在设置窗口中查看和修改。</td>
+            </tr>
+            <tr>
+              <td>配置档与产品资料</td>
+              <td>当前 profile、产品列表、选中的场景和规则。</td>
+              <td>在主窗口和产品管理窗口中维护。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-5-2">5.2 AI 请求会发送哪些内容</h3>
+        <p>
+          生成回复时，OmniReply 会将原文、当前回复规则、必要的产品资料和模型请求参数发送给当前选择的 AI 服务。不同服务由你自己的 API Key 调用，应用不通过中间服务器转发。
+        </p>
+
+        <h3 id="sec-5-3">5.3 API Key 与隐私安全</h3>
+        <ul>
+          <li>不要把包含 API Key 的配置文件分享给他人。</li>
+          <li>如果使用公共电脑，退出前请确认配置文件和历史记录已妥善处理。</li>
+          <li>复制敏感内容前，请确认所选 AI 服务的隐私政策和数据处理规则。</li>
+          <li>历史记录目录为空时，OmniReply 不保存原文和回复历史。</li>
+        </ul>
+
+        <h3 id="sec-5-4">5.4 Free / Pro 版本区别</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>版本</th>
+              <th>说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Free</td>
+              <td>每日本地自然日可进行 10 次模型生成，并可能限制部分规则选择。</td>
+            </tr>
+            <tr>
+              <td>Pro</td>
+              <td>解锁专业版能力。具体购买和授权状态以应用内授权窗口为准。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section" id="faq">
+        <h2>6. 常见问题与故障排查</h2>
+        <p class="section-intro">
+          如果使用过程中出现异常，先从这里检查。大多数问题都和监听开关、API Key、网络代理、快捷键冲突或目标输入框焦点有关。
+        </p>
+
+        <div class="faq">
+          <details id="faq-6-1" open>
+            <summary>6.1 复制后没有反应</summary>
+            <div>
+              <p>请按顺序检查：</p>
+              <ol>
+                <li>底部剪贴板监控开关是否已开启。</li>
+                <li>复制内容是否为纯文本，且不是空内容。</li>
+                <li>是否正在等待上一条 AI 请求完成。</li>
+                <li>是否复制了和上一次完全相同的内容。</li>
+                <li>是否在 OmniReply 自身窗口中复制内容。应用会忽略自身活跃窗口中的复制操作。</li>
+              </ol>
+            </div>
+          </details>
+
+          <details id="faq-6-2">
+            <summary>6.2 提示未配置API Key</summary>
+            <div>
+              <p>当前选择的模型对应服务没有 Key。进入设置窗口，为当前模型对应的服务填写 API Key，或切换到已经配置好的模型。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-3">
+            <summary>6.3 AI请求失败或超时</summary>
+            <div>
+              <p>常见原因包括 Key 无效、额度不足、服务繁忙、网络不可用、代理配置错误或请求超时。先确认浏览器和系统代理能访问对应 AI 服务，再检查设置中的基础地址、模型名称和 Key。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-4">
+            <summary>6.4 回复语言或风格不符合预期</summary>
+            <div>
+              <p>检查语言、场景、风格、回复目的和回复长度。对于 OpenAI 兼容模型，固定语言会写入系统提示；如果仍不稳定，可将语言设为明确的目标语言后重新生成。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-5">
+            <summary>6.5 回写到了错误位置</summary>
+            <div>
+              <p>回写前必须先点击目标输入框，让光标停在正确位置。回写是模拟键盘输入，如果焦点在其他窗口或控件中，内容就会输入到那里。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-6">
+            <summary>6.6 快捷键无效</summary>
+            <div>
+              <p>快捷键可能已被其他软件占用。进入设置窗口的快捷键页签，改成带有 Ctrl、Shift、Alt 或 Win 的组合键，并避免和系统快捷键冲突。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-7">
+            <summary>6.7 表情显示异常</summary>
+            <div>
+              <p>WPF 文本框在部分系统上可能不能稳定显示彩色 emoji。即使界面里显示成单色，插入和回写的通常仍是标准 Unicode 表情字符。目标应用是否显示彩色，取决于目标应用和系统字体支持。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-8">
+            <summary>6.8 历史记录没有保存</summary>
+            <div>
+              <p>历史记录只有在文件设置中指定了历史目录后才会保存。目录为空表示不记录历史。请确认目录存在且当前用户有写入权限。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-9">
+            <summary>6.9 反馈问题时需要提供什么</summary>
+            <div>
+              <p>建议提供应用版本、Windows 版本、当前模型、错误提示、是否使用代理、是否能复现、复现步骤，以及必要的截图。请不要发送真实 API Key。</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <footer>
+        OmniReply 使用帮助。本文档用于介绍应用功能和常见操作，具体界面与限制以当前安装版本为准。
+      </footer>
+    </main>
+  </div>
+  <script>
+    (function () {
+      document.querySelectorAll('.toc-sub a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function () {
+          var id = (a.getAttribute('href') || '').slice(1);
+          if (!id) return;
+          var target = document.getElementById(id);
+          var section = target && target.closest ? target.closest('section[id]') : null;
+          if (!section) return;
+          var chapter = document.querySelector('.toc-chapter[data-chapter="' + section.id + '"]');
+          if (chapter) chapter.open = true;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
