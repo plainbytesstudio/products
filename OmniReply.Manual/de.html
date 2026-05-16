@@ -1,0 +1,963 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OmniReply Benutzerhandbuch</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --paper: #111111;
+      --panel: #1a1a1a;
+      --ink: #f5f5f5;
+      --muted: #9a9a9a;
+      --line: rgba(255, 255, 255, 0.10);
+      --brand: #f3760c;
+      --brand-2: #ff942e;
+      --shadow: 0 18px 70px rgba(0, 0, 0, 0.55), 0 0 70px rgba(243, 118, 12, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 900px 560px at 18% -10%, rgba(243, 118, 12, 0.16), transparent 62%),
+        radial-gradient(ellipse 720px 460px at 88% 8%, rgba(243, 118, 12, 0.08), transparent 58%),
+        linear-gradient(180deg, #050505 0%, #080808 42%, #050505 100%);
+      font-family: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .sidebar,
+    .hero,
+    .section {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.08)), var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(17, 17, 17, 0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 12px;
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 26px rgba(243, 118, 12, 0.28);
+      font-weight: 800;
+    }
+    .brand strong { display: block; font-size: 16px; line-height: 1.25; }
+    .brand span { display: block; color: var(--muted); font-size: 12px; }
+
+    .toc-title {
+      margin: 18px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .toc-chapters {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    details.toc-chapter {
+      margin: 0;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.028);
+      overflow: hidden;
+    }
+    details.toc-chapter[open] { border-color: rgba(243, 118, 12, 0.28); }
+    details.toc-chapter > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 11px 14px;
+      color: var(--ink);
+      font-size: 13.5px;
+      font-weight: 650;
+      user-select: none;
+    }
+    details.toc-chapter > summary::-webkit-details-marker { display: none; }
+    details.toc-chapter > summary:hover,
+    details.toc-chapter[open] > summary { background: rgba(243, 118, 12, 0.08); }
+
+    .toc-sub {
+      margin: 0 8px 4px 18px;
+      padding: 6px 10px 10px 14px;
+      list-style: none;
+      border-left: 2px solid rgba(243, 118, 12, 0.4);
+    }
+    .toc-sub li { margin: 0; }
+    .toc-sub a {
+      display: block;
+      padding: 7px 10px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      border: 1px solid transparent;
+    }
+    .toc-sub a:hover {
+      color: var(--ink);
+      background: rgba(243, 118, 12, 0.10);
+      border-color: rgba(243, 118, 12, 0.24);
+      text-decoration: none;
+    }
+
+    .content { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+    .hero, .section { border-radius: 22px; }
+    .hero { position: relative; overflow: hidden; padding: 42px; }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 68% 44% at 50% 0%, rgba(243, 118, 12, 0.15), transparent 62%),
+        linear-gradient(180deg, rgba(243, 118, 12, 0.06), transparent 46%);
+    }
+    .hero > * { position: relative; z-index: 1; }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, h4 { margin: 0; color: var(--ink); line-height: 1.35; }
+    h1 { max-width: 780px; font-size: clamp(32px, 5vw, 54px); letter-spacing: 0; }
+    h2 { font-size: clamp(22px, 2.4vw, 26px); }
+    h3 {
+      position: relative;
+      margin-top: 32px;
+      padding-left: 14px;
+      font-size: 17px;
+      font-weight: 650;
+    }
+    h3::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.42em;
+      width: 3px;
+      height: 0.88em;
+      border-radius: 99px;
+      background: rgba(243, 118, 12, 0.68);
+    }
+
+    section[id], h3[id], details[id] { scroll-margin-top: 1.25rem; }
+    p { margin: 10px 0 0; }
+
+    .lead, .section-intro, .card p, details div, footer { color: var(--muted); }
+    .lead { max-width: 700px; margin-top: 14px; font-size: 16px; line-height: 1.8; }
+
+    .section { padding: 36px 38px; }
+    .section > h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+    .section > h2::before {
+      content: "";
+      flex-shrink: 0;
+      width: 4px;
+      height: 1.05em;
+      border-radius: 99px;
+      background: linear-gradient(180deg, var(--brand), var(--brand-2));
+    }
+    .section-intro { max-width: 760px; margin-top: 12px; font-size: 15px; }
+
+    .hero-actions, .flow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .pill, .flow span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 12px;
+      border: 1px solid rgba(243, 118, 12, 0.34);
+      border-radius: 999px;
+      color: var(--brand-2);
+      background: rgba(243, 118, 12, 0.10);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card, .step, details:not(.toc-chapter) {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.08)), var(--panel);
+      border-radius: 12px;
+    }
+    .card { padding: 18px 20px; }
+    .card h4 { margin: 0 0 8px; font-size: 14px; font-weight: 700; }
+    .card:hover, details:not(.toc-chapter):hover {
+      border-color: rgba(243, 118, 12, 0.40);
+      box-shadow: inset 0 0 16px rgba(243, 118, 12, 0.04);
+    }
+
+    .steps { display: grid; gap: 14px; margin-top: 18px; counter-reset: steps; }
+    .step { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px 18px; }
+    .step::before {
+      counter-increment: steps;
+      content: counter(steps);
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 10px;
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 24px rgba(243, 118, 12, 0.30);
+      font-weight: 800;
+    }
+
+    .note, .warning {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      color: #ffd9bc;
+      border: 1px solid rgba(243, 118, 12, 0.35);
+      background: rgba(243, 118, 12, 0.10);
+    }
+    .warning {
+      border-color: rgba(243, 118, 12, 0.42);
+      background: linear-gradient(180deg, rgba(243, 118, 12, 0.13), rgba(243, 118, 12, 0.06)), #111111;
+    }
+
+    .doc-figure {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0c0c;
+      box-shadow: var(--shadow);
+    }
+    .doc-figure img { display: block; width: 100%; height: auto; }
+    .doc-figure figcaption {
+      margin: 0;
+      padding: 10px 14px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #111111;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.55;
+    }
+    th {
+      color: var(--ink);
+      background: #1f1f1f;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    td { color: #d8d8d8; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:nth-child(even) td { background: rgba(255, 255, 255, 0.025); }
+
+    ul, ol { margin: 14px 0 0; padding-left: 1.35em; }
+    li + li { margin-top: 8px; }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #ffbd82;
+      background: rgba(243, 118, 12, 0.12);
+      border: 1px solid rgba(243, 118, 12, 0.20);
+      font-family: Consolas, "Cascadia Mono", monospace;
+    }
+    kbd {
+      display: inline-block;
+      min-width: 1.8em;
+      padding: 2px 7px;
+      border: 1px solid #333333;
+      border-bottom-color: #4a4a4a;
+      border-bottom-width: 2px;
+      border-radius: 7px;
+      color: var(--ink);
+      background: #191919;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 0.9em;
+      line-height: 1.45;
+    }
+
+    .faq { display: grid; gap: 10px; margin-top: 22px; }
+    summary { cursor: pointer; padding: 15px 18px; color: var(--ink); font-weight: 800; }
+    summary::marker { color: var(--brand); }
+    details:not(.toc-chapter) div { padding: 0 18px 18px; }
+    footer {
+      margin-top: 8px;
+      padding: 20px 4px 8px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      text-align: center;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 980px) {
+      .shell { display: block; padding: 16px; }
+      .sidebar { position: static; max-height: none; margin-bottom: 18px; }
+      .grid.two, .grid.three { grid-template-columns: 1fr; }
+      .hero, .section { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Hilfenavigation">
+      <div class="brand">
+        <div class="brand-mark">OR</div>
+        <div>
+          <strong>OmniReply</strong>
+          <span>Benutzerhandbuch</span>
+        </div>
+      </div>
+
+      <p class="toc-title">Inhalt</p>
+      <div class="toc-chapters">
+        <details class="toc-chapter" data-chapter="overview" open>
+          <summary>1. OmniReply kennenlernen</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-1-1">1.1 Was OmniReply ist</a></li>
+            <li><a href="#sec-1-2">1.2 Typische Einsatzbereiche</a></li>
+            <li><a href="#sec-1-3">1.3 Grundlegender Ablauf</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="ui" open>
+          <summary>2. Oberfläche und Funktionen</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-2-1">2.1 Hauptfenster</a></li>
+            <li><a href="#sec-2-2">2.2 Status der schwebenden Kugel</a></li>
+            <li><a href="#sec-2-3">2.3 Einstellungsfenster</a></li>
+            <li><a href="#sec-2-4">2.4 Produktverwaltung</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="quickstart">
+          <summary>3. Schnellstart</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-3-1">API-Key hinzufügen</a></li>
+            <li><a href="#sec-3-2">Antwortregeln festlegen</a></li>
+            <li><a href="#sec-3-3">Überwachung starten</a></li>
+            <li><a href="#sec-3-4">Text kopieren oder eingeben</a></li>
+            <li><a href="#sec-3-5">Antwort generieren</a></li>
+            <li><a href="#sec-3-6">Prüfen und bearbeiten</a></li>
+            <li><a href="#sec-3-7">Zurückschreiben</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="features">
+          <summary>4. Funktionen im Detail</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-4-1">4.1 KI-Modelle und API-Keys</a></li>
+            <li><a href="#sec-4-2">4.2 Antwortregeln</a></li>
+            <li><a href="#sec-4-3">4.3 Produktdaten für Empfehlungen</a></li>
+            <li><a href="#sec-4-4">4.4 Zwischenablage-Überwachung</a></li>
+            <li><a href="#sec-4-5">4.5 Bearbeiten und Emoji</a></li>
+            <li><a href="#sec-4-6">4.6 Zurückschreiben und Hotkeys</a></li>
+            <li><a href="#sec-4-7">4.7 Verlauf</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="privacy">
+          <summary>5. Daten, Datenschutz und Lizenz</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-5-1">5.1 Lokal gespeicherte Daten</a></li>
+            <li><a href="#sec-5-2">5.2 Inhalt von KI-Anfragen</a></li>
+            <li><a href="#sec-5-3">5.3 Sicherheit von API-Keys</a></li>
+            <li><a href="#sec-5-4">5.4 Free- und Pro-Version</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="faq">
+          <summary>6. FAQ und Fehlerbehebung</summary>
+          <ul class="toc-sub">
+            <li><a href="#faq-6-1">6.1 Nach dem Kopieren passiert nichts</a></li>
+            <li><a href="#faq-6-2">6.2 API-Key nicht konfiguriert</a></li>
+            <li><a href="#faq-6-3">6.3 KI-Anfrage fehlgeschlagen</a></li>
+            <li><a href="#faq-6-4">6.4 Falsche Sprache oder falscher Stil</a></li>
+            <li><a href="#faq-6-5">6.5 Antwort wurde an der falschen Stelle geschrieben</a></li>
+            <li><a href="#faq-6-6">6.6 Hotkeys funktionieren nicht</a></li>
+            <li><a href="#faq-6-7">6.7 Emoji-Anzeigeprobleme</a></li>
+            <li><a href="#faq-6-8">6.8 Verlauf wurde nicht gespeichert</a></li>
+            <li><a href="#faq-6-9">6.9 Angaben für eine Support-Anfrage</a></li>
+          </ul>
+        </details>
+      </div>
+
+      <p class="toc-title">Standard-Hotkeys</p>
+      <p><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> Überwachung starten/stoppen</p>
+      <p><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd> Fenster anzeigen/ausblenden</p>
+      <p><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd> Neu generieren</p>
+      <p><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd> Zurückschreiben</p>
+    </aside>
+
+    <main class="content">
+      <header class="hero">
+        <p class="eyebrow">Clipboard-driven AI reply assistant</p>
+        <h1>OmniReply Benutzerhandbuch</h1>
+        <p class="lead">
+          Dieses Handbuch erklärt die Oberfläche, Einrichtung, KI-Antwortgenerierung und Zurückschreibfunktion von OmniReply. Beginnen Sie mit dem Schnellstart und nutzen Sie die Detailkapitel später als Nachschlagewerk.
+        </p>
+        <div class="hero-actions">
+          <span class="pill">Zwischenablage-Überwachung</span>
+          <span class="pill">Mehrere KI-Modelle</span>
+          <span class="pill">Bearbeitbares Antwortfeld</span>
+          <span class="pill">Tastatur-Zurückschreiben</span>
+          <span class="pill">Lokale Einstellungen</span>
+        </div>
+      </header>
+
+      <section class="section" id="overview">
+        <h2>1. OmniReply kennenlernen</h2>
+        <p class="section-intro">
+          OmniReply verkürzt den Weg vom Lesen einer Nachricht bis zur passenden Antwort. Die App erfasst Ausgangstext, erstellt einen Antwortentwurf, lässt ihn prüfen und schreibt ihn anschließend in die Zielanwendung zurück.
+        </p>
+
+        <h3 id="sec-1-1">1.1 Was OmniReply ist</h3>
+        <p>
+          OmniReply ist ein Windows-Desktopassistent für schnelle KI-Antworten. Die App überwacht kopierten Text, kombiniert ihn mit den gewählten Einstellungen für Modell, Szene, Sprache, Stil, Antwortziel und Länge und erzeugt daraus eine bearbeitbare Antwort. Nach der Prüfung können Sie den Text in ein Eingabefeld einer anderen Anwendung zurückschreiben.
+        </p>
+
+        <h3 id="sec-1-2">1.2 Typische Einsatzbereiche</h3>
+        <div class="grid three">
+          <div class="card">
+            <h4>Social-Media-Antworten</h4>
+            <p>Natürliche Antworten für Kommentare, Direktnachrichten, Beiträge und Community-Diskussionen vorbereiten.</p>
+          </div>
+          <div class="card">
+            <h4>Kundensupport</h4>
+            <p>Nutzerfragen schnell in klare Erklärungen, Beruhigung, nächste Schritte oder Supportantworten verwandeln.</p>
+          </div>
+          <div class="card">
+            <h4>Produktempfehlungen</h4>
+            <p>Produktinformationen nutzen, um kurze Empfehlungen, Funktionsbeschreibungen und Vergleichsantworten zu erstellen.</p>
+          </div>
+        </div>
+
+        <h3 id="sec-1-3">1.3 Grundlegender Ablauf</h3>
+        <div class="flow" aria-label="Grundlegender Ablauf">
+          <span>API-Key konfigurieren</span>
+          <span>Antwortregeln festlegen</span>
+          <span>Zwischenablage-Überwachung starten</span>
+          <span>Ausgangstext kopieren oder eingeben</span>
+          <span>Antwort generieren</span>
+          <span>Prüfen und bearbeiten</span>
+          <span>In das Zielfeld zurückschreiben</span>
+        </div>
+        <figure class="doc-figure">
+          <img src="images/de/flowchart.jpg" alt="OmniReply-Arbeitsablauf: Einstellungen konfigurieren, Überwachung starten, Ausgangstext erfassen, Antwort generieren und bearbeiten, dann in das Zielfeld zurückschreiben" loading="lazy" decoding="async" />
+          <figcaption>OmniReply-Arbeitsablauf von Einrichtung und Überwachung bis zu Generierung, Bearbeitung und Zurückschreiben.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="ui">
+        <h2>2. Oberfläche und Funktionen im Überblick</h2>
+        <p class="section-intro">
+          Die tägliche Arbeit findet überwiegend im schwebenden Hauptfenster statt. Einstellungen und Produktverwaltung werden hauptsächlich für die Einrichtung genutzt.
+        </p>
+
+        <h3 id="sec-2-1">2.1 Hauptfenster</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Bereich</th>
+              <th>Aufgabe</th>
+              <th>Tipp</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Titelleiste</td>
+              <td>Zeigt App-Name und aktuelle Edition. Das Fenster kann zur schwebenden Kugel minimiert werden.</td>
+              <td>Minimieren Sie das Fenster, wenn es beim Warten auf kopierten Text nicht stören soll.</td>
+            </tr>
+            <tr>
+              <td>Konfigurationsbereich</td>
+              <td>Auswahl von Modell, Szene, Sprache, Stil, Ziel, Länge und Produkt.</td>
+              <td>Nach einer Regeländerung sollte die Antwort neu generiert werden.</td>
+            </tr>
+            <tr>
+              <td>Ausgangstext</td>
+              <td>Zeigt erfassten Text aus der Zwischenablage und erlaubt manuelle Eingabe.</td>
+              <td>Nützlich, wenn Kopieren unpraktisch ist oder der Ausgangstext zuerst angepasst werden soll.</td>
+            </tr>
+            <tr>
+              <td>Antwortbereich</td>
+              <td>Zeigt die generierte KI-Antwort und lässt sie bearbeiten.</td>
+              <td>Prüfen Sie Fakten, Ton und sensible Inhalte vor dem Zurückschreiben.</td>
+            </tr>
+            <tr>
+              <td>Emoji-Leiste</td>
+              <td>Fügt häufig verwendete Emoji-Zeichen in die Antwort ein.</td>
+              <td>Eingefügte Emoji bleiben Textzeichen und können weiter bearbeitet werden.</td>
+            </tr>
+            <tr>
+              <td>Statusleiste</td>
+              <td>Steuert Zwischenablage-Überwachung, Sprache, Einstellungen, Info und Beenden.</td>
+              <td>Aktivieren Sie die Überwachung, bevor Sie den automatischen Erfassungsablauf nutzen.</td>
+            </tr>
+          </tbody>
+        </table>
+        <figure class="doc-figure">
+          <img src="images/de/ui.jpg" alt="OmniReply-Hauptfenster mit Titelleiste, Konfigurationsbereich, Ausgangstext, Antworteditor, Emoji-Leiste und Statusleiste" loading="lazy" decoding="async" />
+          <figcaption>Aufbau des Hauptfensters und die wichtigsten Arbeitsbereiche.</figcaption>
+        </figure>
+
+        <h3 id="sec-2-2">2.2 Status der schwebenden Kugel</h3>
+        <p>
+          Im minimierten Zustand wird OmniReply als schwebende Kugel angezeigt. Sie lässt sich verschieben und per Doppelklick wieder öffnen. Die Farbe zeigt den Dienststatus: Eine farbige Kugel bedeutet, dass die Zwischenablage-Überwachung aktiv ist. Eine graue Kugel bedeutet, dass die Überwachung ausgeschaltet ist. Während OmniReply auf eine KI-Antwort wartet, kann zusätzlich ein Anfragestatus angezeigt werden.
+        </p>
+
+        <h3 id="sec-2-3">2.3 Einstellungsfenster</h3>
+        <div class="grid two">
+          <div class="card">
+            <h4>Modelleinstellungen</h4>
+            <p>API-Keys, Basisadressen und Modellnamen für OpenAI, Gemini, Grok und DeepSeek verwalten.</p>
+          </div>
+          <div class="card">
+            <h4>Netzwerkeinstellungen</h4>
+            <p>Bei Bedarf einen manuellen HTTP-Proxy aktivieren. Wenn dieser deaktiviert ist, nutzt OmniReply die Systemproxy-Konfiguration.</p>
+          </div>
+          <div class="card">
+            <h4>Hotkey-Einstellungen</h4>
+            <p>Globale Tastenkürzel für Fensteranzeige, Überwachung, Aktualisieren und Zurückschreiben ändern.</p>
+          </div>
+          <div class="card">
+            <h4>Dateieinstellungen</h4>
+            <p>Ordner für den Verlauf auswählen. Ohne ausgewählten Ordner wird kein Verlauf gespeichert.</p>
+          </div>
+        </div>
+
+        <h3 id="sec-2-4">2.4 Produktverwaltung</h3>
+        <p>
+          Die Produktverwaltung speichert Produktnamen und Produktbeschreibungen für das aktuelle Profil. Wenn das Antwortziel eine Produktempfehlung ist, wird die Beschreibung des ausgewählten Produkts als Kontext gesendet, damit die Antwort genauer auf das Produkt eingehen kann.
+        </p>
+        <figure class="doc-figure">
+          <img src="images/de/pm.jpg" alt="OmniReply-Produktverwaltungsfenster" loading="lazy" decoding="async" />
+          <figcaption>Produktverwaltung für empfehlungsbezogene Antworten.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="quickstart">
+        <h2>3. Schnellstart</h2>
+        <p class="section-intro">
+          Folgen Sie diesen Schritten beim ersten Einsatz. Danach besteht der Alltag meist nur noch aus Kopieren, Prüfen und Zurückschreiben.
+        </p>
+
+        <div class="steps">
+          <div class="step" id="sec-3-1">
+            <div>
+              <h3>API-Key hinzufügen</h3>
+              <p>Öffnen Sie die Einstellungen und tragen Sie den API-Key des KI-Dienstes ein, den Sie verwenden möchten. Nicht genutzte Anbieter können leer bleiben. Für das aktuell gewählte Modell muss ein gültiger Key vorhanden sein.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-2">
+            <div>
+              <h3>Antwortregeln festlegen</h3>
+              <p>Wählen Sie Modell, Szene, Sprache, Stil, Antwortziel und Antwortlänge. Für Produktempfehlungen wählen Sie zusätzlich das passende Produkt aus.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-3">
+            <div>
+              <h3>Zwischenablage-Überwachung starten</h3>
+              <p>Aktivieren Sie den Schalter für die Zwischenablage-Überwachung in der Statusleiste oder drücken Sie <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-4">
+            <div>
+              <h3>Ausgangstext kopieren oder eingeben</h3>
+              <p>Kopieren Sie eine Frage, einen Kommentar oder eine Nachricht aus einer anderen App. Alternativ können Sie den Text direkt in OmniReply eingeben oder einfügen und manuell neu generieren.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-5">
+            <div>
+              <h3>KI-Antwort generieren</h3>
+              <p>Nachdem neuer Text kopiert wurde, liest OmniReply ihn aus und ruft das ausgewählte Modell auf. Für eine neue Antwort klicken Sie auf Aktualisieren oder drücken <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-6">
+            <div>
+              <h3>Prüfen und bearbeiten</h3>
+              <p>Das Antwortfeld ist bearbeitbar. Passen Sie Formulierungen an, entfernen Sie unnötige Stellen, ergänzen Sie Kontext oder fügen Sie Emoji ein. Überspringen Sie die Prüfung nicht, nur weil der Entwurf von KI erstellt wurde.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-7">
+            <div>
+              <h3>In das Zielfeld zurückschreiben</h3>
+              <p>Klicken Sie zuerst in das Eingabefeld der Zielanwendung, damit sich der Cursor an der richtigen Stelle befindet. Klicken Sie dann auf Zurückschreiben oder drücken Sie <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="warning">
+          Das Zurückschreiben simuliert Tastatureingaben. Es sendet die Nachricht nicht automatisch. Stellen Sie sicher, dass das Zielfeld fokussiert ist, und senden oder bestätigen Sie die Antwort anschließend selbst in der Zielanwendung.
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2>4. Funktionen im Detail</h2>
+        <p class="section-intro">
+          Dieses Kapitel erklärt, was die einzelnen Einstellungen bewirken und wie sie die fertige Antwort beeinflussen.
+        </p>
+
+        <h3 id="sec-4-1">4.1 KI-Modelle und API-Keys</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Modelloption</th>
+              <th>Erforderliche Einstellung</th>
+              <th>Beschreibung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ChatGPT (OpenAI)</td>
+              <td><code>OpenAI_Key</code></td>
+              <td>Nutzt einen OpenAI-kompatiblen Chat-Completions-Endpunkt. Basisadresse und Modellname können konfiguriert werden.</td>
+            </tr>
+            <tr>
+              <td>Gemini (Google)</td>
+              <td><code>Gemini_Key</code></td>
+              <td>Nutzt Google Gemini. Basisadresse und Modellname für Gemini können konfiguriert werden.</td>
+            </tr>
+            <tr>
+              <td>Grok (xAI)</td>
+              <td><code>Grok_Key</code></td>
+              <td>Nutzt xAI Grok. Basisadresse, Modellname und Systemnachricht können konfiguriert werden.</td>
+            </tr>
+            <tr>
+              <td>DeepSeek (DeepSeek)</td>
+              <td><code>Deepseek_Key</code></td>
+              <td>Unterstützt OpenAI-kompatible Anfragen oder DeepSeek-Reasoning-Anfrageeinstellungen.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">
+          Das ausgewählte Modell bestimmt, welcher Key benötigt wird. Anbieter, die Sie nicht verwenden, können leer bleiben.
+        </p>
+
+        <h3 id="sec-4-2">4.2 Antwortregeln</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Regel</th>
+              <th>Wirkung</th>
+              <th>Empfehlung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Szene</td>
+              <td>Legt Plattform oder Kontext der Antwort fest, etwa Social Media, Forum oder Support.</td>
+              <td>Wählen Sie die Szene, die dem echten Gespräch am nächsten kommt.</td>
+            </tr>
+            <tr>
+              <td>Sprache</td>
+              <td>Steuert die Ausgabesprache. Automatische Sprache orientiert sich am Ausgangskontext.</td>
+              <td>Wählen Sie eine konkrete Sprache, wenn die Antwort fest in einer Sprache sein muss.</td>
+            </tr>
+            <tr>
+              <td>Stil</td>
+              <td>Steuert Ton, Persona und Wortwahl.</td>
+              <td>Für öffentliche Kommentare ist ein natürlicher, freundlicher und nicht aufdringlicher Stil meist sicherer.</td>
+            </tr>
+            <tr>
+              <td>Antwortziel</td>
+              <td>Gibt die Absicht vor, etwa Empfehlung, Support, Erklärung oder Gegenargument.</td>
+              <td>Prüfen Sie das Ziel vor der Generierung, da es den Entwurf stark beeinflusst.</td>
+            </tr>
+            <tr>
+              <td>Antwortlänge</td>
+              <td>Steuert, ob die Ausgabe kurz, mittel oder ausführlich sein soll.</td>
+              <td>Für soziale Plattformen ist kurz oder automatisch meist ein guter Startpunkt.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-3">4.3 Produktdaten für Empfehlungen</h3>
+        <p>
+          Produktdaten bestehen aus Produktname und Produktbeschreibung. Wird ein empfehlungsbezogenes Ziel gewählt, sendet OmniReply die Beschreibung des ausgewählten Produkts als Kontext an die KI. Eine gute Produktbeschreibung sollte enthalten:
+        </p>
+        <ul>
+          <li>Welches Problem das Produkt löst.</li>
+          <li>Kernfunktionen und Vorteile.</li>
+          <li>Für wen und in welchen Situationen es geeignet ist.</li>
+          <li>Ob es offline arbeitet, Daten hochlädt oder wichtige Einschränkungen hat.</li>
+          <li>Klare, realistische Formulierungen ohne übertriebene Versprechen.</li>
+        </ul>
+
+        <h3 id="sec-4-4">4.4 Zwischenablage-Überwachung</h3>
+        <p>
+          Bei aktivierter Überwachung lauscht OmniReply auf Aktualisierungen der Systemzwischenablage und liest neuen Text aus. Um Fehltrigger zu reduzieren, ignoriert die App leeren Text, wiederholten Text und Kopiervorgänge, die passieren, während das OmniReply-Fenster selbst aktiv ist.
+        </p>
+        <div class="note">
+          Wenn Sie lieber manuell arbeiten, müssen Sie die automatische Erfassung nicht nutzen. Geben Sie den Ausgangstext ein oder fügen Sie ihn ein und verwenden Sie anschließend Aktualisieren, um eine neue Antwort anzufordern.
+        </div>
+
+        <h3 id="sec-4-5">4.5 Bearbeiten und Emoji</h3>
+        <p>
+          Der Antwortbereich ist ein bearbeitbares Textfeld. Sie können KI-generierten Text direkt umschreiben oder häufig verwendete Unicode-Emoji über die Emoji-Leiste oder das Emoji-Popup einfügen. Manche Systeme oder WPF-Steuerelemente zeigen Emoji nicht zuverlässig farbig an; die eingefügten Zeichen bleiben dennoch standardisierte Emoji-Zeichen.
+        </p>
+
+        <h3 id="sec-4-6">4.6 Zurückschreiben und Hotkeys</h3>
+        <p>
+          Beim Zurückschreiben blendet OmniReply zuerst das eigene Fenster aus, wartet kurz, bis das Zielfeld den Fokus zurückerhält, und simuliert dann Tastatureingaben Zeichen für Zeichen. Zeilenumbrüche werden über eine simulierte Zeilenumbruch-Taste verarbeitet. Die Standard-Hotkeys sind:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Aktion</th>
+              <th>Standard-Hotkey</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hauptfenster anzeigen oder ausblenden</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd></td>
+            </tr>
+            <tr>
+              <td>Zwischenablage-Überwachung starten oder stoppen</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></td>
+            </tr>
+            <tr>
+              <td>Antwort neu generieren</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></td>
+            </tr>
+            <tr>
+              <td>Antwort zurückschreiben</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-7">4.7 Verlauf</h3>
+        <p>
+          Nachdem in den Dateieinstellungen ein Verlaufsordner ausgewählt wurde, kann OmniReply Ausgangstext, generierte Antworten und Anfragezeitpunkte speichern. Ist kein Verlaufsordner ausgewählt, wird kein Verlauf geschrieben.
+        </p>
+      </section>
+
+      <section class="section" id="privacy">
+        <h2>5. Daten, Datenschutz und Lizenz</h2>
+        <p class="section-intro">
+          OmniReply speichert Einstellungen und Profildaten auf Ihrem Gerät. KI-Anfragen werden direkt an den KI-Dienst gesendet, den Sie ausgewählt haben.
+        </p>
+
+        <h3 id="sec-5-1">5.1 Lokal gespeicherte Daten</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Daten</th>
+              <th>Beschreibung</th>
+              <th>Verwaltung durch den Benutzer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>App-Einstellungen</td>
+              <td>Modell-Endpunkte, API-Keys, Proxy-Einstellungen, Hotkeys, Verlaufseinstellungen und verwandte Optionen.</td>
+              <td>Im Einstellungsfenster anzeigen und bearbeiten.</td>
+            </tr>
+            <tr>
+              <td>Profile und Produktdaten</td>
+              <td>Aktuelles Profil, Produktliste, ausgewählte Szene und Antwortregeln.</td>
+              <td>Im Hauptfenster und in der Produktverwaltung pflegen.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-5-2">5.2 Inhalt von KI-Anfragen</h3>
+        <p>
+          Beim Generieren einer Antwort sendet OmniReply den Ausgangstext, die aktuellen Antwortregeln, notwendigen Produktkontext und Modellparameter an den ausgewählten KI-Dienst. Die Anfragen werden mit Ihrem eigenen API-Key ausgeführt. OmniReply leitet Ihre Anfragen nicht über einen Zwischenserver.
+        </p>
+
+        <h3 id="sec-5-3">5.3 Sicherheit von API-Keys</h3>
+        <ul>
+          <li>Teilen Sie keine Konfigurationsdateien, die API-Keys enthalten.</li>
+          <li>Auf gemeinsam genutzten Computern sollten Einstellungen und Verlauf vor dem Verlassen angemessen bereinigt oder geschützt werden.</li>
+          <li>Prüfen Sie vor dem Kopieren sensibler Inhalte die Datenschutz- und Datenverarbeitungsregeln des ausgewählten KI-Dienstes.</li>
+          <li>Wenn kein Verlaufsordner konfiguriert ist, speichert OmniReply weder Ausgangstext noch generierte Antwortverläufe.</li>
+        </ul>
+
+        <h3 id="sec-5-4">5.4 Free- und Pro-Version</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Version</th>
+              <th>Beschreibung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Free</td>
+              <td>Erlaubt 10 Modellgenerierungen pro lokalem Kalendertag und kann einige Regelauswahlen einschränken.</td>
+            </tr>
+            <tr>
+              <td>Pro</td>
+              <td>Schaltet Pro-Funktionen frei. Kauf- und Lizenzstatus werden im Lizenzfenster der App angezeigt.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section" id="faq">
+        <h2>6. FAQ und Fehlerbehebung</h2>
+        <p class="section-intro">
+          Wenn etwas nicht wie erwartet funktioniert, beginnen Sie hier. Die meisten Probleme hängen mit dem Überwachungsschalter, API-Keys, Netzwerk- oder Proxy-Einstellungen, Hotkey-Konflikten oder dem Fokus im Zielfeld zusammen.
+        </p>
+
+        <div class="faq">
+          <details id="faq-6-1" open>
+            <summary>6.1 Nach dem Kopieren passiert nichts</summary>
+            <div>
+              <p>Prüfen Sie der Reihe nach:</p>
+              <ol>
+                <li>Ist die Zwischenablage-Überwachung in der Statusleiste aktiviert?</li>
+                <li>Ist der kopierte Inhalt reiner Text und nicht leer?</li>
+                <li>Wartet OmniReply noch auf den Abschluss der vorherigen KI-Anfrage?</li>
+                <li>Ist der kopierte Text exakt derselbe wie beim letzten erfassten Text?</li>
+                <li>Wurde innerhalb des OmniReply-Fensters kopiert? Kopiervorgänge aus dem aktiven OmniReply-Fenster werden ignoriert.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details id="faq-6-2">
+            <summary>6.2 API-Key nicht konfiguriert</summary>
+            <div>
+              <p>Für den Anbieter des ausgewählten Modells ist kein Key konfiguriert. Öffnen Sie die Einstellungen und tragen Sie den API-Key für diesen Anbieter ein oder wechseln Sie zu einem Modell, dessen Anbieter bereits eingerichtet ist.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-3">
+            <summary>6.3 KI-Anfrage fehlgeschlagen oder Zeitüberschreitung</summary>
+            <div>
+              <p>Häufige Ursachen sind ein ungültiger Key, ausgeschöpftes Kontingent, Dienstüberlastung, Netzwerkprobleme, falsche Proxy-Konfiguration oder Zeitüberschreitung. Prüfen Sie zuerst, ob Browser und Systemproxy den jeweiligen KI-Dienst erreichen, und kontrollieren Sie danach Basisadresse, Modellname und API-Key in den Einstellungen.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-4">
+            <summary>6.4 Sprache oder Stil der Antwort passt nicht</summary>
+            <div>
+              <p>Prüfen Sie Sprache, Szene, Stil, Antwortziel und Antwortlänge. Bei OpenAI-kompatiblen Modellen wird eine feste Sprache in den Systemprompt aufgenommen. Wenn die Ausgabe weiterhin uneinheitlich ist, wählen Sie eine konkrete Zielsprache und generieren Sie erneut.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-5">
+            <summary>6.5 Die Antwort wurde an der falschen Stelle geschrieben</summary>
+            <div>
+              <p>Klicken Sie vor dem Zurückschreiben in das Zielfeld und stellen Sie sicher, dass der Cursor an der richtigen Stelle steht. Das Zurückschreiben simuliert Tastatureingaben; liegt der Fokus in einem anderen Fenster oder Steuerelement, wird die Antwort dort eingegeben.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-6">
+            <summary>6.6 Hotkeys funktionieren nicht</summary>
+            <div>
+              <p>Der Hotkey wird möglicherweise bereits von einer anderen Anwendung verwendet. Öffnen Sie den Hotkey-Tab in den Einstellungen und wählen Sie eine Kombination mit Ctrl, Shift, Alt oder Win, die nicht mit Systemkürzeln kollidiert.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-7">
+            <summary>6.7 Emoji-Anzeigeprobleme</summary>
+            <div>
+              <p>Auf manchen Systemen zeigen WPF-Textfelder Emoji nicht zuverlässig farbig an. Auch wenn Emoji in OmniReply einfarbig erscheinen, sind eingefügte und zurückgeschriebene Emoji in der Regel standardisierte Unicode-Zeichen. Ob sie in der Zielanwendung farbig erscheinen, hängt von Zielanwendung und Systemschriftunterstützung ab.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-8">
+            <summary>6.8 Verlauf wurde nicht gespeichert</summary>
+            <div>
+              <p>Verlauf wird nur gespeichert, wenn in den Dateieinstellungen ein Verlaufsordner ausgewählt wurde. Eine leere Ordnereinstellung bedeutet, dass kein Verlauf aufgezeichnet wird. Stellen Sie sicher, dass der Ordner existiert und Ihr Benutzerkonto Schreibrechte besitzt.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-9">
+            <summary>6.9 Was sollte eine Support-Anfrage enthalten?</summary>
+            <div>
+              <p>Nennen Sie App-Version, Windows-Version, ausgewähltes Modell, Fehlermeldung, ob ein Proxy genutzt wird, ob das Problem reproduzierbar ist, die Schritte zur Reproduktion und bei Bedarf Screenshots. Senden Sie keine echten API-Keys.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <footer>
+        OmniReply Benutzerhandbuch. Dieses Dokument beschreibt häufige Funktionen und Arbeitsabläufe. Oberfläche und Einschränkungen richten sich nach der installierten Version.
+      </footer>
+    </main>
+  </div>
+  <script>
+    (function () {
+      document.querySelectorAll('.toc-sub a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function () {
+          var id = (a.getAttribute('href') || '').slice(1);
+          if (!id) return;
+          var target = document.getElementById(id);
+          var section = target && target.closest ? target.closest('section[id]') : null;
+          if (!section) return;
+          var chapter = document.querySelector('.toc-chapter[data-chapter="' + section.id + '"]');
+          if (chapter) chapter.open = true;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

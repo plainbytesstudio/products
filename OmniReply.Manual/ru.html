@@ -1,0 +1,1059 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Руководство пользователя OmniReply</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --paper: #111111;
+      --ink: #f5f5f5;
+      --muted: #9a9a9a;
+      --line: rgba(255, 255, 255, 0.10);
+      --brand: #f3760c;
+      --brand-2: #ff942e;
+      --panel: #1a1a1a;
+      --shadow: 0 18px 70px rgba(0, 0, 0, 0.55), 0 0 70px rgba(243, 118, 12, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 900px 560px at 18% -10%, rgba(243, 118, 12, 0.16), transparent 62%),
+        radial-gradient(ellipse 720px 460px at 88% 8%, rgba(243, 118, 12, 0.08), transparent 58%),
+        linear-gradient(180deg, #050505 0%, #080808 42%, #050505 100%);
+      font-family: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .sidebar,
+    .hero,
+    .section {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.08)), var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(17, 17, 17, 0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 12px;
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 26px rgba(243, 118, 12, 0.28);
+      font-weight: 800;
+    }
+
+    .brand strong { display: block; font-size: 16px; line-height: 1.25; }
+    .brand span { display: block; color: var(--muted); font-size: 12px; }
+
+    .toc-title {
+      margin: 18px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .toc-chapters {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    details.toc-chapter {
+      margin: 0;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.028);
+      overflow: hidden;
+    }
+
+    details.toc-chapter[open] { border-color: rgba(243, 118, 12, 0.28); }
+    details.toc-chapter > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 11px 14px;
+      color: var(--ink);
+      font-size: 13.5px;
+      font-weight: 650;
+      user-select: none;
+    }
+
+    details.toc-chapter > summary::-webkit-details-marker { display: none; }
+    details.toc-chapter > summary:hover,
+    details.toc-chapter[open] > summary { background: rgba(243, 118, 12, 0.08); }
+
+    .toc-sub {
+      margin: 0 8px 4px 18px;
+      padding: 6px 10px 10px 14px;
+      list-style: none;
+      border-left: 2px solid rgba(243, 118, 12, 0.4);
+    }
+
+    .toc-sub li { margin: 0; }
+    .toc-sub a {
+      display: block;
+      padding: 7px 10px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      border: 1px solid transparent;
+    }
+
+    .toc-sub a:hover {
+      color: var(--ink);
+      background: rgba(243, 118, 12, 0.10);
+      border-color: rgba(243, 118, 12, 0.24);
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .hero,
+    .section {
+      border-radius: 22px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 68% 44% at 50% 0%, rgba(243, 118, 12, 0.15), transparent 62%),
+        linear-gradient(180deg, rgba(243, 118, 12, 0.06), transparent 46%);
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, h4 { margin: 0; color: var(--ink); line-height: 1.35; }
+    h1 { max-width: 780px; font-size: clamp(32px, 5vw, 54px); letter-spacing: 0; }
+    h2 { font-size: clamp(22px, 2.4vw, 26px); }
+    h3 {
+      position: relative;
+      margin-top: 32px;
+      padding-left: 14px;
+      font-size: 17px;
+      font-weight: 650;
+    }
+
+    h3::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.42em;
+      width: 3px;
+      height: 0.88em;
+      border-radius: 99px;
+      background: rgba(243, 118, 12, 0.68);
+    }
+
+    section[id], h3[id], details[id] { scroll-margin-top: 1.25rem; }
+    p { margin: 10px 0 0; }
+
+    .lead,
+    .section-intro,
+    .card p,
+    details div,
+    footer {
+      color: var(--muted);
+    }
+
+    .lead {
+      max-width: 700px;
+      margin-top: 14px;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .section {
+      padding: 36px 38px;
+    }
+
+    .section > h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+
+    .section > h2::before {
+      content: "";
+      flex-shrink: 0;
+      width: 4px;
+      height: 1.05em;
+      border-radius: 99px;
+      background: linear-gradient(180deg, var(--brand), var(--brand-2));
+    }
+
+    .section-intro {
+      max-width: 760px;
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    .hero-actions,
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .pill,
+    .flow span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 12px;
+      border: 1px solid rgba(243, 118, 12, 0.34);
+      border-radius: 999px;
+      color: var(--brand-2);
+      background: rgba(243, 118, 12, 0.10);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card,
+    .step,
+    details:not(.toc-chapter) {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.08)), var(--panel);
+      border-radius: 12px;
+    }
+
+    .card { padding: 18px 20px; }
+    .card h4 { margin: 0 0 8px; font-size: 14px; font-weight: 700; }
+    .card:hover,
+    details:not(.toc-chapter):hover {
+      border-color: rgba(243, 118, 12, 0.40);
+      box-shadow: inset 0 0 16px rgba(243, 118, 12, 0.04);
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      counter-reset: steps;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 16px 18px;
+    }
+
+    .step::before {
+      counter-increment: steps;
+      content: counter(steps);
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 10px;
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 24px rgba(243, 118, 12, 0.30);
+      font-weight: 800;
+    }
+
+    .note,
+    .warning,
+    .image-placeholder {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 14px;
+    }
+
+    .note {
+      color: #ffd9bc;
+      border: 1px solid rgba(243, 118, 12, 0.35);
+      background: rgba(243, 118, 12, 0.10);
+    }
+
+    .warning {
+      color: #ffd9bc;
+      border: 1px solid rgba(243, 118, 12, 0.42);
+      background: linear-gradient(180deg, rgba(243, 118, 12, 0.13), rgba(243, 118, 12, 0.06)), #111111;
+    }
+
+    .image-placeholder {
+      color: var(--muted);
+      border: 1px dashed rgba(243, 118, 12, 0.35);
+      background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(243, 118, 12, 0.12), transparent 65%), #0c0c0c;
+      text-align: center;
+    }
+
+    .image-placeholder strong { display: block; color: var(--ink); }
+
+    .doc-figure {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0c0c;
+      box-shadow: var(--shadow);
+    }
+
+    .doc-figure img { display: block; width: 100%; height: auto; }
+    .doc-figure figcaption {
+      margin: 0;
+      padding: 10px 14px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #111111;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    th {
+      color: var(--ink);
+      background: #1f1f1f;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    td { color: #d8d8d8; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:nth-child(even) td { background: rgba(255, 255, 255, 0.025); }
+
+    ul, ol { margin: 14px 0 0; padding-left: 1.35em; }
+    li + li { margin-top: 8px; }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #ffbd82;
+      background: rgba(243, 118, 12, 0.12);
+      border: 1px solid rgba(243, 118, 12, 0.20);
+      font-family: Consolas, "Cascadia Mono", monospace;
+    }
+
+    kbd {
+      display: inline-block;
+      min-width: 1.8em;
+      padding: 2px 7px;
+      border: 1px solid #333333;
+      border-bottom-color: #4a4a4a;
+      border-bottom-width: 2px;
+      border-radius: 7px;
+      color: var(--ink);
+      background: #191919;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 0.9em;
+      line-height: 1.45;
+    }
+
+    .faq { display: grid; gap: 10px; margin-top: 22px; }
+    summary {
+      cursor: pointer;
+      padding: 15px 18px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    summary::marker { color: var(--brand); }
+    details:not(.toc-chapter) div { padding: 0 18px 18px; }
+    footer {
+      margin-top: 8px;
+      padding: 20px 4px 8px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      text-align: center;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 980px) {
+      .shell { display: block; padding: 16px; }
+      .sidebar { position: static; max-height: none; margin-bottom: 18px; }
+      .grid.two, .grid.three { grid-template-columns: 1fr; }
+      .hero, .section { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Навигация по справке">
+      <div class="brand">
+        <div class="brand-mark">OR</div>
+        <div>
+          <strong>OmniReply</strong>
+          <span>Руководство</span>
+        </div>
+      </div>
+
+      <p class="toc-title">Содержание</p>
+      <div class="toc-chapters">
+        <details class="toc-chapter" data-chapter="overview" open>
+          <summary>1. Знакомство с OmniReply</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-1-1">1.1 Что такое OmniReply</a></li>
+            <li><a href="#sec-1-2">1.2 Типичные сценарии</a></li>
+            <li><a href="#sec-1-3">1.3 Базовый рабочий процесс</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="ui" open>
+          <summary>2. Интерфейс и функции</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-2-1">2.1 Главное окно</a></li>
+            <li><a href="#sec-2-2">2.2 Плавающий индикатор</a></li>
+            <li><a href="#sec-2-3">2.3 Окно настроек</a></li>
+            <li><a href="#sec-2-4">2.4 Управление продуктами</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="quickstart">
+          <summary>3. Быстрый старт</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-3-1">Добавить API-ключ</a></li>
+            <li><a href="#sec-3-2">Настроить правила ответа</a></li>
+            <li><a href="#sec-3-3">Запустить мониторинг</a></li>
+            <li><a href="#sec-3-4">Скопировать или ввести текст</a></li>
+            <li><a href="#sec-3-5">Сгенерировать ответ</a></li>
+            <li><a href="#sec-3-6">Проверить и отредактировать</a></li>
+            <li><a href="#sec-3-7">Вставить в поле</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="features">
+          <summary>4. Подробности функций</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-4-1">4.1 Модели ИИ и API-ключи</a></li>
+            <li><a href="#sec-4-2">4.2 Правила ответа</a></li>
+            <li><a href="#sec-4-3">4.3 Данные для рекомендаций</a></li>
+            <li><a href="#sec-4-4">4.4 Мониторинг буфера обмена</a></li>
+            <li><a href="#sec-4-5">4.5 Редактирование и эмодзи</a></li>
+            <li><a href="#sec-4-6">4.6 Ввод в поле и сочетания</a></li>
+            <li><a href="#sec-4-7">4.7 История</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="privacy">
+          <summary>5. Данные, конфиденциальность и лицензия</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-5-1">5.1 Локально сохраняемые данные</a></li>
+            <li><a href="#sec-5-2">5.2 Что отправляется в запросах ИИ</a></li>
+            <li><a href="#sec-5-3">5.3 Безопасность API-ключей</a></li>
+            <li><a href="#sec-5-4">5.4 Версии Free и Pro</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="faq">
+          <summary>6. Вопросы и устранение неполадок</summary>
+          <ul class="toc-sub">
+            <li><a href="#faq-6-1">6.1 После копирования ничего не происходит</a></li>
+            <li><a href="#faq-6-2">6.2 API-ключ не настроен</a></li>
+            <li><a href="#faq-6-3">6.3 Запрос ИИ не выполнен или истёк</a></li>
+            <li><a href="#faq-6-4">6.4 Неверный язык или стиль</a></li>
+            <li><a href="#faq-6-5">6.5 Текст введён не туда</a></li>
+            <li><a href="#faq-6-6">6.6 Сочетания клавиш не работают</a></li>
+            <li><a href="#faq-6-7">6.7 Проблемы с отображением эмодзи</a></li>
+            <li><a href="#faq-6-8">6.8 История не сохранилась</a></li>
+            <li><a href="#faq-6-9">6.9 Что указать в обращении в поддержку</a></li>
+          </ul>
+        </details>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="hero">
+        <p class="eyebrow">ИИ-ассистент ответов на основе буфера обмена</p>
+        <h1>Руководство пользователя OmniReply</h1>
+        <p class="lead">
+          В этом руководстве описаны интерфейс OmniReply, настройка, генерация ответов ИИ и ввод текста в целевое поле. Начните с раздела «Быстрый старт», а затем при необходимости вернитесь к подробному описанию функций.
+        </p>
+        <div class="hero-actions">
+          <span class="pill">Мониторинг буфера обмена</span>
+          <span class="pill">Несколько моделей ИИ</span>
+          <span class="pill">Редактируемое поле ответа</span>
+          <span class="pill">Ввод с клавиатуры</span>
+          <span class="pill">Локальные настройки</span>
+        </div>
+      </header>
+
+      <section class="section" id="overview">
+        <h2>1. Знакомство с OmniReply</h2>
+        <p class="section-intro">
+          OmniReply помогает быстрее пройти путь от прочтения сообщения до вдумчивого ответа: захват исходного текста, генерация черновика, проверка и ввод в целевое приложение.
+        </p>
+
+        <h3 id="sec-1-1">1.1 Что такое OmniReply</h3>
+        <p>
+          OmniReply — настольный ИИ-ассистент для ответов в Windows. Он отслеживает скопированный текст, сочетает его с выбранной моделью, сценой, языком, стилем, целью и длиной ответа, а затем формирует редактируемый ответ. После проверки черновика вы можете ввести его в поле ввода другого приложения.
+        </p>
+
+        <h3 id="sec-1-2">1.2 Типичные сценарии</h3>
+        <div class="grid three">
+          <div class="card">
+            <h4>Ответы в соцсетях</h4>
+            <p>Готовьте естественные ответы на комментарии, сообщения, посты и обсуждения в сообществах.</p>
+          </div>
+          <div class="card">
+            <h4>Поддержка клиентов</h4>
+            <p>Превращайте вопросы пользователей в понятные объяснения, успокаивающие формулировки, рекомендации и следующие шаги.</p>
+          </div>
+          <div class="card">
+            <h4>Рекомендации продуктов</h4>
+            <p>Используйте сведения о продукте для кратких рекомендаций, описания функций и сравнительных ответов.</p>
+          </div>
+        </div>
+
+        <h3 id="sec-1-3">1.3 Базовый рабочий процесс</h3>
+        <div class="flow" aria-label="Базовый рабочий процесс">
+          <span>Настроить API-ключ</span>
+          <span>Задать правила ответа</span>
+          <span>Запустить мониторинг буфера</span>
+          <span>Скопировать или ввести исходник</span>
+          <span>Сгенерировать ответ</span>
+          <span>Проверить и отредактировать</span>
+          <span>Вставить в целевое поле</span>
+        </div>
+        <figure class="doc-figure">
+          <img src="Images/ru/flowchart.jpg" alt="Рабочий процесс OmniReply: настройка, мониторинг, захват исходного текста, генерация и редактирование ответа, ввод в целевое поле" loading="lazy" decoding="async" />
+          <figcaption>Рабочий процесс OmniReply — от настройки и мониторинга до генерации ИИ, редактирования и ввода в поле.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="ui">
+        <h2>2. Обзор интерфейса и функций</h2>
+        <p class="section-intro">
+          Большую часть работы вы выполняете в плавающем главном окне. Окна настроек и управления продуктами нужны в основном при первоначальной настройке.
+        </p>
+
+        <h3 id="sec-2-1">2.1 Главное окно</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Область</th>
+              <th>Назначение</th>
+              <th>Совет</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Заголовок</td>
+              <td>Показывает имя приложения и текущую редакцию. Окно можно свернуть в плавающий индикатор.</td>
+              <td>Сверните окно, если оно мешает, пока вы ждёте скопированный текст.</td>
+            </tr>
+            <tr>
+              <td>Конфигурация</td>
+              <td>Выбор модели, сцены, языка, стиля, цели, длины и продукта.</td>
+              <td>После смены правил перегенерируйте ответ, чтобы применить новые настройки.</td>
+            </tr>
+            <tr>
+              <td>Исходный текст</td>
+              <td>Показывает текст из буфера обмена; также можно вводить вручную.</td>
+              <td>Удобно, когда копировать неудобно или нужно сначала отредактировать исходник.</td>
+            </tr>
+            <tr>
+              <td>Ответ</td>
+              <td>Отображает сгенерированный ответ ИИ и позволяет его редактировать.</td>
+              <td>Перед вводом в поле проверяйте факты, тон и чувствительные сведения.</td>
+            </tr>
+            <tr>
+              <td>Панель эмодзи</td>
+              <td>Вставляет часто используемые эмодзи в ответ.</td>
+              <td>Эмодзи вставляются как текстовые символы — их можно редактировать и удалять.</td>
+            </tr>
+            <tr>
+              <td>Строка состояния</td>
+              <td>Управляет мониторингом буфера, языком, настройками, разделом «О программе» и выходом.</td>
+              <td>Перед автоматическим захватом включите мониторинг буфера обмена.</td>
+            </tr>
+          </tbody>
+        </table>
+        <figure class="doc-figure">
+          <img src="Images/ru/ui.jpg" alt="Главное окно OmniReply: заголовок, конфигурация, исходный текст, редактор ответа, панель эмодзи и строка состояния" loading="lazy" decoding="async" />
+          <figcaption>Структура главного окна и основные рабочие области.</figcaption>
+        </figure>
+
+        <h3 id="sec-2-2">2.2 Плавающий индикатор</h3>
+        <p>
+          В свёрнутом виде OmniReply отображается как плавающий индикатор. Его можно перетаскивать, дважды щёлкнуть для развёртывания главного окна и по цвету понять состояние сервиса. Цветной индикатор означает, что мониторинг буфера включён; серый — что выключен. В ожидании ответа ИИ индикатор может показывать состояние выполнения запроса.
+        </p>
+
+        <h3 id="sec-2-3">2.3 Окно настроек</h3>
+        <div class="grid two">
+          <div class="card">
+            <h4>Настройки моделей</h4>
+            <p>API-ключи, базовые URL и имена моделей для OpenAI, Gemini, Grok и DeepSeek.</p>
+          </div>
+          <div class="card">
+            <h4>Сетевые настройки</h4>
+            <p>При необходимости включите ручной HTTP-прокси. Если отключено, OmniReply использует системные настройки прокси.</p>
+          </div>
+          <div class="card">
+            <h4>Сочетания клавиш</h4>
+            <p>Глобальные сочетания для показа окна, переключения мониторинга, обновления ответа и ввода в поле.</p>
+          </div>
+          <div class="card">
+            <h4>Настройки файлов</h4>
+            <p>Выбор папки истории. Если папка не указана, история не сохраняется.</p>
+          </div>
+        </div>
+
+        <h3 id="sec-2-4">2.4 Управление продуктами</h3>
+        <p>
+          Здесь хранятся названия и описания продуктов для текущего профиля. Если цель ответа — рекомендация продукта, описание выбранного продукта отправляется как контекст, чтобы ответ точнее отражал его особенности.
+        </p>
+        <figure class="doc-figure">
+          <img src="Images/ru/pm.jpg" alt="Окно управления продуктами OmniReply" loading="lazy" decoding="async" />
+          <figcaption>Управление продуктами для ответов с рекомендациями.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="quickstart">
+        <h2>3. Быстрый старт</h2>
+        <p class="section-intro">
+          При первом использовании выполните шаги ниже. Затем обычно достаточно копировать текст, проверять ответ и вводить его в поле.
+        </p>
+
+        <div class="steps">
+          <div class="step" id="sec-3-1">
+            <div>
+              <h3>Добавить API-ключ</h3>
+              <p>Откройте «Настройки» и введите API-ключ нужного сервиса ИИ. Неиспользуемые провайдеры можно оставить пустыми. Для выбранной модели нужен действующий ключ.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-2">
+            <div>
+              <h3>Настроить правила ответа</h3>
+              <p>Выберите модель, сцену, язык, стиль, цель и длину ответа. Для рекомендации продукта также выберите соответствующий продукт.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-3">
+            <div>
+              <h3>Запустить мониторинг буфера обмена</h3>
+              <p>Включите переключатель мониторинга в строке состояния или нажмите <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-4">
+            <div>
+              <h3>Скопировать или ввести исходный текст</h3>
+              <p>Скопируйте вопрос, комментарий или сообщение из другого приложения. Можно также ввести или вставить текст в OmniReply и обновить вручную.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-5">
+            <div>
+              <h3>Сгенерировать ответ ИИ</h3>
+              <p>После копирования нового текста OmniReply читает его и вызывает выбранную модель. Для повторной генерации нажмите «Обновить» или <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-6">
+            <div>
+              <h3>Проверить и отредактировать</h3>
+              <p>Поле ответа редактируется. Измените формулировки, удалите лишнее, добавьте контекст или эмодзи. Не пропускайте проверку только потому, что черновик создан ИИ.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-7">
+            <div>
+              <h3>Вставить в целевое поле</h3>
+              <p>Сначала щёлкните целевое поле ввода, чтобы установить курсор. Затем нажмите «Вставить» или <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="warning">
+          Ввод в поле имитирует нажатия клавиш и не отправляет сообщение автоматически. Убедитесь, что целевое поле в фокусе, затем отправьте или подтвердите ответ в целевом приложении самостоятельно.
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2>4. Подробности функций</h2>
+        <p class="section-intro">
+          В этом разделе описано, что делает каждая настройка и как она влияет на итоговый ответ.
+        </p>
+
+        <h3 id="sec-4-1">4.1 Модели ИИ и API-ключи</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Модель</th>
+              <th>Требуемая настройка</th>
+              <th>Описание</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ChatGPT (OpenAI)</td>
+              <td><code>OpenAI_Key</code></td>
+              <td>Точка доступа Chat Completions, совместимая с OpenAI. Можно задать базовый URL и имя модели.</td>
+            </tr>
+            <tr>
+              <td>Gemini (Google)</td>
+              <td><code>Gemini_Key</code></td>
+              <td>Google Gemini. Можно задать базовый URL Gemini и имя модели.</td>
+            </tr>
+            <tr>
+              <td>Grok (xAI)</td>
+              <td><code>Grok_Key</code></td>
+              <td>xAI Grok. Можно задать базовый URL, имя модели и системное сообщение.</td>
+            </tr>
+            <tr>
+              <td>DeepSeek (DeepSeek)</td>
+              <td><code>Deepseek_Key</code></td>
+              <td>Поддерживаются запросы в формате OpenAI или настройки reasoning DeepSeek.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">
+          Для выбранной модели нужен соответствующий ключ. Неиспользуемые провайдеры можно не заполнять.
+        </p>
+
+        <h3 id="sec-4-2">4.2 Правила ответа</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Правило</th>
+              <th>Эффект</th>
+              <th>Рекомендация</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Сцена</td>
+              <td>Задаёт платформу или контекст ответа: соцсети, форумы, поддержка и т. п.</td>
+              <td>Выбирайте сцену, максимально близкую к реальному разговору.</td>
+            </tr>
+            <tr>
+              <td>Язык</td>
+              <td>Управляет языком вывода. Автовыбор старается следовать контексту исходника.</td>
+              <td>Если ответ должен быть строго на одном языке, выберите его явно.</td>
+            </tr>
+            <tr>
+              <td>Стиль</td>
+              <td>Задаёт тон, персону и формулировки.</td>
+              <td>Для публичных комментариев обычно лучше естественный, дружелюбный, ненавязчивый стиль.</td>
+            </tr>
+            <tr>
+              <td>Цель ответа</td>
+              <td>Направляет намерение: рекомендация, поддержка, объяснение, опровержение.</td>
+              <td>Перед генерацией подтвердите цель — она сильно влияет на черновик.</td>
+            </tr>
+            <tr>
+              <td>Длина ответа</td>
+              <td>Краткий, средний или подробный вывод.</td>
+              <td>Для соцсетей часто удобны короткий или автоматический режим.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-3">4.3 Данные для рекомендаций продуктов</h3>
+        <p>
+          Включают название и описание продукта. При выборе цели, связанной с рекомендацией, OmniReply отправляет описание выбранного продукта как контекст для ИИ. Хорошее описание должно содержать:
+        </p>
+        <ul>
+          <li>Какую проблему решает продукт.</li>
+          <li>Ключевые функции и преимущества.</li>
+          <li>Для кого и в каких случаях он подходит.</li>
+          <li>Работа офлайн, передача данных, важные ограничения.</li>
+          <li>Чёткие реалистичные формулировки без преувеличений.</li>
+        </ul>
+
+        <h3 id="sec-4-4">4.4 Мониторинг буфера обмена</h3>
+        <p>
+          При включённом мониторинге OmniReply отслеживает обновления системного буфера и читает новый текст. Чтобы снизить ложные срабатывания, игнорируются пустой текст, повторы и копирование, когда активно окно OmniReply.
+        </p>
+        <div class="note">
+          Если вы предпочитаете ручной ввод, автоматический захват не обязателен. Введите или вставьте исходник и нажмите «Обновить» для нового запроса.
+        </div>
+
+        <h3 id="sec-4-5">4.5 Редактирование и эмодзи</h3>
+        <p>
+          Область ответа — редактируемое текстовое поле. Можно переписать текст ИИ или вставить Unicode-эмодзи с панели или из всплывающего окна. В некоторых системах или элементах WPF эмодзи могут не отображаться в цвете, но вставленные символы остаются стандартными эмодзи.
+        </p>
+
+        <h3 id="sec-4-6">4.6 Ввод в поле и сочетания клавиш</h3>
+        <p>
+          Перед вводом OmniReply скрывает своё окно, ненадолго ждёт возврата фокуса в целевое поле, затем посимвольно имитирует ввод с клавиатуры. Перенос строки выполняется имитацией клавиши Enter. Сочетания по умолчанию:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Действие</th>
+              <th>Сочетание по умолчанию</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Показать или скрыть главное окно</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd></td>
+            </tr>
+            <tr>
+              <td>Запустить или остановить мониторинг буфера</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></td>
+            </tr>
+            <tr>
+              <td>Перегенерировать ответ</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></td>
+            </tr>
+            <tr>
+              <td>Вставить ответ в поле</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-7">4.7 История</h3>
+        <p>
+          После выбора папки истории в настройках файлов OmniReply может сохранять исходный текст, сгенерированные ответы и время запросов. Если папка не указана, история не записывается.
+        </p>
+      </section>
+
+      <section class="section" id="privacy">
+        <h2>5. Данные, конфиденциальность и лицензия</h2>
+        <p class="section-intro">
+          OmniReply хранит настройки и данные профиля на вашем устройстве. Запросы к моделям отправляются напрямую в выбранный сервис ИИ.
+        </p>
+
+        <h3 id="sec-5-1">5.1 Локально сохраняемые данные</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Данные</th>
+              <th>Описание</th>
+              <th>Управление пользователем</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Настройки приложения</td>
+              <td>Адреса моделей, API-ключи, прокси, сочетания клавиш, папка истории и связанные параметры.</td>
+              <td>Просмотр и изменение в окне «Настройки».</td>
+            </tr>
+            <tr>
+              <td>Профили и данные продуктов</td>
+              <td>Текущий профиль, список продуктов, выбранная сцена и правила ответа.</td>
+              <td>Управление в главном окне и в разделе управления продуктами.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-5-2">5.2 Что отправляется в запросах ИИ</h3>
+        <p>
+          При генерации ответа OmniReply отправляет в выбранный сервис ИИ исходный текст, текущие правила ответа, необходимый контекст продукта и параметры запроса к модели. Запросы выполняются вашим API-ключом. OmniReply не направляет их через промежуточный сервер.
+        </p>
+
+        <h3 id="sec-5-3">5.3 Безопасность API-ключей</h3>
+        <ul>
+          <li>Не передавайте файлы конфигурации с API-ключами другим людям.</li>
+          <li>На общих компьютерах перед уходом убедитесь, что настройки и история обработаны надлежащим образом.</li>
+          <li>Перед копированием конфиденциального содержимого изучите политику конфиденциальности и обработки данных выбранного сервиса ИИ.</li>
+          <li>Если папка истории не задана, OmniReply не сохраняет исходный текст и историю ответов.</li>
+        </ul>
+
+        <h3 id="sec-5-4">5.4 Версии Free и Pro</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Редакция</th>
+              <th>Описание</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Free</td>
+              <td>До 10 генераций моделью за локальный календарный день; возможны ограничения на часть правил.</td>
+            </tr>
+            <tr>
+              <td>Pro</td>
+              <td>Открывает возможности Pro. Покупка и статус лицензии отображаются в окне лицензии приложения.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section" id="faq">
+        <h2>6. Вопросы и устранение неполадок</h2>
+        <p class="section-intro">
+          Если что-то работает не так, начните отсюда. Чаще всего причина в переключателе мониторинга, API-ключах, прокси, конфликте сочетаний или фокусе в целевом поле.
+        </p>
+
+        <div class="faq">
+          <details id="faq-6-1" open>
+            <summary>6.1 После копирования ничего не происходит</summary>
+            <div>
+              <p>Проверьте по порядку:</p>
+              <ol>
+                <li>Включён ли мониторинг буфера обмена в строке состояния.</li>
+                <li>Является ли скопированное содержимое обычным текстом и не пустым ли оно.</li>
+                <li>Не ждёт ли OmniReply завершения предыдущего запроса ИИ.</li>
+                <li>Не совпадает ли скопированный текст с предыдущим захваченным.</li>
+                <li>Не копировали ли вы внутри окна OmniReply — копирование из активного окна OmniReply игнорируется.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details id="faq-6-2">
+            <summary>6.2 API-ключ не настроен</summary>
+            <div>
+              <p>У провайдера выбранной модели нет ключа. Откройте «Настройки», введите ключ для этого провайдера или переключитесь на модель с уже настроенным ключом.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-3">
+            <summary>6.3 Запрос ИИ не выполнен или истёк</summary>
+            <div>
+              <p>Частые причины: недействительный ключ, исчерпанная квота, перегрузка сервиса, сеть, неверный прокси или тайм-аут. Сначала убедитесь, что браузер и системный прокси достигают нужного сервиса ИИ, затем проверьте базовый URL, имя модели и ключ в настройках.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-4">
+            <summary>6.4 Язык или стиль ответа не соответствуют ожиданиям</summary>
+            <div>
+              <p>Проверьте язык, сцену, стиль, цель и длину ответа. Для моделей, совместимых с OpenAI, фиксированный язык включается в системный промпт. Если результат нестабилен, явно задайте целевой язык и перегенерируйте ответ.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-5">
+            <summary>6.5 Текст введён не в то место</summary>
+            <div>
+              <p>Перед вводом щёлкните целевое поле и убедитесь, что курсор на месте. Ввод имитирует клавиатуру: если фокус в другом окне или элементе, текст попадёт туда.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-6">
+            <summary>6.6 Сочетания клавиш не работают</summary>
+            <div>
+              <p>Сочетание может быть занято другим приложением. Откройте вкладку «Сочетания» в настройках и выберите комбинацию с Ctrl, Shift, Alt или Win, избегая конфликтов с системой.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-7">
+            <summary>6.7 Проблемы с отображением эмодзи</summary>
+            <div>
+              <p>В некоторых системах текстовые поля WPF могут ненадёжно показывать цветные эмодзи. Даже если в OmniReply они монохромные, вставленные и введённые символы обычно остаются стандартными Unicode-эмодзи. Цвет в целевом приложении зависит от него и от шрифтов системы.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-8">
+            <summary>6.8 История не сохранилась</summary>
+            <div>
+              <p>История сохраняется только при указанной папке в настройках файлов. Пустое значение означает, что история не ведётся. Убедитесь, что папка существует и у вашей учётной записи есть права на запись.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-9">
+            <summary>6.9 Что указать в обращении в поддержку</summary>
+            <div>
+              <p>Укажите версию приложения, версию Windows, выбранную модель, текст ошибки, использование прокси, воспроизводимость, шаги воспроизведения и при необходимости скриншоты. Не отправляйте настоящие API-ключи.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <footer>
+        Руководство пользователя OmniReply. Документ описывает типичные функции и сценарии работы. Фактический интерфейс и ограничения зависят от установленной версии.
+      </footer>
+    </main>
+  </div>
+  <script>
+    (function () {
+      document.querySelectorAll('.toc-sub a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function () {
+          var id = (a.getAttribute('href') || '').slice(1);
+          if (!id) return;
+          var target = document.getElementById(id);
+          var section = target && target.closest ? target.closest('section[id]') : null;
+          if (!section) return;
+          var chapter = document.querySelector('.toc-chapter[data-chapter="' + section.id + '"]');
+          if (chapter) chapter.open = true;
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

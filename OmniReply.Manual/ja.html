@@ -1,0 +1,1755 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OmniReply マニュアル</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #1f2937;
+      --muted: #667085;
+      --soft: #eef4ff;
+      --soft-2: #f8fafc;
+      --line: #d9e2ef;
+      --brand: #2f74d0;
+      --brand-2: #1859ad;
+      --ok: #0f8a5f;
+      --warn: #b45309;
+      --shadow: 0 18px 50px rgba(31, 41, 55, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(47, 116, 208, 0.14), transparent 34rem),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 30rem);
+      font-family: "Microsoft YaHei UI", "Segoe UI", Arial, sans-serif;
+      line-height: 1.75;
+    }
+
+    a {
+      color: var(--brand-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      padding: 22px;
+      border: 1px solid rgba(217, 226, 239, 0.9);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 12px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #4a90e2, #2368bd);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toc-title {
+      margin: 22px 0 10px;
+      color: #475467;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .toc {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .toc a {
+      display: block;
+      padding: 7px 10px;
+      border-radius: 9px;
+      color: #344054;
+      font-size: 14px;
+    }
+
+    .toc a:hover {
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .content .hero,
+    .content .section {
+      margin-top: 0;
+    }
+
+    .hero,
+    .section {
+      border: 1px solid rgba(217, 226, 239, 0.95);
+      border-radius: 22px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 42px;
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--brand-2);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      margin: 0;
+      line-height: 1.35;
+      color: #111827;
+    }
+
+    h1 {
+      max-width: 780px;
+      font-size: clamp(32px, 5vw, 54px);
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 28px;
+    }
+
+    h3 {
+      margin-top: 26px;
+      font-size: 19px;
+    }
+
+    h4 {
+      font-size: 16px;
+    }
+
+    section[id],
+    h3[id],
+    details[id] {
+      scroll-margin-top: 1.25rem;
+    }
+
+    p {
+      margin: 10px 0 0;
+    }
+
+    .section {
+      padding: 36px 38px;
+      scroll-margin-top: 24px;
+    }
+
+    .content .section > h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      margin-bottom: 2px;
+      border-bottom: 1px solid var(--line);
+      font-size: clamp(22px, 2.4vw, 26px);
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+
+    .content .section > h2::before {
+      content: "";
+      flex-shrink: 0;
+      width: 4px;
+      height: 1.05em;
+      border-radius: 99px;
+      background: linear-gradient(180deg, var(--brand), var(--brand-2));
+    }
+
+    .content h3 {
+      position: relative;
+      margin-top: 32px;
+      padding-left: 14px;
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+
+    .content h3::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.42em;
+      width: 3px;
+      height: 0.88em;
+      border-radius: 99px;
+      background: rgba(47, 116, 208, 0.55);
+    }
+
+    .content h3:first-of-type {
+      margin-top: 20px;
+    }
+
+    .section-intro {
+      max-width: 720px;
+      margin-top: 12px;
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .lead {
+      max-width: 680px;
+      margin-top: 14px;
+      font-size: 16px;
+      line-height: 1.8;
+      color: #475467;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 12px;
+      border: 1px solid #c9d8ef;
+      border-radius: 999px;
+      color: #1d4f91;
+      background: #f3f8ff;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--soft-2);
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .content .card h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .card p {
+      margin: 0;
+      color: #4b5563;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      counter-reset: steps;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .step::before {
+      counter-increment: steps;
+      content: counter(steps);
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #4a90e2, #2368bd);
+      font-weight: 800;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+      margin-bottom: 4px;
+    }
+
+    .flow span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 11px;
+      border: 1px solid #cfe0f7;
+      border-radius: 999px;
+      background: #f3f8ff;
+      color: #1d4f91;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .note,
+    .warning,
+    .image-placeholder {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 14px;
+    }
+
+    .note {
+      border: 1px solid #b7dfcf;
+      background: #effaf5;
+      color: #095c40;
+    }
+
+    .warning {
+      border: 1px solid #f3d7a6;
+      background: #fff7ed;
+      color: #7c3f06;
+    }
+
+    .image-placeholder {
+      border: 1px dashed #a8b8d0;
+      background:
+        linear-gradient(135deg, rgba(47, 116, 208, 0.07), rgba(47, 116, 208, 0)),
+        #f8fafc;
+      color: #5d6b7e;
+      text-align: center;
+    }
+
+    .image-placeholder strong {
+      display: block;
+      color: #344054;
+    }
+
+    .doc-figure {
+      margin-top: 18px;
+      border: 1px solid rgba(217, 226, 239, 0.95);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .doc-figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+
+    .doc-figure figcaption {
+      margin: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid rgba(217, 226, 239, 0.85);
+      background: rgba(248, 250, 252, 0.96);
+    }
+
+    .doc-flow-steps {
+      margin-top: 24px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(248, 250, 252, 0.6);
+    }
+
+    .doc-flow-steps-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: flow-step;
+      display: grid;
+      gap: 10px;
+      color: #344054;
+    }
+
+    .doc-flow-steps-list > li {
+      position: relative;
+      margin: 0;
+      padding: 14px 16px 14px 52px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--paper);
+    }
+
+    .doc-flow-steps-list > li::before {
+      counter-increment: flow-step;
+      content: counter(flow-step);
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      border-radius: 8px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #4a90e2, #2368bd);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .doc-flow-steps-list strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #111827;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .doc-flow-steps-list p {
+      margin: 0;
+      color: #5d6b7e;
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      font-size: 14px;
+      overflow: hidden;
+      box-shadow: 0 1px 0 rgba(31, 41, 55, 0.04);
+    }
+
+    th,
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    th {
+      color: #344054;
+      background: #f3f6fb;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: rgba(248, 250, 252, 0.85);
+    }
+
+    .content ul:not(.toc):not(.toc-sub),
+    .content ol:not(.doc-flow-steps-list):not(.toc):not(.toc-sub) {
+      margin: 14px 0 0;
+      padding-left: 1.35em;
+    }
+
+    .content li + li {
+      margin-top: 8px;
+    }
+
+    .faq {
+      display: grid;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .faq details {
+      overflow: hidden;
+    }
+
+    .faq summary {
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.55;
+      color: #111827;
+    }
+
+    .faq summary::marker {
+      color: var(--brand-2);
+    }
+
+    .faq summary:hover {
+      color: var(--brand-2);
+    }
+
+    .faq details[open] > summary {
+      color: var(--brand-2);
+    }
+
+    .content footer {
+      margin-top: 8px;
+      padding: 20px 4px 8px;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 12.5px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #eef2f7;
+      color: #243b53;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 0.94em;
+    }
+
+    kbd {
+      display: inline-block;
+      min-width: 1.8em;
+      padding: 2px 7px;
+      border: 1px solid #c8d1df;
+      border-bottom-width: 2px;
+      border-radius: 7px;
+      background: #ffffff;
+      color: #1f2937;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 0.9em;
+      line-height: 1.45;
+    }
+
+    ul,
+    ol {
+      margin: 10px 0 0;
+      padding-left: 22px;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    details:not(.toc-chapter) {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper);
+    }
+
+    summary {
+      cursor: pointer;
+      padding: 15px 18px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    details div {
+      padding: 0 18px 18px;
+      color: var(--muted);
+    }
+
+    footer {
+      margin: 24px 0 0;
+      padding: 22px 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .shell {
+        display: block;
+        padding: 16px;
+      }
+
+      .sidebar {
+        position: static;
+        max-height: none;
+        margin-bottom: 18px;
+      }
+
+      .grid.two,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .hero,
+      .section {
+        padding: 22px 20px;
+      }
+
+      .content {
+        gap: 14px;
+      }
+
+      .content .section > h2 {
+        font-size: 20px;
+        padding-bottom: 12px;
+      }
+    }
+    /* Website-aligned dark visual theme */
+    :root {
+      --bg: #050505;
+      --paper: #111111;
+      --ink: #f5f5f5;
+      --muted: #9a9a9a;
+      --soft: rgba(243, 118, 12, 0.12);
+      --soft-2: #1a1a1a;
+      --line: rgba(255, 255, 255, 0.10);
+      --brand: #f3760c;
+      --brand-2: #ff942e;
+      --ok: #ff942e;
+      --warn: #f3760c;
+      --shadow: 0 18px 70px rgba(0, 0, 0, 0.55), 0 0 70px rgba(243, 118, 12, 0.08);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 900px 560px at 18% -10%, rgba(243, 118, 12, 0.16), transparent 62%),
+        radial-gradient(ellipse 720px 460px at 88% 8%, rgba(243, 118, 12, 0.08), transparent 58%),
+        linear-gradient(180deg, #050505 0%, #080808 42%, #050505 100%);
+      font-family: "Segoe UI", "Segoe UI Variable", "Meiryo UI", "Yu Gothic UI", "Microsoft YaHei UI", system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--brand);
+    }
+
+    .shell {
+      max-width: 1180px;
+    }
+
+    .sidebar,
+    .hero,
+    .section {
+      border-color: var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.08)),
+        var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar {
+      background: rgba(17, 17, 17, 0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand-mark {
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 26px rgba(243, 118, 12, 0.28);
+    }
+
+    .brand strong,
+    h1,
+    h2,
+    h3,
+    h4,
+    summary,
+    .image-placeholder strong {
+      color: var(--ink);
+    }
+
+    .brand span,
+    .toc-title,
+    .lead,
+    .section-intro,
+    .card p,
+    details div,
+    footer {
+      color: var(--muted);
+    }
+
+    .toc a {
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+
+    .toc a:hover {
+      color: var(--ink);
+      background: rgba(243, 118, 12, 0.10);
+      border-color: rgba(243, 118, 12, 0.24);
+    }
+
+    .toc-title {
+      margin: 18px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .toc-chapters {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    details.toc-chapter {
+      margin: 0;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.028);
+      overflow: hidden;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    details.toc-chapter:hover {
+      border-color: rgba(243, 118, 12, 0.22);
+    }
+
+    details.toc-chapter[open] {
+      border-color: rgba(243, 118, 12, 0.28);
+      box-shadow: 0 0 0 1px rgba(243, 118, 12, 0.08);
+    }
+
+    details.toc-chapter > summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 0;
+      font-size: 13.5px;
+      font-weight: 650;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      user-select: none;
+      transition: background 0.16s ease, color 0.16s ease;
+    }
+
+    details.toc-chapter > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.toc-chapter > summary::marker {
+      content: "";
+    }
+
+    details.toc-chapter > summary::before {
+      content: "";
+      flex-shrink: 0;
+      width: 0;
+      height: 0;
+      margin-top: 1px;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--muted);
+      opacity: 0.85;
+      transform: rotate(-90deg);
+      transform-origin: 50% 45%;
+      transition: transform 0.22s ease, border-top-color 0.16s ease, opacity 0.16s ease;
+    }
+
+    details.toc-chapter[open] > summary::before {
+      transform: rotate(0deg);
+      border-top-color: var(--brand);
+      opacity: 1;
+    }
+
+    details.toc-chapter > summary:hover {
+      background: rgba(243, 118, 12, 0.09);
+    }
+
+    details.toc-chapter[open] > summary {
+      background: rgba(243, 118, 12, 0.07);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .toc-sub {
+      margin: 0;
+      padding: 6px 10px 10px 14px;
+      list-style: none;
+      border-left: 2px solid rgba(243, 118, 12, 0.4);
+      margin-left: 18px;
+      margin-right: 8px;
+      margin-bottom: 4px;
+    }
+
+    .toc-sub li {
+      margin: 0;
+    }
+
+    .toc-sub li + li {
+      margin-top: 1px;
+    }
+
+    .toc-sub a {
+      display: block;
+      padding: 7px 10px;
+      font-size: 13px;
+      line-height: 1.45;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: background 0.14s ease, border-color 0.14s ease, color 0.14s ease, transform 0.14s ease;
+    }
+
+    .toc-sub a:hover {
+      transform: translateX(2px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 68% 44% at 50% 0%, rgba(243, 118, 12, 0.15), transparent 62%),
+        linear-gradient(180deg, rgba(243, 118, 12, 0.06), transparent 46%);
+    }
+
+    .hero > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      color: var(--brand);
+    }
+
+    .pill,
+    .flow span {
+      color: var(--brand-2);
+      background: rgba(243, 118, 12, 0.10);
+      border-color: rgba(243, 118, 12, 0.34);
+      box-shadow: inset 0 0 16px rgba(243, 118, 12, 0.03);
+    }
+
+    .card,
+    .step,
+    details {
+      border-color: var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.08)),
+        #1a1a1a;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    }
+
+    .card:hover,
+    details:not(.toc-chapter):hover {
+      border-color: rgba(243, 118, 12, 0.40);
+      box-shadow: inset 0 0 16px rgba(243, 118, 12, 0.04);
+    }
+
+    .step::before {
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 24px rgba(243, 118, 12, 0.30);
+    }
+
+    .note {
+      color: #ffd9bc;
+      border-color: rgba(243, 118, 12, 0.35);
+      background: rgba(243, 118, 12, 0.10);
+    }
+
+    .warning {
+      color: #ffd9bc;
+      border-color: rgba(243, 118, 12, 0.42);
+      background:
+        linear-gradient(180deg, rgba(243, 118, 12, 0.13), rgba(243, 118, 12, 0.06)),
+        #111111;
+    }
+
+    .image-placeholder {
+      color: var(--muted);
+      border-color: rgba(243, 118, 12, 0.35);
+      background:
+        radial-gradient(ellipse 60% 80% at 50% 0%, rgba(243, 118, 12, 0.12), transparent 65%),
+        #0c0c0c;
+    }
+
+    .doc-figure {
+      border-color: var(--line);
+      background: #111111;
+      box-shadow: var(--shadow);
+    }
+
+    .doc-figure figcaption {
+      border-top-color: rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--muted);
+    }
+
+    .doc-flow-steps-list {
+      color: var(--muted);
+    }
+
+    .doc-flow-steps-list strong {
+      color: var(--ink);
+    }
+
+    .doc-flow-steps-list p {
+      color: var(--muted);
+    }
+
+    .doc-flow-steps {
+      border-color: var(--line);
+      background: rgba(0, 0, 0, 0.32);
+    }
+
+    .doc-flow-steps-list > li {
+      border-color: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    .doc-flow-steps-list > li::before {
+      color: #0a0a0a;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: 0 0 16px rgba(243, 118, 12, 0.25);
+    }
+
+    .content .hero h1 {
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+
+    .content .section > h2 {
+      border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .content h3::before {
+      background: rgba(243, 118, 12, 0.62);
+    }
+
+    .content .card h4 {
+      color: var(--brand-2);
+    }
+
+    .content .step h3 {
+      margin-top: 0;
+      padding-left: 0;
+      font-size: 16px;
+    }
+
+    .content .step h3::before {
+      content: none;
+    }
+
+    .faq details[open] {
+      border-color: rgba(243, 118, 12, 0.32);
+    }
+
+    .content .faq > details {
+      border-color: var(--line);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.12)),
+        #161616;
+    }
+
+    .content .faq > details > summary {
+      color: #ffead4;
+      background: rgba(255, 255, 255, 0.02);
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .content .faq > details > summary::marker {
+      color: var(--brand);
+    }
+
+    .content .faq > details > summary:hover {
+      color: var(--brand-2);
+      background: rgba(243, 118, 12, 0.08);
+    }
+
+    .content .faq > details[open] > summary {
+      color: var(--brand-2);
+      background: rgba(243, 118, 12, 0.12);
+      border-bottom: 1px solid rgba(243, 118, 12, 0.22);
+    }
+
+    .content .faq > details > div {
+      color: #c4c4c4;
+      background: rgba(0, 0, 0, 0.28);
+    }
+
+    .content .faq > details > div p,
+    .content .faq > details > div li {
+      color: #c4c4c4;
+    }
+
+    .content footer {
+      border-top-color: rgba(255, 255, 255, 0.08);
+    }
+
+    table {
+      border-color: var(--line);
+      background: #111111;
+    }
+
+    th,
+    td {
+      border-bottom-color: rgba(255, 255, 255, 0.07);
+    }
+
+    th {
+      color: var(--ink);
+      background: #1f1f1f;
+    }
+
+    td {
+      color: #d8d8d8;
+      background: transparent;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    tbody tr:hover td {
+      background: rgba(243, 118, 12, 0.045);
+    }
+
+    code {
+      color: #ffbd82;
+      background: rgba(243, 118, 12, 0.12);
+      border: 1px solid rgba(243, 118, 12, 0.20);
+    }
+
+    kbd {
+      color: var(--ink);
+      background: #191919;
+      border-color: #333333;
+      border-bottom-color: #4a4a4a;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    details:not(.toc-chapter) {
+      background: #111111;
+    }
+
+    summary {
+      list-style-position: inside;
+    }
+
+    summary::marker {
+      color: var(--brand);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="マニュアルの目次">
+      <div class="brand">
+        <div class="brand-mark">OR</div>
+        <div>
+          <strong>OmniReply</strong>
+          <span>マニュアル</span>
+        </div>
+      </div>
+      <p class="toc-title">目次</p>
+      <div class="toc-chapters">
+        <details class="toc-chapter" open data-chapter="overview">
+          <summary>1. OmniReply について</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-1-1">1.1 OmniReply とは</a></li>
+            <li><a href="#sec-1-2">1.2 こんな場面で</a></li>
+            <li><a href="#sec-1-3">1.3 基本的な流れ</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="ui">
+          <summary>2. 画面と機能の概要</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-2-1">2.1 メインウィンドウ</a></li>
+            <li><a href="#sec-2-2">2.2 フローティングボール</a></li>
+            <li><a href="#sec-2-3">2.3 設定ウィンドウ</a></li>
+            <li><a href="#sec-2-4">2.4 製品管理</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="quickstart">
+          <summary>3. クイックスタート</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-3-1">API Key を追加</a></li>
+            <li><a href="#sec-3-2">返信ルールを設定</a></li>
+            <li><a href="#sec-3-3">クリップボード監視を開始</a></li>
+            <li><a href="#sec-3-4">原文をコピーまたは入力</a></li>
+            <li><a href="#sec-3-5">AI 返信を生成</a></li>
+            <li><a href="#sec-3-6">確認して編集</a></li>
+            <li><a href="#sec-3-7">書き戻し</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="features">
+          <summary>4. 機能の詳細</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-4-1">4.1 AI モデルと API Key</a></li>
+            <li><a href="#sec-4-2">4.2 返信ルール</a></li>
+            <li><a href="#sec-4-3">4.3 製品おすすめ情報</a></li>
+            <li><a href="#sec-4-4">4.4 クリップボード監視</a></li>
+            <li><a href="#sec-4-5">4.5 編集と絵文字</a></li>
+            <li><a href="#sec-4-6">4.6 書き戻しとショートカット</a></li>
+            <li><a href="#sec-4-7">4.7 履歴</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="privacy">
+          <summary>5. データ、プライバシー、ライセンス</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#sec-5-1">5.1 ローカルに保存されるデータ</a></li>
+            <li><a href="#sec-5-2">5.2 AI リクエストに含まれる内容</a></li>
+            <li><a href="#sec-5-3">5.3 API Key の安全</a></li>
+            <li><a href="#sec-5-4">5.4 無料版と Pro</a></li>
+          </ol>
+        </details>
+        <details class="toc-chapter" data-chapter="faq">
+          <summary>6. よくある質問とトラブルシューティング</summary>
+          <ol class="toc toc-sub">
+            <li><a href="#faq-6-1">6.1 コピーしても反応しない</a></li>
+            <li><a href="#faq-6-2">6.2 API Key が未設定</a></li>
+            <li><a href="#faq-6-3">6.3 AI リクエスト失敗またはタイムアウト</a></li>
+            <li><a href="#faq-6-4">6.4 言語や文体が想定と異なる</a></li>
+            <li><a href="#faq-6-5">6.5 書き戻し先が間違った</a></li>
+            <li><a href="#faq-6-6">6.6 ショートカットが効かない</a></li>
+            <li><a href="#faq-6-7">6.7 絵文字の表示に問題がある</a></li>
+            <li><a href="#faq-6-8">6.8 履歴が保存されない</a></li>
+            <li><a href="#faq-6-9">6.9 サポート報告に含める内容</a></li>
+          </ol>
+        </details>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="hero">
+        <p class="eyebrow">クリップボード連動の AI 返信アシスタント</p>
+        <h1>OmniReply マニュアル</h1>
+        <p class="lead">
+          本マニュアルでは、OmniReply の画面、設定方法、AI 返信の生成フロー、書き戻しの動作を説明します。まずクイックスタートで一度流れを試し、詳細は機能の説明を参照してください。
+        </p>
+        <div class="hero-actions">
+          <span class="pill">クリップボード監視</span>
+          <span class="pill">複数 AI モデル</span>
+          <span class="pill">編集可能な返信欄</span>
+          <span class="pill">キーボード書き戻し</span>
+          <span class="pill">ローカル設定</span>
+        </div>
+      </header>
+
+      <section class="section" id="overview">
+        <h2>1. OmniReply について</h2>
+        <p class="section-intro">
+          OmniReply はメッセージを自動送信するためのツールではなく、「原文を理解し、候補返信を生成し、人が確認してから対象アプリへ入力する」流れを短くするためのものです。
+        </p>
+
+        <h3 id="sec-1-1">1.1 OmniReply とは</h3>
+        <p>
+          OmniReply は Windows 向けの AI クイック返信ツールです。クリップボードのテキストを監視し、選択したモデル、シーン、言語、スタイル、返信の目的、返信の長さに合わせて返信を生成します。結果は編集可能な返信欄に表示され、確認後に対象アプリの入力欄へ書き戻せます。
+        </p>
+
+        <h3 id="sec-1-2">1.2 こんな場面で</h3>
+        <div class="grid three" style="margin-top: 20px;">
+          <div class="card">
+            <h4>SNS でのやりとり</h4>
+            <p>コメント、DM、投稿への返信など、自然で文脈に沿った文案を用意できます。</p>
+          </div>
+          <div class="card">
+            <h4>カスタマーサポート</h4>
+            <p>ユーザーの質問から、説明、安心させる文面、提案、次のステップを素早く整理できます。</p>
+          </div>
+          <div class="card">
+            <h4>製品のおすすめ</h4>
+            <p>製品情報をもとに、短いおすすめ、機能説明、比較返信を作成できます。</p>
+          </div>
+        </div>
+
+        <h3 id="sec-1-3">1.3 基本的な流れ</h3>
+        <div class="flow" aria-label="基本的な利用の流れ">
+          <span>API Key を設定</span>
+          <span>返信ルールを設定</span>
+          <span>クリップボード監視を開始</span>
+          <span>原文をコピーまたは入力</span>
+          <span>返信を生成</span>
+          <span>確認して編集</span>
+          <span>対象入力欄へ書き戻し</span>
+        </div>
+        <figure class="doc-figure">
+          <img src="Images/ja/flowchart.jpg" alt="OmniReply の基本フロー：設定と監視、原文の取得、返信の生成と編集、対象入力欄への書き戻し" loading="lazy" decoding="async" />
+          <figcaption>図：全体の流れ</figcaption>
+        </figure>
+        <div class="doc-flow-steps" aria-label="フロー図のステップ説明">
+          <ol class="doc-flow-steps-list">
+            <li>
+              <strong>API Key を設定</strong>
+              <p>設定で利用する AI サービスの API Key を入力します。</p>
+            </li>
+            <li>
+              <strong>返信ルールを設定</strong>
+              <p>AI モデル、シーン、返信言語、文体、返信の目的、返信の長さを選びます。</p>
+            </li>
+            <li>
+              <strong>クリップボード監視を開始</strong>
+              <p>クリップボード監視をオンにします（Ctrl+Shift+X）。フローティングボールがカラー表示になると動作中です。</p>
+            </li>
+            <li>
+              <strong>原文をコピーまたは入力</strong>
+              <p>質問、コメント、メッセージをコピー（Ctrl+C）するか、原文を直接入力します。</p>
+            </li>
+            <li>
+              <strong>AI 返信を生成</strong>
+              <p>OmniReply が原文と返信ルールに基づき返信の下書きを生成します。</p>
+            </li>
+            <li>
+              <strong>確認して編集</strong>
+              <p>生成結果を確認し、必要に応じて表現、詳細、絵文字を調整します。</p>
+            </li>
+            <li>
+              <strong>対象入力欄へ書き戻し</strong>
+              <p>対象の入力欄をクリックしてから「書き戻し」を押すか、Ctrl+Shift+Enter を押します。</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section" id="ui">
+        <h2>2. 画面と機能の概要</h2>
+        <p class="section-intro">
+          日常の操作はフローティングのメインウィンドウで行います。設定ウィンドウと製品管理は、初期設定時などに使います。
+        </p>
+        <figure class="doc-figure">
+          <img src="Images/ja/ui.jpg" alt="OmniReply メインウィンドウ：タイトルバー、設定パネル、原文エリア、返信エリア、絵文字バー、ステータスバー" loading="lazy" decoding="async" />
+          <figcaption>図：メインウィンドウの構成</figcaption>
+        </figure>
+
+        <h3 id="sec-2-1">2.1 メインウィンドウ</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>エリア</th>
+              <th>役割</th>
+              <th>ヒント</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>タイトルバー</td>
+              <td>アプリ名と現在のライセンス状態を表示。フローティングボールに折りたためます。</td>
+              <td>画面を占有したくないときは折りたたみ、コピーを待つ運用に便利です。</td>
+            </tr>
+            <tr>
+              <td>設定パネル</td>
+              <td>モデル、シーン、言語、スタイル、目的、長さ、製品を選択します。</td>
+              <td>ルールを変更したら再生成し、古い返信設定のまま使わないようにします。</td>
+            </tr>
+            <tr>
+              <td>原文エリア</td>
+              <td>クリップボードで取得した内容を表示。手入力も可能です。</td>
+              <td>コピーが不便なときや、先に原文を直したいときに使います。</td>
+            </tr>
+            <tr>
+              <td>返信エリア</td>
+              <td>AI が生成した返信を表示し、編集できます。</td>
+              <td>送信や書き戻し前に、事実、トーン、機微情報を必ず確認してください。</td>
+            </tr>
+            <tr>
+              <td>絵文字バー</td>
+              <td>よく使う絵文字を返信に挿入します。</td>
+              <td>挿入されるのはテキスト文字なので、後から編集・削除できます。</td>
+            </tr>
+            <tr>
+              <td>ステータスバー</td>
+              <td>クリップボード監視、言語、設定、OmniReply について、終了を操作します。</td>
+              <td>初回利用時は、先にクリップボード監視をオンにしてください。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-2-2">2.2 フローティングボール</h3>
+        <p>
+          ウィンドウを折りたたむとフローティングボールになります。ドラッグ移動、ダブルクリックで展開ができ、見た目でサービスの状態も分かります。カラー表示はクリップボード監視がオン、グレー表示はオフです。新しいテキストをコピーすると取得が始まり、モデル応答待ちの間はリクエスト中の表示になります。
+        </p>
+
+        <h3 id="sec-2-3">2.3 設定ウィンドウ</h3>
+        <div class="grid two" style="margin-top: 20px;">
+          <div class="card">
+            <h4>モデル設定</h4>
+            <p>OpenAI、Gemini、Grok、DeepSeek の API Key、ベース URL、モデル名を管理します。</p>
+          </div>
+          <div class="card">
+            <h4>ネットワーク設定（未提供）</h4>
+            <p>必要に応じて手動 HTTP プロキシを有効化します。無効時はシステムのプロキシ設定を使用します。</p>
+          </div>
+          <div class="card">
+            <h4>ショートカット設定</h4>
+            <p>ウィンドウ表示、サービス開始/停止、返信の再取得、書き戻しのグローバルショートカットを変更します。</p>
+          </div>
+          <div class="card">
+            <h4>ファイル設定</h4>
+            <p>履歴フォルダーを指定します。未指定の場合、履歴は保存されません。</p>
+          </div>
+        </div>
+        <h3 id="sec-2-4">2.4 製品管理</h3>
+        <p>
+          現在のプロファイル内の製品名と説明を管理します。返信の目的が製品おすすめのとき、選択中の製品説明が AI へのコンテキストとして送られ、返信が製品の特徴に沿いやすくなります。
+        </p>
+        <figure class="doc-figure">
+          <img src="Images/ja/pm.jpg" alt="OmniReply 製品管理ウィンドウ" loading="lazy" decoding="async" />
+          <figcaption>図：製品管理</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="quickstart">
+        <h2>3. クイックスタート</h2>
+        <p class="section-intro">
+          初回は次の順序で進めてください。一度流れが分かれば、日常は原文のコピー、返信の確認、書き戻しが中心になります。
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div>
+              <h3 id="sec-3-1">API Key を追加</h3>
+              <p>設定ウィンドウを開き、モデル設定で利用する AI サービスの API Key を入力します。使わないサービスは空欄のままで構いません。現在選択中のモデルには有効な Key が必要です。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-2">返信ルールを設定</h3>
+              <p>メインウィンドウでモデル、シーン、言語、スタイル、返信の目的、返信の長さを選びます。製品おすすめの場合は、該当する製品情報も選択してください。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-3">クリップボード監視を開始</h3>
+              <p>ステータスバーのクリップボード監視スイッチをオンにするか、<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> でサービスを開始します。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-4">原文をコピーまたは入力</h3>
+              <p>他アプリから質問、コメント、メッセージをコピーします。原文エリアへ直接入力してから手動で再取得することもできます。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-5">AI 返信を生成</h3>
+              <p>新しい内容をコピーすると、OmniReply が原文を読み取り現在のモデルを呼び出します。再生成する場合は更新ボタンを押すか、<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd> を押します。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-6">確認して編集</h3>
+              <p>返信欄は編集可能です。トーンの調整、削除、情報の追加、絵文字の挿入ができます。AI 生成だからといって確認を省略しないでください。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div>
+              <h3 id="sec-3-7">対象入力欄へ書き戻し</h3>
+              <p>対象アプリの入力欄をクリックしてカーソルを置き、「書き戻し」をクリックするか、<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd> を押します。</p>
+            </div>
+          </div>
+        </div>
+        <div class="warning">
+          書き戻しはキーボード入力をシミュレートするもので、メッセージを自動送信しません。書き戻し前に対象入力欄にフォーカスがあることを確認し、送信は対象アプリ側で行ってください。
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2>4. 機能の詳細</h2>
+        <p class="section-intro">
+          各設定項目の意味と、最終的な返信への影響を説明します。
+        </p>
+
+        <h3 id="sec-4-1">4.1 AI モデルと API Key</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>モデル</th>
+              <th>必要な設定</th>
+              <th>説明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ChatGPT (OpenAI)</td>
+              <td><code>OpenAI_Key</code></td>
+              <td>OpenAI 互換の Chat Completions エンドポイントを使用。ベース URL とモデル名を設定できます。</td>
+            </tr>
+            <tr>
+              <td>Gemini (Google)</td>
+              <td><code>Gemini_Key</code></td>
+              <td>Google Gemini を使用。Gemini のベース URL とモデル名を設定できます。</td>
+            </tr>
+            <tr>
+              <td>Grok (xAI)</td>
+              <td><code>Grok_Key</code></td>
+              <td>xAI Grok を使用。ベース URL、モデル名、システムメッセージを設定できます。</td>
+            </tr>
+            <tr>
+              <td>DeepSeek (DeepSeek)</td>
+              <td><code>Deepseek_Key</code></td>
+              <td>OpenAI 互換リクエスト、または DeepSeek reasoning 形式のリクエスト設定に対応。</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">
+          選択中のモデルに対応する Key が必要です。使わないサービスは未入力のままで構いません。
+        </p>
+
+        <h3 id="sec-4-2">4.2 返信ルール</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ルール</th>
+              <th>効果</th>
+              <th>おすすめ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>シーン</td>
+              <td>SNS、フォーラム、サポートなど、返信のプラットフォームや文脈を決めます。</td>
+              <td>実際の利用環境に最も近いシーンを選んでください。</td>
+            </tr>
+            <tr>
+              <td>言語</td>
+              <td>出力言語を制御します。「自動」は原文の文脈に合わせます。</td>
+              <td>固定言語が必要な場合は「自動」を使わないでください。</td>
+            </tr>
+            <tr>
+              <td>スタイル</td>
+              <td>トーン、ペルソナ、表現を制御します。</td>
+              <td>公開コメントでは、自然で親しみやすく、押し付けがましくない文体が無難です。</td>
+            </tr>
+            <tr>
+              <td>返信の目的</td>
+              <td>おすすめ、サポート、説明、反論など、返信の意図を決めます。</td>
+              <td>内容の方向性に大きく影響するため、生成前に確認してください。</td>
+            </tr>
+            <tr>
+              <td>返信の長さ</td>
+              <td>短い、中程度、詳しいなど出力量を制御します。</td>
+              <td>SNS では短めまたは自動が使いやすいことが多いです。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-3">4.3 製品おすすめ情報</h3>
+        <p>
+          製品名と説明で構成されます。おすすめ系の目的を選ぶと、選択中の製品説明が AI へのコンテキストとして送られます。説明には次を含めるとよいでしょう。
+        </p>
+        <ul>
+          <li>どんな課題を解決するか。</li>
+          <li>主な機能と強み。</li>
+          <li>どんなユーザー・場面向けか。</li>
+          <li>オフライン可否、データ送信の有無、重要な制限。</li>
+          <li>誇大表現を避け、現実的な説明にする。</li>
+        </ul>
+
+        <h3 id="sec-4-4">4.4 クリップボード監視</h3>
+        <p>
+          監視をオンにすると、システムのクリップボード更新を待ち受け、新しいテキストを読み取ります。誤作動を減らすため、空文字、同一内容の繰り返し、OmniReply 自身のウィンドウがアクティブなときのコピーは無視します。
+        </p>
+        <div class="note">
+          手入力だけで使う場合は自動取得に頼る必要はありません。原文を入力または貼り付けたあと、更新ボタンで再リクエストしてください。
+        </div>
+
+        <h3 id="sec-4-5">4.5 編集と絵文字</h3>
+        <p>
+          返信エリアは編集可能なテキストボックスです。AI 生成文を直接書き換えたり、絵文字バーやポップアップから Unicode 絵文字を挿入できます。環境によって WPF 上ではカラー表示されない場合がありますが、文字自体は標準の絵文字です。
+        </p>
+
+        <h3 id="sec-4-6">4.6 書き戻しとショートカット</h3>
+        <p>
+          書き戻し時は OmniReply ウィンドウを一度隠し、対象入力欄のフォーカス復帰を短く待ってから、1 文字ずつキー入力をシミュレートします。改行は Enter キーのシミュレートで処理します。既定のショートカットは次のとおりです。
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>操作</th>
+              <th>既定のショートカット</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>メインウィンドウの表示/非表示</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd></td>
+            </tr>
+            <tr>
+              <td>クリップボード監視の開始/停止</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></td>
+            </tr>
+            <tr>
+              <td>返信を再生成</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></td>
+            </tr>
+            <tr>
+              <td>返信を書き戻し</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-7">4.7 履歴</h3>
+        <p>
+          ファイル設定で履歴フォルダーを指定すると、OmniReply は JSONL 形式で原文、返信内容、リクエスト時刻を保存します。フォルダー未指定の場合は履歴を書き込みません。
+        </p>
+      </section>
+
+      <section class="section" id="privacy">
+        <h2>5. データ、プライバシー、ライセンス</h2>
+        <p class="section-intro">
+          OmniReply の設定とプロファイルデータはローカルに保存されます。モデルへのリクエストは、選択した AI サービスへ直接送信されます。
+        </p>
+
+        <h3 id="sec-5-1">5.1 ローカルに保存されるデータ</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>データ</th>
+              <th>説明</th>
+              <th>ユーザーの管理方法</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>アプリ設定</td>
+              <td>モデル URL、API Key、プロキシ、ショートカット、履歴フォルダーなど。</td>
+              <td>設定ウィンドウで確認・変更。</td>
+            </tr>
+            <tr>
+              <td>プロファイルと製品情報</td>
+              <td>現在のプロファイル、製品一覧、選択中のシーンとルール。</td>
+              <td>メインウィンドウと製品管理で編集。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-5-2">5.2 AI リクエストに含まれる内容</h3>
+        <p>
+          返信生成時、OmniReply は原文、現在の返信ルール、必要な製品コンテキスト、モデルへのリクエストパラメータを選択中の AI サービスへ送ります。各サービスはご自身の API Key で呼び出され、中継サーバーは経由しません。
+        </p>
+
+        <h3 id="sec-5-3">5.3 API Key の安全</h3>
+        <ul>
+          <li>API Key を含む設定ファイルを他人と共有しないでください。</li>
+          <li>共用 PC では、終了前に設定と履歴を適切に扱ってください。</li>
+          <li>機微な内容をコピーする前に、利用する AI サービスのプライバシーポリシーとデータ取扱いを確認してください。</li>
+          <li>履歴フォルダー未設定の場合、OmniReply は原文と返信履歴を保存しません。</li>
+        </ul>
+
+        <h3 id="sec-5-4">5.4 無料版と Pro</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>エディション</th>
+              <th>説明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Free（無料版）</td>
+              <td>1 暦日あたり最大 10 回のモデル生成。一部ルール選択に制限がある場合があります。</td>
+            </tr>
+            <tr>
+              <td>Pro</td>
+              <td>Pro 機能を利用可能。購入とライセンス状態はアプリ内のライセンス画面で確認できます。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section" id="faq">
+        <h2>6. よくある質問とトラブルシューティング</h2>
+        <p class="section-intro">
+          想定どおり動かない場合は、まずここを確認してください。多くは監視スイッチ、API Key、プロキシ、ショートカットの競合、入力欄のフォーカスが原因です。
+        </p>
+
+        <div class="faq">
+          <details id="faq-6-1" open>
+            <summary>6.1 コピーしても反応しない</summary>
+            <div>
+              <p>次の順に確認してください。</p>
+              <ol>
+                <li>ステータスバーでクリップボード監視がオンか。</li>
+                <li>コピー内容がプレーンテキストで、空でないか。</li>
+                <li>前回の AI リクエストの完了待ちになっていないか。</li>
+                <li>前回と全く同じ内容をコピーしていないか。</li>
+                <li>OmniReply 自身のウィンドウ内でコピーしていないか（アクティブ時のコピーは無視されます）。</li>
+              </ol>
+            </div>
+          </details>
+
+          <details id="faq-6-2">
+            <summary>6.2 API Key が未設定</summary>
+            <div>
+              <p>選択中モデルのサービスに Key がありません。設定ウィンドウで Key を入力するか、設定済みのモデルに切り替えてください。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-3">
+            <summary>6.3 AI リクエスト失敗またはタイムアウト</summary>
+            <div>
+              <p>Key 無効、クォータ不足、サービス混雑、ネットワーク障害、プロキシ設定ミス、タイムアウトなどが考えられます。ブラウザとシステムプロキシから AI サービスへ到達できるか確認し、設定のベース URL、モデル名、Key を見直してください。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-4">
+            <summary>6.4 言語や文体が想定と異なる</summary>
+            <div>
+              <p>言語、シーン、スタイル、返信の目的、返信の長さを確認してください。OpenAI 互換モデルでは固定言語がシステムプロンプトに含まれます。不安定な場合は目的言語を明示して再生成してください。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-5">
+            <summary>6.5 書き戻し先が間違った</summary>
+            <div>
+              <p>書き戻し前に対象入力欄をクリックし、カーソル位置を確認してください。書き戻しはキー入力のシミュレートのため、フォーカスが別ウィンドウやコントロールにあると、そちらに入力されます。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-6">
+            <summary>6.6 ショートカットが効かない</summary>
+            <div>
+              <p>他アプリが同じショートカットを使っている可能性があります。設定のショートカットタブで Ctrl、Shift、Alt、Win を含む組み合わせに変更し、OS のショートカットと競合しないようにしてください。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-7">
+            <summary>6.7 絵文字の表示に問題がある</summary>
+            <div>
+              <p>環境によって WPF テキストボックスではカラー絵文字が安定表示されないことがあります。OmniReply 上でモノクロに見えても、挿入・書き戻しされる文字は通常 Unicode 絵文字です。対象アプリでの表示はアプリとフォント依存です。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-8">
+            <summary>6.8 履歴が保存されない</summary>
+            <div>
+              <p>ファイル設定で履歴フォルダーを指定した場合のみ保存されます。空欄の場合は記録されません。フォルダーが存在し、現在のユーザーが書き込み可能か確認してください。</p>
+            </div>
+          </details>
+
+          <details id="faq-6-9">
+            <summary>6.9 サポート報告に含める内容</summary>
+            <div>
+              <p>アプリ版、Windows 版、選択モデル、エラーメッセージ、プロキシ利用の有無、再現可否、再現手順、必要に応じたスクリーンショットを含めてください。実際の API Key は送らないでください。</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <footer>
+        OmniReply マニュアル。本書は一般的な機能と操作を説明するもので、実際の画面と制限はインストール版によります。
+      </footer>
+    </main>
+  </div>
+  <script>
+    (function () {
+      document.querySelectorAll('.toc-sub a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function () {
+          var id = (a.getAttribute('href') || '').slice(1);
+          if (!id) return;
+          var target = document.getElementById(id);
+          var section = target && target.closest ? target.closest('section[id]') : null;
+          if (!section) return;
+          var chapter = document.querySelector('.toc-chapter[data-chapter="' + section.id + '"]');
+          if (chapter) chapter.open = true;
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

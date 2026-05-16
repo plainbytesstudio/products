@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OmniReply Gebruikershandleiding</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --paper: #111111;
+      --panel: #1a1a1a;
+      --ink: #f5f5f5;
+      --muted: #9a9a9a;
+      --line: rgba(255, 255, 255, 0.10);
+      --brand: #f3760c;
+      --brand-2: #ff942e;
+      --shadow: 0 18px 70px rgba(0, 0, 0, 0.55), 0 0 70px rgba(243, 118, 12, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 900px 560px at 18% -10%, rgba(243, 118, 12, 0.16), transparent 62%),
+        radial-gradient(ellipse 720px 460px at 88% 8%, rgba(243, 118, 12, 0.08), transparent 58%),
+        linear-gradient(180deg, #050505 0%, #080808 42%, #050505 100%);
+      font-family: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .shell { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 28px; max-width: 1180px; margin: 0 auto; padding: 28px; }
+    .sidebar, .hero, .section {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.08)), var(--paper);
+      box-shadow: var(--shadow);
+    }
+    .sidebar {
+      position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto;
+      padding: 22px; border-radius: 18px; background: rgba(17, 17, 17, 0.88); backdrop-filter: blur(14px);
+    }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+    .brand-mark {
+      display: grid; width: 42px; height: 42px; place-items: center; border-radius: 12px;
+      color: #0a0a0a; background: var(--brand); box-shadow: 0 0 26px rgba(243, 118, 12, 0.28); font-weight: 800;
+    }
+    .brand strong { display: block; font-size: 16px; line-height: 1.25; }
+    .brand span { display: block; color: var(--muted); font-size: 12px; }
+    .toc-title {
+      margin: 18px 0 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .toc-chapters { display: flex; flex-direction: column; gap: 8px; padding: 6px; border-radius: 14px; background: rgba(0,0,0,0.38); border: 1px solid rgba(255,255,255,0.07); }
+    details.toc-chapter { margin: 0; border: 1px solid rgba(255,255,255,0.09); border-radius: 12px; background: rgba(255,255,255,0.028); overflow: hidden; }
+    details.toc-chapter[open] { border-color: rgba(243, 118, 12, 0.28); }
+    details.toc-chapter > summary { list-style: none; cursor: pointer; padding: 11px 14px; color: var(--ink); font-size: 13.5px; font-weight: 650; user-select: none; }
+    details.toc-chapter > summary::-webkit-details-marker { display: none; }
+    details.toc-chapter > summary:hover, details.toc-chapter[open] > summary { background: rgba(243, 118, 12, 0.08); }
+    .toc-sub { margin: 0 8px 4px 18px; padding: 6px 10px 10px 14px; list-style: none; border-left: 2px solid rgba(243, 118, 12, 0.4); }
+    .toc-sub li { margin: 0; }
+    .toc-sub a { display: block; padding: 7px 10px; border-radius: 8px; color: var(--muted); font-size: 13px; line-height: 1.45; border: 1px solid transparent; }
+    .toc-sub a:hover { color: var(--ink); background: rgba(243,118,12,0.10); border-color: rgba(243,118,12,0.24); text-decoration: none; }
+    .content { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+    .hero, .section { border-radius: 22px; }
+    .hero { position: relative; overflow: hidden; padding: 42px; }
+    .hero::before {
+      content: ""; position: absolute; inset: -1px; pointer-events: none;
+      background: radial-gradient(ellipse 68% 44% at 50% 0%, rgba(243,118,12,0.15), transparent 62%), linear-gradient(180deg, rgba(243,118,12,0.06), transparent 46%);
+    }
+    .hero > * { position: relative; z-index: 1; }
+    .eyebrow { margin: 0 0 10px; color: var(--brand); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1, h2, h3, h4 { margin: 0; color: var(--ink); line-height: 1.35; }
+    h1 { max-width: 780px; font-size: clamp(32px, 5vw, 54px); letter-spacing: 0; }
+    h2 { font-size: clamp(22px, 2.4vw, 26px); }
+    h3 { position: relative; margin-top: 32px; padding-left: 14px; font-size: 17px; font-weight: 650; }
+    h3::before { content: ""; position: absolute; left: 0; top: 0.42em; width: 3px; height: 0.88em; border-radius: 99px; background: rgba(243,118,12,0.68); }
+    section[id], h3[id], details[id] { scroll-margin-top: 1.25rem; }
+    p { margin: 10px 0 0; }
+    .lead, .section-intro, .card p, details div, footer { color: var(--muted); }
+    .lead { max-width: 700px; margin-top: 14px; font-size: 16px; line-height: 1.8; }
+    .section { padding: 36px 38px; }
+    .section > h2 { display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid var(--line); font-weight: 750; letter-spacing: -0.02em; }
+    .section > h2::before { content: ""; flex-shrink: 0; width: 4px; height: 1.05em; border-radius: 99px; background: linear-gradient(180deg, var(--brand), var(--brand-2)); }
+    .section-intro { max-width: 760px; margin-top: 12px; font-size: 15px; }
+    .hero-actions, .flow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .pill, .flow span {
+      display: inline-flex; align-items: center; min-height: 32px; padding: 5px 12px;
+      border: 1px solid rgba(243,118,12,0.34); border-radius: 999px; color: var(--brand-2);
+      background: rgba(243,118,12,0.10); font-size: 12px; font-weight: 650;
+    }
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card, .step, details:not(.toc-chapter) {
+      border: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.08)), var(--panel); border-radius: 12px;
+    }
+    .card { padding: 18px 20px; }
+    .card h4 { margin: 0 0 8px; font-size: 14px; font-weight: 700; }
+    .card:hover, details:not(.toc-chapter):hover { border-color: rgba(243,118,12,0.40); box-shadow: inset 0 0 16px rgba(243,118,12,0.04); }
+    .steps { display: grid; gap: 14px; margin-top: 18px; counter-reset: steps; }
+    .step { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px 18px; }
+    .step::before {
+      counter-increment: steps; content: counter(steps); display: grid; width: 40px; height: 40px; place-items: center;
+      border-radius: 10px; color: #0a0a0a; background: var(--brand); box-shadow: 0 0 24px rgba(243,118,12,0.30); font-weight: 800;
+    }
+    .note, .warning { margin-top: 18px; padding: 16px 18px; border-radius: 14px; color: #ffd9bc; border: 1px solid rgba(243,118,12,0.35); background: rgba(243,118,12,0.10); }
+    .warning { border-color: rgba(243,118,12,0.42); background: linear-gradient(180deg, rgba(243,118,12,0.13), rgba(243,118,12,0.06)), #111111; }
+    .doc-figure { margin-top: 18px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #0c0c0c; box-shadow: var(--shadow); }
+    .doc-figure img { display: block; width: 100%; height: auto; }
+    .doc-figure figcaption { margin: 0; padding: 10px 14px; color: var(--muted); text-align: center; border-top: 1px solid var(--line); background: rgba(255,255,255,0.03); font-size: 12px; }
+    table { width: 100%; margin-top: 20px; border-collapse: collapse; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #111111; font-size: 14px; }
+    th, td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); text-align: left; vertical-align: top; line-height: 1.55; }
+    th { color: var(--ink); background: #1f1f1f; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+    td { color: #d8d8d8; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:nth-child(even) td { background: rgba(255,255,255,0.025); }
+    ul, ol { margin: 14px 0 0; padding-left: 1.35em; }
+    li + li { margin-top: 8px; }
+    code { padding: 2px 6px; border-radius: 6px; color: #ffbd82; background: rgba(243,118,12,0.12); border: 1px solid rgba(243,118,12,0.20); font-family: Consolas, "Cascadia Mono", monospace; }
+    kbd {
+      display: inline-block; min-width: 1.8em; padding: 2px 7px; border: 1px solid #333333; border-bottom-color: #4a4a4a;
+      border-bottom-width: 2px; border-radius: 7px; color: var(--ink); background: #191919; font-family: Consolas, "Cascadia Mono", monospace; font-size: 0.9em; line-height: 1.45;
+    }
+    .faq { display: grid; gap: 10px; margin-top: 22px; }
+    summary { cursor: pointer; padding: 15px 18px; color: var(--ink); font-weight: 800; }
+    summary::marker { color: var(--brand); }
+    details:not(.toc-chapter) div { padding: 0 18px 18px; }
+    footer { margin-top: 8px; padding: 20px 4px 8px; border-top: 1px solid var(--line); color: var(--muted); text-align: center; font-size: 12.5px; }
+    @media (max-width: 980px) {
+      .shell { display: block; padding: 16px; }
+      .sidebar { position: static; max-height: none; margin-bottom: 18px; }
+      .grid.two, .grid.three { grid-template-columns: 1fr; }
+      .hero, .section { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Helpnavigatie">
+      <div class="brand">
+        <div class="brand-mark">OR</div>
+        <div>
+          <strong>OmniReply</strong>
+          <span>Gebruikershandleiding</span>
+        </div>
+      </div>
+
+      <p class="toc-title">Inhoud</p>
+      <div class="toc-chapters">
+        <details class="toc-chapter" data-chapter="overview" open>
+          <summary>1. Kennismaken met OmniReply</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-1-1">1.1 Wat OmniReply is</a></li>
+            <li><a href="#sec-1-2">1.2 Veelgebruikte situaties</a></li>
+            <li><a href="#sec-1-3">1.3 Basisworkflow</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="ui" open>
+          <summary>2. Interface en functies</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-2-1">2.1 Hoofdvenster</a></li>
+            <li><a href="#sec-2-2">2.2 Status van de zwevende bol</a></li>
+            <li><a href="#sec-2-3">2.3 Instellingenvenster</a></li>
+            <li><a href="#sec-2-4">2.4 Productbeheer</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="quickstart">
+          <summary>3. Snelstart</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-3-1">API-sleutel toevoegen</a></li>
+            <li><a href="#sec-3-2">Antwoordregels instellen</a></li>
+            <li><a href="#sec-3-3">Monitoring starten</a></li>
+            <li><a href="#sec-3-4">Tekst kopiëren of invoeren</a></li>
+            <li><a href="#sec-3-5">Antwoord genereren</a></li>
+            <li><a href="#sec-3-6">Controleren en bewerken</a></li>
+            <li><a href="#sec-3-7">Terugschrijven</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="features">
+          <summary>4. Functies in detail</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-4-1">4.1 AI-modellen en API-sleutels</a></li>
+            <li><a href="#sec-4-2">4.2 Antwoordregels</a></li>
+            <li><a href="#sec-4-3">4.3 Productgegevens voor aanbevelingen</a></li>
+            <li><a href="#sec-4-4">4.4 Klembordmonitoring</a></li>
+            <li><a href="#sec-4-5">4.5 Bewerken en emoji</a></li>
+            <li><a href="#sec-4-6">4.6 Terugschrijven en sneltoetsen</a></li>
+            <li><a href="#sec-4-7">4.7 Geschiedenis</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="privacy">
+          <summary>5. Gegevens, privacy en licentie</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-5-1">5.1 Lokaal opgeslagen gegevens</a></li>
+            <li><a href="#sec-5-2">5.2 Wat AI-verzoeken bevatten</a></li>
+            <li><a href="#sec-5-3">5.3 Veilig omgaan met API-sleutels</a></li>
+            <li><a href="#sec-5-4">5.4 Free- en Pro-edities</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="faq">
+          <summary>6. FAQ en probleemoplossing</summary>
+          <ul class="toc-sub">
+            <li><a href="#faq-6-1">6.1 Er gebeurt niets na het kopiëren</a></li>
+            <li><a href="#faq-6-2">6.2 API-sleutel niet ingesteld</a></li>
+            <li><a href="#faq-6-3">6.3 AI-verzoek mislukt of time-out</a></li>
+            <li><a href="#faq-6-4">6.4 Verkeerde taal of stijl</a></li>
+            <li><a href="#faq-6-5">6.5 Antwoord kwam op de verkeerde plek terecht</a></li>
+            <li><a href="#faq-6-6">6.6 Sneltoetsen werken niet</a></li>
+            <li><a href="#faq-6-7">6.7 Problemen met emojiweergave</a></li>
+            <li><a href="#faq-6-8">6.8 Geschiedenis is niet opgeslagen</a></li>
+            <li><a href="#faq-6-9">6.9 Wat meesturen bij een supportmelding</a></li>
+          </ul>
+        </details>
+      </div>
+
+      <p class="toc-title">Standaardsneltoetsen</p>
+      <p><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> Monitoring starten/stoppen</p>
+      <p><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd> Venster tonen/verbergen</p>
+      <p><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd> Opnieuw genereren</p>
+      <p><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd> Terugschrijven</p>
+    </aside>
+
+    <main class="content">
+      <header class="hero">
+        <p class="eyebrow">Clipboard-driven AI reply assistant</p>
+        <h1>OmniReply Gebruikershandleiding</h1>
+        <p class="lead">
+          Deze handleiding legt de interface, configuratie, AI-antwoordgeneratie en terugschrijffunctie van OmniReply uit. Begin met de snelstart en gebruik de detailhoofdstukken later als naslagwerk.
+        </p>
+        <div class="hero-actions">
+          <span class="pill">Klembordmonitoring</span>
+          <span class="pill">Meerdere AI-modellen</span>
+          <span class="pill">Bewerkbaar antwoordveld</span>
+          <span class="pill">Terugschrijven via toetsenbord</span>
+          <span class="pill">Lokale instellingen</span>
+        </div>
+      </header>
+
+      <section class="section" id="overview">
+        <h2>1. Kennismaken met OmniReply</h2>
+        <p class="section-intro">
+          OmniReply verkort de afstand tussen het lezen van een bericht en het schrijven van een passend antwoord. De app vangt brontekst op, maakt een conceptantwoord, laat je dit controleren en typt het daarna terug in de doelapp.
+        </p>
+
+        <h3 id="sec-1-1">1.1 Wat OmniReply is</h3>
+        <p>
+          OmniReply is een Windows-desktopassistent voor snelle AI-antwoorden. De app monitort gekopieerde tekst, combineert die met je gekozen model, scène, taal, stijl, antwoorddoel en lengte, en genereert vervolgens een bewerkbaar antwoord. Na controle kun je de tekst terugschrijven naar een invoerveld in een andere toepassing.
+        </p>
+
+        <h3 id="sec-1-2">1.2 Veelgebruikte situaties</h3>
+        <div class="grid three">
+          <div class="card">
+            <h4>Sociale reacties</h4>
+            <p>Bereid natuurlijke antwoorden voor op opmerkingen, privéberichten, posts en communitygesprekken.</p>
+          </div>
+          <div class="card">
+            <h4>Klantenservice</h4>
+            <p>Zet gebruikersvragen snel om in duidelijke uitleg, geruststelling, vervolgstappen of supportantwoorden.</p>
+          </div>
+          <div class="card">
+            <h4>Productaanbevelingen</h4>
+            <p>Gebruik productinformatie om korte aanbevelingen, functieuitleg en vergelijkende antwoorden te maken.</p>
+          </div>
+        </div>
+
+        <h3 id="sec-1-3">1.3 Basisworkflow</h3>
+        <div class="flow" aria-label="Basisworkflow">
+          <span>API-sleutel configureren</span>
+          <span>Antwoordregels instellen</span>
+          <span>Klembordmonitoring starten</span>
+          <span>Brontekst kopiëren of invoeren</span>
+          <span>Antwoord genereren</span>
+          <span>Controleren en bewerken</span>
+          <span>Naar het doelveld terugschrijven</span>
+        </div>
+        <figure class="doc-figure">
+          <img src="Images/nl/flowchart.jpg" alt="OmniReply-workflow: instellingen configureren, monitoring starten, brontekst vastleggen, antwoord genereren en bewerken, en daarna terugschrijven naar het doelveld" loading="lazy" decoding="async" />
+          <figcaption>OmniReply-workflow van configuratie en monitoring tot genereren, bewerken en terugschrijven.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="ui">
+        <h2>2. Interface en functies</h2>
+        <p class="section-intro">
+          Het dagelijkse werk gebeurt vooral in het zwevende hoofdvenster. Het instellingenvenster en productbeheer worden voornamelijk gebruikt voor configuratie.
+        </p>
+
+        <h3 id="sec-2-1">2.1 Hoofdvenster</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Onderdeel</th>
+              <th>Doel</th>
+              <th>Tip</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Titelbalk</td>
+              <td>Toont de appnaam en huidige editie. Het venster kan worden ingeklapt tot de zwevende bol.</td>
+              <td>Klap het venster in wanneer het niet in de weg moet staan terwijl je op gekopieerde tekst wacht.</td>
+            </tr>
+            <tr>
+              <td>Configuratiegedeelte</td>
+              <td>Kies model, scène, taal, stijl, doel, lengte en product.</td>
+              <td>Genereer opnieuw nadat je regels hebt gewijzigd, zodat de nieuwe instellingen worden toegepast.</td>
+            </tr>
+            <tr>
+              <td>Brontekst</td>
+              <td>Toont vastgelegde klembordtekst en ondersteunt ook handmatige invoer.</td>
+              <td>Handig wanneer kopiëren onpraktisch is of wanneer je de brontekst eerst wilt aanpassen.</td>
+            </tr>
+            <tr>
+              <td>Antwoordgebied</td>
+              <td>Toont het gegenereerde AI-antwoord en laat je het bewerken.</td>
+              <td>Controleer feiten, toon en gevoelige inhoud voordat je terugschrijft.</td>
+            </tr>
+            <tr>
+              <td>Emojibalk</td>
+              <td>Voegt veelgebruikte emoji-tekens toe aan het antwoord.</td>
+              <td>Ingevoegde emoji blijven teksttekens en kunnen worden bewerkt of verwijderd.</td>
+            </tr>
+            <tr>
+              <td>Statusbalk</td>
+              <td>Beheert klembordmonitoring, taal, instellingen, info en afsluiten.</td>
+              <td>Zet klembordmonitoring aan voordat je automatische vastlegging gebruikt.</td>
+            </tr>
+          </tbody>
+        </table>
+        <figure class="doc-figure">
+          <img src="Images/nl/ui.jpg" alt="OmniReply-hoofdvenster met titelbalk, configuratiegedeelte, brontekst, antwoordeditor, emojibalk en statusbalk" loading="lazy" decoding="async" />
+          <figcaption>Indeling van het hoofdvenster en de belangrijkste werkgebieden.</figcaption>
+        </figure>
+
+        <h3 id="sec-2-2">2.2 Status van de zwevende bol</h3>
+        <p>
+          In ingeklapte toestand wordt OmniReply weergegeven als zwevende bol. Je kunt de bol verslepen en dubbelklikken om het hoofdvenster weer te openen. De kleur geeft de servicestatus aan: een gekleurde bol betekent dat klembordmonitoring actief is; een grijze bol betekent dat monitoring uit staat. Terwijl OmniReply wacht op een AI-antwoord kan de bol ook een lopende aanvraag tonen.
+        </p>
+
+        <h3 id="sec-2-3">2.3 Instellingenvenster</h3>
+        <div class="grid two">
+          <div class="card">
+            <h4>Modelinstellingen</h4>
+            <p>Beheer API-sleutels, basis-URL's en modelnamen voor OpenAI, Gemini, Grok en DeepSeek.</p>
+          </div>
+          <div class="card">
+            <h4>Netwerkinstellingen</h4>
+            <p>Schakel indien nodig een handmatige HTTP-proxy in. Als deze uit staat, gebruikt OmniReply de systeemproxyconfiguratie.</p>
+          </div>
+          <div class="card">
+            <h4>Sneltoetsinstellingen</h4>
+            <p>Wijzig de globale sneltoetsen voor venster tonen, monitoring schakelen, vernieuwen en terugschrijven.</p>
+          </div>
+          <div class="card">
+            <h4>Bestandsinstellingen</h4>
+            <p>Kies de geschiedenismap. Als er geen map is geselecteerd, wordt geschiedenis niet opgeslagen.</p>
+          </div>
+        </div>
+
+        <h3 id="sec-2-4">2.4 Productbeheer</h3>
+        <p>
+          Productbeheer bewaart productnamen en productbeschrijvingen voor het huidige profiel. Wanneer het antwoorddoel een productaanbeveling is, wordt de geselecteerde productbeschrijving als context meegestuurd zodat het antwoord nauwkeuriger op het product kan ingaan.
+        </p>
+        <figure class="doc-figure">
+          <img src="Images/nl/pm.jpg" alt="OmniReply-venster voor productbeheer" loading="lazy" decoding="async" />
+          <figcaption>Productbeheer voor antwoorden rond aanbevelingen.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="quickstart">
+        <h2>3. Snelstart</h2>
+        <p class="section-intro">
+          Volg deze stappen bij het eerste gebruik. Daarna bestaat de dagelijkse workflow meestal uit kopiëren, controleren en terugschrijven.
+        </p>
+
+        <div class="steps">
+          <div class="step" id="sec-3-1">
+            <div>
+              <h3>API-sleutel toevoegen</h3>
+              <p>Open Instellingen en voer de API-sleutel in voor de AI-dienst die je wilt gebruiken. Ongebruikte aanbieders kun je leeg laten. Voor het momenteel geselecteerde model moet een geldige sleutel aanwezig zijn.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-2">
+            <div>
+              <h3>Antwoordregels instellen</h3>
+              <p>Kies model, scène, taal, stijl, antwoorddoel en antwoordlengte. Voor een productaanbeveling selecteer je ook het relevante product.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-3">
+            <div>
+              <h3>Klembordmonitoring starten</h3>
+              <p>Zet de schakelaar voor klembordmonitoring in de statusbalk aan, of druk op <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-4">
+            <div>
+              <h3>Brontekst kopiëren of invoeren</h3>
+              <p>Kopieer een vraag, opmerking of bericht uit een andere app. Je kunt brontekst ook direct in OmniReply typen of plakken en daarna handmatig opnieuw genereren.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-5">
+            <div>
+              <h3>AI-antwoord genereren</h3>
+              <p>Nadat nieuwe tekst is gekopieerd, leest OmniReply deze uit en roept het geselecteerde model aan. Klik op Vernieuwen of druk op <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd> om opnieuw te genereren.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-6">
+            <div>
+              <h3>Controleren en bewerken</h3>
+              <p>Het antwoordveld is bewerkbaar. Pas formuleringen aan, verwijder overbodige stukken, voeg context toe of plaats emoji. Sla de controle niet over omdat het concept door AI is gemaakt.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-7">
+            <div>
+              <h3>Naar het doelveld terugschrijven</h3>
+              <p>Klik eerst in het invoerveld van de doelapp, zodat de cursor op de juiste plek staat. Klik daarna op Terugschrijven of druk op <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="warning">
+          Terugschrijven simuleert toetsenbordinvoer. Het verstuurt het bericht niet automatisch. Zorg dat het doelveld focus heeft en verzend of bevestig het antwoord daarna zelf in de doelapp.
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2>4. Functies in detail</h2>
+        <p class="section-intro">
+          Dit hoofdstuk legt uit wat elke instelling doet en hoe deze het uiteindelijke antwoord beïnvloedt.
+        </p>
+
+        <h3 id="sec-4-1">4.1 AI-modellen en API-sleutels</h3>
+        <table>
+          <thead>
+            <tr><th>Modeloptie</th><th>Vereiste instelling</th><th>Beschrijving</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ChatGPT (OpenAI)</td><td><code>OpenAI_Key</code></td><td>Gebruikt een OpenAI-compatibel Chat Completions-eindpunt. Basis-URL en modelnaam kunnen worden ingesteld.</td></tr>
+            <tr><td>Gemini (Google)</td><td><code>Gemini_Key</code></td><td>Gebruikt Google Gemini. De Gemini-basis-URL en modelnaam kunnen worden ingesteld.</td></tr>
+            <tr><td>Grok (xAI)</td><td><code>Grok_Key</code></td><td>Gebruikt xAI Grok. Basis-URL, modelnaam en systeembericht kunnen worden ingesteld.</td></tr>
+            <tr><td>DeepSeek (DeepSeek)</td><td><code>Deepseek_Key</code></td><td>Ondersteunt OpenAI-compatibele verzoeken of DeepSeek-reasoning-instellingen.</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Het geselecteerde model bepaalt welke sleutel nodig is. Aanbieders die je niet gebruikt, kunnen leeg blijven.</p>
+
+        <h3 id="sec-4-2">4.2 Antwoordregels</h3>
+        <table>
+          <thead>
+            <tr><th>Regel</th><th>Effect</th><th>Aanbeveling</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Scène</td><td>Bepaalt het platform of de context van het antwoord, zoals sociale media, forum of support.</td><td>Kies de scène die het best aansluit op het echte gesprek.</td></tr>
+            <tr><td>Taal</td><td>Stuurt de uitvoertaal. Automatische taal probeert de broncontext te volgen.</td><td>Kies een specifieke taal wanneer het antwoord in één vaste taal moet blijven.</td></tr>
+            <tr><td>Stijl</td><td>Stuurt toon, persona en woordkeuze.</td><td>Voor openbare opmerkingen is een natuurlijke, vriendelijke en niet-opdringerige stijl meestal veiliger.</td></tr>
+            <tr><td>Antwoorddoel</td><td>Geeft de bedoeling aan, zoals aanbeveling, support, uitleg of weerlegging.</td><td>Controleer het doel vóór het genereren, omdat dit het concept sterk beïnvloedt.</td></tr>
+            <tr><td>Antwoordlengte</td><td>Bepaalt of de uitvoer kort, gemiddeld of uitgebreid moet zijn.</td><td>Voor sociale platforms is kort of automatisch vaak een goed beginpunt.</td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-3">4.3 Productgegevens voor aanbevelingen</h3>
+        <p>
+          Productgegevens bestaan uit de productnaam en productbeschrijving. Wanneer een aanbevelingsdoel is geselecteerd, stuurt OmniReply de beschrijving van het gekozen product als context naar de AI. Een goede productbeschrijving bevat:
+        </p>
+        <ul>
+          <li>Welk probleem het product oplost.</li>
+          <li>Belangrijkste functies en voordelen.</li>
+          <li>Voor wie en in welke situaties het nuttig is.</li>
+          <li>Of het offline werkt, gegevens uploadt of belangrijke beperkingen heeft.</li>
+          <li>Duidelijke, realistische formuleringen zonder overdreven beloftes.</li>
+        </ul>
+
+        <h3 id="sec-4-4">4.4 Klembordmonitoring</h3>
+        <p>
+          Wanneer monitoring is ingeschakeld, luistert OmniReply naar updates van het systeemklembord en leest het nieuwe tekst uit. Om onbedoelde triggers te verminderen, negeert de app lege tekst, herhaalde tekst en kopieeracties terwijl het OmniReply-venster zelf actief is.
+        </p>
+        <div class="note">Als je liever handmatig werkt, hoef je automatische vastlegging niet te gebruiken. Typ of plak de brontekst en gebruik daarna Vernieuwen om een nieuw antwoord aan te vragen.</div>
+
+        <h3 id="sec-4-5">4.5 Bewerken en emoji</h3>
+        <p>
+          Het antwoordgebied is een bewerkbaar tekstveld. Je kunt AI-gegenereerde tekst direct herschrijven of veelgebruikte Unicode-emoji invoegen via de emojibalk of pop-up. Sommige systemen of WPF-besturingselementen tonen emoji niet altijd in kleur, maar de ingevoegde tekens blijven standaard emoji-tekens.
+        </p>
+
+        <h3 id="sec-4-6">4.6 Terugschrijven en sneltoetsen</h3>
+        <p>
+          Bij terugschrijven verbergt OmniReply eerst het eigen venster, wacht kort tot het doelveld opnieuw focus heeft en simuleert daarna toetsenbordinvoer teken voor teken. Regeleinden worden verwerkt met een gesimuleerde nieuwe-regeltoets. De standaardsneltoetsen zijn:
+        </p>
+        <table>
+          <thead><tr><th>Actie</th><th>Standaardsneltoets</th></tr></thead>
+          <tbody>
+            <tr><td>Hoofdvenster tonen of verbergen</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd></td></tr>
+            <tr><td>Klembordmonitoring starten of stoppen</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></td></tr>
+            <tr><td>Antwoord opnieuw genereren</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></td></tr>
+            <tr><td>Antwoord terugschrijven</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd></td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-7">4.7 Geschiedenis</h3>
+        <p>
+          Nadat je in de bestandsinstellingen een geschiedenismap hebt gekozen, kan OmniReply brontekst, gegenereerde antwoorden en aanvraagtijden opslaan. Als er geen geschiedenismap is gekozen, wordt er geen geschiedenis weggeschreven.
+        </p>
+      </section>
+
+      <section class="section" id="privacy">
+        <h2>5. Gegevens, privacy en licentie</h2>
+        <p class="section-intro">OmniReply bewaart instellingen en profielgegevens op je apparaat. AI-verzoeken worden rechtstreeks naar de AI-dienst gestuurd die jij kiest.</p>
+
+        <h3 id="sec-5-1">5.1 Lokaal opgeslagen gegevens</h3>
+        <table>
+          <thead><tr><th>Gegevens</th><th>Beschrijving</th><th>Beheer door gebruiker</th></tr></thead>
+          <tbody>
+            <tr><td>App-instellingen</td><td>Modeleindpunten, API-sleutels, proxy-instellingen, sneltoetsen, geschiedenisinstellingen en verwante opties.</td><td>Bekijken en bewerken in het instellingenvenster.</td></tr>
+            <tr><td>Profielen en productgegevens</td><td>Het huidige profiel, productlijst, gekozen scène en antwoordregels.</td><td>Beheren in het hoofdvenster en Productbeheer.</td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-5-2">5.2 Wat AI-verzoeken bevatten</h3>
+        <p>
+          Bij het genereren van een antwoord stuurt OmniReply de brontekst, huidige antwoordregels, noodzakelijke productcontext en modelparameters naar de geselecteerde AI-dienst. Verzoeken worden uitgevoerd met je eigen API-sleutel. OmniReply leidt je verzoeken niet via een tussenserver.
+        </p>
+
+        <h3 id="sec-5-3">5.3 Veilig omgaan met API-sleutels</h3>
+        <ul>
+          <li>Deel geen configuratiebestanden die API-sleutels bevatten.</li>
+          <li>Op gedeelde computers moet je instellingen en geschiedenis passend opruimen of beveiligen voordat je weggaat.</li>
+          <li>Controleer vóór het kopiëren van gevoelige inhoud het privacy- en gegevensbeleid van de gekozen AI-dienst.</li>
+          <li>Als er geen geschiedenismap is ingesteld, bewaart OmniReply geen brontekst of gegenereerde antwoordgeschiedenis.</li>
+        </ul>
+
+        <h3 id="sec-5-4">5.4 Free- en Pro-edities</h3>
+        <table>
+          <thead><tr><th>Editie</th><th>Beschrijving</th></tr></thead>
+          <tbody>
+            <tr><td>Free</td><td>Staat 10 modelgeneraties per lokale kalenderdag toe en kan sommige regelkeuzes beperken.</td></tr>
+            <tr><td>Pro</td><td>Ontgrendelt Pro-functies. Aankoop- en licentiestatus worden weergegeven in het licentievenster van de app.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section" id="faq">
+        <h2>6. FAQ en probleemoplossing</h2>
+        <p class="section-intro">Als iets niet werkt zoals verwacht, begin dan hier. De meeste problemen hebben te maken met de monitoringschakelaar, API-sleutels, netwerk- of proxy-instellingen, sneltoetsconflicten of focus in het doelinvoerveld.</p>
+
+        <div class="faq">
+          <details id="faq-6-1" open>
+            <summary>6.1 Er gebeurt niets na het kopiëren</summary>
+            <div>
+              <p>Controleer achtereenvolgens:</p>
+              <ol>
+                <li>Is klembordmonitoring ingeschakeld in de statusbalk?</li>
+                <li>Is de gekopieerde inhoud platte tekst en niet leeg?</li>
+                <li>Wacht OmniReply nog op het vorige AI-verzoek?</li>
+                <li>Is de gekopieerde tekst exact gelijk aan de vorige vastgelegde tekst?</li>
+                <li>Heb je gekopieerd binnen het OmniReply-venster? Kopieeracties vanuit het actieve OmniReply-venster worden genegeerd.</li>
+              </ol>
+            </div>
+          </details>
+          <details id="faq-6-2"><summary>6.2 API-sleutel niet ingesteld</summary><div><p>Voor de aanbieder van het geselecteerde model is geen sleutel ingesteld. Open Instellingen en voer de API-sleutel voor die aanbieder in, of schakel over naar een model waarvan de aanbieder al is ingesteld.</p></div></details>
+          <details id="faq-6-3"><summary>6.3 AI-verzoek mislukt of time-out</summary><div><p>Veelvoorkomende oorzaken zijn een ongeldige sleutel, opgebruikt tegoed, drukte bij de dienst, netwerkproblemen, verkeerde proxyconfiguratie of een time-out. Controleer eerst of je browser en systeemproxy de AI-dienst kunnen bereiken, en controleer daarna basis-URL, modelnaam en API-sleutel in Instellingen.</p></div></details>
+          <details id="faq-6-4"><summary>6.4 De taal of stijl van het antwoord klopt niet</summary><div><p>Controleer taal, scène, stijl, antwoorddoel en antwoordlengte. Voor OpenAI-compatibele modellen wordt een vaste taal opgenomen in de systeemprompt. Als de uitvoer nog steeds wisselt, kies dan een specifieke doeltaal en genereer opnieuw.</p></div></details>
+          <details id="faq-6-5"><summary>6.5 Het antwoord kwam op de verkeerde plek terecht</summary><div><p>Klik vóór het terugschrijven in het doelveld en controleer of de cursor op de juiste plek staat. Terugschrijven simuleert toetsenbordinvoer; als de focus in een ander venster of besturingselement staat, wordt het antwoord daar getypt.</p></div></details>
+          <details id="faq-6-6"><summary>6.6 Sneltoetsen werken niet</summary><div><p>De sneltoets wordt mogelijk al door een andere app gebruikt. Open het tabblad Sneltoetsen in Instellingen en kies een combinatie met Ctrl, Shift, Alt of Win die niet botst met systeemsneltoetsen.</p></div></details>
+          <details id="faq-6-7"><summary>6.7 Problemen met emojiweergave</summary><div><p>Op sommige systemen geven WPF-tekstvelden emoji niet betrouwbaar in kleur weer. Ook als emoji in OmniReply monochroom lijken, zijn ingevoegde en teruggeschreven emoji meestal standaard Unicode-tekens. Of ze in de doelapp in kleur verschijnen, hangt af van die app en de systeemlettertype-ondersteuning.</p></div></details>
+          <details id="faq-6-8"><summary>6.8 Geschiedenis is niet opgeslagen</summary><div><p>Geschiedenis wordt alleen opgeslagen als er in de bestandsinstellingen een geschiedenismap is geselecteerd. Een lege mapinstelling betekent dat er geen geschiedenis wordt vastgelegd. Controleer of de map bestaat en je gebruikersaccount schrijfrechten heeft.</p></div></details>
+          <details id="faq-6-9"><summary>6.9 Wat moet ik meesturen bij een supportmelding?</summary><div><p>Noem de appversie, Windows-versie, het geselecteerde model, foutbericht, of je een proxy gebruikt, of het probleem reproduceerbaar is, de stappen om het te reproduceren en eventueel screenshots. Verstuur geen echte API-sleutels.</p></div></details>
+        </div>
+      </section>
+
+      <footer>
+        OmniReply Gebruikershandleiding. Dit document beschrijft veelgebruikte functies en workflows. De daadwerkelijke interface en beperkingen hangen af van de geïnstalleerde versie.
+      </footer>
+    </main>
+  </div>
+  <script>
+    (function () {
+      document.querySelectorAll('.toc-sub a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function () {
+          var id = (a.getAttribute('href') || '').slice(1);
+          if (!id) return;
+          var target = document.getElementById(id);
+          var section = target && target.closest ? target.closest('section[id]') : null;
+          if (!section) return;
+          var chapter = document.querySelector('.toc-chapter[data-chapter="' + section.id + '"]');
+          if (chapter) chapter.open = true;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

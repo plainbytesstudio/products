@@ -1,0 +1,1058 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guida utente OmniReply</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --paper: #111111;
+      --ink: #f5f5f5;
+      --muted: #9a9a9a;
+      --line: rgba(255, 255, 255, 0.10);
+      --brand: #f3760c;
+      --brand-2: #ff942e;
+      --panel: #1a1a1a;
+      --shadow: 0 18px 70px rgba(0, 0, 0, 0.55), 0 0 70px rgba(243, 118, 12, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse 900px 560px at 18% -10%, rgba(243, 118, 12, 0.16), transparent 62%),
+        radial-gradient(ellipse 720px 460px at 88% 8%, rgba(243, 118, 12, 0.08), transparent 58%),
+        linear-gradient(180deg, #050505 0%, #080808 42%, #050505 100%);
+      font-family: "Segoe UI", "Segoe UI Variable", system-ui, -apple-system, sans-serif;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--brand); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .sidebar,
+    .hero,
+    .section {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.08)), var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(17, 17, 17, 0.88);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 12px;
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 26px rgba(243, 118, 12, 0.28);
+      font-weight: 800;
+    }
+
+    .brand strong { display: block; font-size: 16px; line-height: 1.25; }
+    .brand span { display: block; color: var(--muted); font-size: 12px; }
+
+    .toc-title {
+      margin: 18px 0 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .toc-chapters {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 14px;
+      background: rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    details.toc-chapter {
+      margin: 0;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.028);
+      overflow: hidden;
+    }
+
+    details.toc-chapter[open] { border-color: rgba(243, 118, 12, 0.28); }
+    details.toc-chapter > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 11px 14px;
+      color: var(--ink);
+      font-size: 13.5px;
+      font-weight: 650;
+      user-select: none;
+    }
+
+    details.toc-chapter > summary::-webkit-details-marker { display: none; }
+    details.toc-chapter > summary:hover,
+    details.toc-chapter[open] > summary { background: rgba(243, 118, 12, 0.08); }
+
+    .toc-sub {
+      margin: 0 8px 4px 18px;
+      padding: 6px 10px 10px 14px;
+      list-style: none;
+      border-left: 2px solid rgba(243, 118, 12, 0.4);
+    }
+
+    .toc-sub li { margin: 0; }
+    .toc-sub a {
+      display: block;
+      padding: 7px 10px;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      border: 1px solid transparent;
+    }
+
+    .toc-sub a:hover {
+      color: var(--ink);
+      background: rgba(243, 118, 12, 0.10);
+      border-color: rgba(243, 118, 12, 0.24);
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-width: 0;
+    }
+
+    .hero,
+    .section {
+      border-radius: 22px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 68% 44% at 50% 0%, rgba(243, 118, 12, 0.15), transparent 62%),
+        linear-gradient(180deg, rgba(243, 118, 12, 0.06), transparent 46%);
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, h4 { margin: 0; color: var(--ink); line-height: 1.35; }
+    h1 { max-width: 780px; font-size: clamp(32px, 5vw, 54px); letter-spacing: 0; }
+    h2 { font-size: clamp(22px, 2.4vw, 26px); }
+    h3 {
+      position: relative;
+      margin-top: 32px;
+      padding-left: 14px;
+      font-size: 17px;
+      font-weight: 650;
+    }
+
+    h3::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.42em;
+      width: 3px;
+      height: 0.88em;
+      border-radius: 99px;
+      background: rgba(243, 118, 12, 0.68);
+    }
+
+    section[id], h3[id], details[id] { scroll-margin-top: 1.25rem; }
+    p { margin: 10px 0 0; }
+
+    .lead,
+    .section-intro,
+    .card p,
+    details div,
+    footer {
+      color: var(--muted);
+    }
+
+    .lead {
+      max-width: 700px;
+      margin-top: 14px;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .section {
+      padding: 36px 38px;
+    }
+
+    .section > h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 750;
+      letter-spacing: -0.02em;
+    }
+
+    .section > h2::before {
+      content: "";
+      flex-shrink: 0;
+      width: 4px;
+      height: 1.05em;
+      border-radius: 99px;
+      background: linear-gradient(180deg, var(--brand), var(--brand-2));
+    }
+
+    .section-intro {
+      max-width: 760px;
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    .hero-actions,
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .pill,
+    .flow span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 12px;
+      border: 1px solid rgba(243, 118, 12, 0.34);
+      border-radius: 999px;
+      color: var(--brand-2);
+      background: rgba(243, 118, 12, 0.10);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .grid { display: grid; gap: 16px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card,
+    .step,
+    details:not(.toc-chapter) {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.08)), var(--panel);
+      border-radius: 12px;
+    }
+
+    .card { padding: 18px 20px; }
+    .card h4 { margin: 0 0 8px; font-size: 14px; font-weight: 700; }
+    .card:hover,
+    details:not(.toc-chapter):hover {
+      border-color: rgba(243, 118, 12, 0.40);
+      box-shadow: inset 0 0 16px rgba(243, 118, 12, 0.04);
+    }
+
+    .steps {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      counter-reset: steps;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      padding: 16px 18px;
+    }
+
+    .step::before {
+      counter-increment: steps;
+      content: counter(steps);
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 10px;
+      color: #0a0a0a;
+      background: var(--brand);
+      box-shadow: 0 0 24px rgba(243, 118, 12, 0.30);
+      font-weight: 800;
+    }
+
+    .note,
+    .warning,
+    .image-placeholder {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 14px;
+    }
+
+    .note {
+      color: #ffd9bc;
+      border: 1px solid rgba(243, 118, 12, 0.35);
+      background: rgba(243, 118, 12, 0.10);
+    }
+
+    .warning {
+      color: #ffd9bc;
+      border: 1px solid rgba(243, 118, 12, 0.42);
+      background: linear-gradient(180deg, rgba(243, 118, 12, 0.13), rgba(243, 118, 12, 0.06)), #111111;
+    }
+
+    .image-placeholder {
+      color: var(--muted);
+      border: 1px dashed rgba(243, 118, 12, 0.35);
+      background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(243, 118, 12, 0.12), transparent 65%), #0c0c0c;
+      text-align: center;
+    }
+
+    .image-placeholder strong { display: block; color: var(--ink); }
+
+    .doc-figure {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0c0c;
+      box-shadow: var(--shadow);
+    }
+
+    .doc-figure img { display: block; width: 100%; height: auto; }
+    .doc-figure figcaption {
+      margin: 0;
+      padding: 10px 14px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #111111;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    th {
+      color: var(--ink);
+      background: #1f1f1f;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    td { color: #d8d8d8; }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr:nth-child(even) td { background: rgba(255, 255, 255, 0.025); }
+
+    ul, ol { margin: 14px 0 0; padding-left: 1.35em; }
+    li + li { margin-top: 8px; }
+
+    code {
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #ffbd82;
+      background: rgba(243, 118, 12, 0.12);
+      border: 1px solid rgba(243, 118, 12, 0.20);
+      font-family: Consolas, "Cascadia Mono", monospace;
+    }
+
+    kbd {
+      display: inline-block;
+      min-width: 1.8em;
+      padding: 2px 7px;
+      border: 1px solid #333333;
+      border-bottom-color: #4a4a4a;
+      border-bottom-width: 2px;
+      border-radius: 7px;
+      color: var(--ink);
+      background: #191919;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 0.9em;
+      line-height: 1.45;
+    }
+
+    .faq { display: grid; gap: 10px; margin-top: 22px; }
+    summary {
+      cursor: pointer;
+      padding: 15px 18px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    summary::marker { color: var(--brand); }
+    details:not(.toc-chapter) div { padding: 0 18px 18px; }
+    footer {
+      margin-top: 8px;
+      padding: 20px 4px 8px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      text-align: center;
+      font-size: 12.5px;
+    }
+
+    @media (max-width: 980px) {
+      .shell { display: block; padding: 16px; }
+      .sidebar { position: static; max-height: none; margin-bottom: 18px; }
+      .grid.two, .grid.three { grid-template-columns: 1fr; }
+      .hero, .section { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Navigazione della guida">
+      <div class="brand">
+        <div class="brand-mark">OR</div>
+        <div>
+          <strong>OmniReply</strong>
+          <span>Guida utente</span>
+        </div>
+      </div>
+
+      <p class="toc-title">Indice</p>
+      <div class="toc-chapters">
+        <details class="toc-chapter" data-chapter="overview" open>
+          <summary>1. Conoscere OmniReply</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-1-1">1.1 Cos'è OmniReply</a></li>
+            <li><a href="#sec-1-2">1.2 Casi d'uso comuni</a></li>
+            <li><a href="#sec-1-3">1.3 Flusso di lavoro di base</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="ui" open>
+          <summary>2. Interfaccia e funzionalità</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-2-1">2.1 Finestra principale</a></li>
+            <li><a href="#sec-2-2">2.2 Stato della sfera flottante</a></li>
+            <li><a href="#sec-2-3">2.3 Finestra Impostazioni</a></li>
+            <li><a href="#sec-2-4">2.4 Gestione prodotti</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="quickstart">
+          <summary>3. Avvio rapido</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-3-1">Aggiungi una chiave API</a></li>
+            <li><a href="#sec-3-2">Imposta le regole di risposta</a></li>
+            <li><a href="#sec-3-3">Avvia il monitoraggio</a></li>
+            <li><a href="#sec-3-4">Copia o inserisci il testo</a></li>
+            <li><a href="#sec-3-5">Genera una risposta</a></li>
+            <li><a href="#sec-3-6">Controlla e modifica</a></li>
+            <li><a href="#sec-3-7">Scrivi indietro</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="features">
+          <summary>4. Dettagli delle funzionalità</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-4-1">4.1 Modelli AI e chiavi API</a></li>
+            <li><a href="#sec-4-2">4.2 Regole di risposta</a></li>
+            <li><a href="#sec-4-3">4.3 Dati per raccomandazioni di prodotti</a></li>
+            <li><a href="#sec-4-4">4.4 Monitoraggio appunti</a></li>
+            <li><a href="#sec-4-5">4.5 Modifica e emoji</a></li>
+            <li><a href="#sec-4-6">4.6 Scrittura indietro e scorciatoie</a></li>
+            <li><a href="#sec-4-7">4.7 Cronologia</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="privacy">
+          <summary>5. Dati, privacy e licenza</summary>
+          <ul class="toc-sub">
+            <li><a href="#sec-5-1">5.1 Dati salvati in locale</a></li>
+            <li><a href="#sec-5-2">5.2 Cosa includono le richieste AI</a></li>
+            <li><a href="#sec-5-3">5.3 Sicurezza delle chiavi API</a></li>
+            <li><a href="#sec-5-4">5.4 Edizioni Free e Pro</a></li>
+          </ul>
+        </details>
+        <details class="toc-chapter" data-chapter="faq">
+          <summary>6. FAQ e risoluzione problemi</summary>
+          <ul class="toc-sub">
+            <li><a href="#faq-6-1">6.1 Non succede nulla dopo la copia</a></li>
+            <li><a href="#faq-6-2">6.2 Chiave API non configurata</a></li>
+            <li><a href="#faq-6-3">6.3 Richiesta AI non riuscita o scaduta</a></li>
+            <li><a href="#faq-6-4">6.4 Lingua o stile errati</a></li>
+            <li><a href="#faq-6-5">6.5 Risposta scritta nel posto sbagliato</a></li>
+            <li><a href="#faq-6-6">6.6 Le scorciatoie non funzionano</a></li>
+            <li><a href="#faq-6-7">6.7 Problemi di visualizzazione emoji</a></li>
+            <li><a href="#faq-6-8">6.8 Cronologia non salvata</a></li>
+            <li><a href="#faq-6-9">6.9 Cosa includere in una segnalazione</a></li>
+          </ul>
+        </details>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="hero">
+        <p class="eyebrow">Assistente AI alle risposte basato sugli appunti</p>
+        <h1>Guida utente OmniReply</h1>
+        <p class="lead">
+          Questa guida spiega l'interfaccia di OmniReply, la configurazione iniziale, la generazione delle risposte AI e la scrittura nel campo di destinazione. Inizia dalla sezione Avvio rapido e torna ai dettagli delle funzionalità quando ti serve più contesto.
+        </p>
+        <div class="hero-actions">
+          <span class="pill">Monitoraggio appunti</span>
+          <span class="pill">Modelli AI multipli</span>
+          <span class="pill">Casella risposta modificabile</span>
+          <span class="pill">Scrittura da tastiera</span>
+          <span class="pill">Impostazioni locali</span>
+        </div>
+      </header>
+
+      <section class="section" id="overview">
+        <h2>1. Conoscere OmniReply</h2>
+        <p class="section-intro">
+          OmniReply riduce la distanza tra la lettura di un messaggio e la stesura di una risposta ponderata. Ti aiuta a catturare il testo di origine, generare una bozza, controllarla e digitarla nel campo di destinazione.
+        </p>
+
+        <h3 id="sec-1-1">1.1 Cos'è OmniReply</h3>
+        <p>
+          OmniReply è un assistente AI per le risposte su Windows. Monitora il testo copiato, lo combina con il modello, la scena, la lingua, lo stile, l'obiettivo e la lunghezza della risposta che hai selezionato, quindi genera una risposta modificabile. Dopo aver controllato la bozza, puoi scriverla nel campo di input di un'altra app.
+        </p>
+
+        <h3 id="sec-1-2">1.2 Casi d'uso comuni</h3>
+        <div class="grid three">
+          <div class="card">
+            <h4>Risposte sui social</h4>
+            <p>Prepara risposte naturali per commenti, messaggi, post e conversazioni in community.</p>
+          </div>
+          <div class="card">
+            <h4>Assistenza clienti</h4>
+            <p>Trasforma le domande degli utenti in spiegazioni chiare, rassicurazioni, passi successivi o risposte di supporto.</p>
+          </div>
+          <div class="card">
+            <h4>Raccomandazioni di prodotti</h4>
+            <p>Usa le informazioni sui prodotti per creare raccomandazioni concise, spiegazioni delle funzionalità e risposte comparative.</p>
+          </div>
+        </div>
+
+        <h3 id="sec-1-3">1.3 Flusso di lavoro di base</h3>
+        <div class="flow" aria-label="Flusso di lavoro di base">
+          <span>Configura la chiave API</span>
+          <span>Imposta le regole di risposta</span>
+          <span>Avvia il monitoraggio appunti</span>
+          <span>Copia o inserisci il testo di origine</span>
+          <span>Genera la risposta</span>
+          <span>Controlla e modifica</span>
+          <span>Scrivi nel campo di destinazione</span>
+        </div>
+        <figure class="doc-figure">
+          <img src="Images/it/flowchart.jpg" alt="Flusso OmniReply: configura le impostazioni, avvia il monitoraggio, cattura il testo di origine, genera e modifica la risposta, quindi scrivi nel campo di input di destinazione" loading="lazy" decoding="async" />
+          <figcaption>Flusso OmniReply dalla configurazione e dal monitoraggio alla generazione AI, alla modifica e alla scrittura nel campo di destinazione.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="ui">
+        <h2>2. Panoramica di interfaccia e funzionalità</h2>
+        <p class="section-intro">
+          La maggior parte del lavoro quotidiano avviene nella finestra principale flottante. Le finestre Impostazioni e Gestione prodotti servono soprattutto per la configurazione.
+        </p>
+
+        <h3 id="sec-2-1">2.1 Finestra principale</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Area</th>
+              <th>Funzione</th>
+              <th>Suggerimento</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Barra del titolo</td>
+              <td>Mostra il nome dell'app e l'edizione corrente. La finestra può essere ridotta alla sfera flottante.</td>
+              <td>Riduci la finestra quando vuoi tenerla fuori mano in attesa del testo copiato.</td>
+            </tr>
+            <tr>
+              <td>Area Configurazione</td>
+              <td>Seleziona modello, scena, lingua, stile, obiettivo, lunghezza e prodotto.</td>
+              <td>Dopo aver cambiato le regole, rigenera la risposta per applicare le nuove impostazioni.</td>
+            </tr>
+            <tr>
+              <td>Area testo di origine</td>
+              <td>Mostra il testo catturato dagli appunti e accetta anche l'inserimento manuale.</td>
+              <td>Usala quando la copia è scomoda o quando vuoi modificare prima il testo di origine.</td>
+            </tr>
+            <tr>
+              <td>Area risposta</td>
+              <td>Mostra la risposta AI generata e consente di modificarla.</td>
+              <td>Controlla sempre fatti, tono e contenuti sensibili prima di scrivere indietro.</td>
+            </tr>
+            <tr>
+              <td>Barra emoji</td>
+              <td>Inserisce emoji comuni nella risposta.</td>
+              <td>Le emoji inserite sono caratteri di testo e possono essere modificate o eliminate.</td>
+            </tr>
+            <tr>
+              <td>Barra di stato</td>
+              <td>Controlla il monitoraggio appunti, la lingua, Impostazioni, Informazioni ed Esci.</td>
+              <td>Attiva il monitoraggio appunti prima di usare il flusso di cattura automatica.</td>
+            </tr>
+          </tbody>
+        </table>
+        <figure class="doc-figure">
+          <img src="Images/it/ui.jpg" alt="Finestra principale OmniReply con barra del titolo, area Configurazione, area testo di origine, editor risposta, barra emoji e barra di stato" loading="lazy" decoding="async" />
+          <figcaption>Layout della finestra principale e aree di lavoro principali.</figcaption>
+        </figure>
+
+        <h3 id="sec-2-2">2.2 Stato della sfera flottante</h3>
+        <p>
+          Quando è ridotta, OmniReply diventa una sfera flottante. Puoi trascinarla, fare doppio clic per espandere la finestra principale e capire lo stato del servizio dal suo aspetto. Una sfera colorata indica che il monitoraggio appunti è attivo. Una sfera grigia indica che il monitoraggio è disattivato. In attesa di una risposta AI, la sfera può mostrare anche uno stato di richiesta in corso.
+        </p>
+
+        <h3 id="sec-2-3">2.3 Finestra Impostazioni</h3>
+        <div class="grid two">
+          <div class="card">
+            <h4>Impostazioni modello</h4>
+            <p>Gestisci chiavi API, URL di base e nomi modello per OpenAI, Gemini, Grok e DeepSeek.</p>
+          </div>
+          <div class="card">
+            <h4>Impostazioni di rete</h4>
+            <p>Attiva un proxy HTTP manuale quando necessario. Se disattivato, OmniReply usa la configurazione proxy di sistema.</p>
+          </div>
+          <div class="card">
+            <h4>Impostazioni scorciatoie</h4>
+            <p>Modifica le scorciatoie globali per mostrare la finestra, attivare o disattivare il monitoraggio, aggiornare e scrivere indietro.</p>
+          </div>
+          <div class="card">
+            <h4>Impostazioni file</h4>
+            <p>Scegli la cartella della cronologia. Se non selezioni una cartella, la cronologia non viene salvata.</p>
+          </div>
+        </div>
+
+        <h3 id="sec-2-4">2.4 Gestione prodotti</h3>
+        <p>
+          La gestione prodotti memorizza nomi e descrizioni dei prodotti per il profilo corrente. Quando l'obiettivo della risposta è una raccomandazione di prodotto, la descrizione del prodotto selezionato viene inviata come contesto, così la risposta generata può menzionare il prodotto con maggiore precisione.
+        </p>
+        <figure class="doc-figure">
+          <img src="Images/it/pm.jpg" alt="Finestra Gestione prodotti di OmniReply" loading="lazy" decoding="async" />
+          <figcaption>Gestione prodotti per risposte legate a raccomandazioni.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section" id="quickstart">
+        <h2>3. Avvio rapido</h2>
+        <p class="section-intro">
+          Segui questi passaggi al primo utilizzo. In seguito, il flusso quotidiano di solito si limita a copiare, controllare e scrivere indietro.
+        </p>
+
+        <div class="steps">
+          <div class="step" id="sec-3-1">
+            <div>
+              <h3>Aggiungi una chiave API</h3>
+              <p>Apri Impostazioni e inserisci la chiave API del servizio AI che vuoi usare. I provider non utilizzati possono restare vuoti. Il modello attualmente selezionato deve avere una chiave valida.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-2">
+            <div>
+              <h3>Imposta le regole di risposta</h3>
+              <p>Scegli modello, scena, lingua, stile, obiettivo e lunghezza della risposta. Se stai preparando una raccomandazione di prodotto, seleziona anche il prodotto pertinente.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-3">
+            <div>
+              <h3>Avvia il monitoraggio appunti</h3>
+              <p>Attiva l'interruttore del monitoraggio appunti nella barra di stato oppure premi <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-4">
+            <div>
+              <h3>Copia o inserisci il testo di origine</h3>
+              <p>Copia una domanda, un commento o un messaggio da un'altra app. Puoi anche digitare o incollare il testo direttamente in OmniReply e rigenerare manualmente.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-5">
+            <div>
+              <h3>Genera una risposta AI</h3>
+              <p>Dopo la copia di un nuovo testo, OmniReply lo legge e chiama il modello selezionato. Per generare di nuovo, clicca Aggiorna oppure premi <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-6">
+            <div>
+              <h3>Controlla e modifica</h3>
+              <p>La casella risposta è modificabile. Adatta le formulazioni, rimuovi parti superflue, aggiungi contesto o inserisci emoji. Non saltare il controllo solo perché la bozza è stata generata dall'AI.</p>
+            </div>
+          </div>
+          <div class="step" id="sec-3-7">
+            <div>
+              <h3>Scrivi nel campo di destinazione</h3>
+              <p>Clicca prima il campo di input di destinazione per posizionare il cursore nel punto giusto. Poi clicca Scrivi indietro oppure premi <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="warning">
+          La scrittura indietro simula l'input da tastiera. Non invia automaticamente il messaggio. Assicurati che il campo di destinazione abbia il focus prima di scrivere, quindi invia o conferma la risposta tu stesso nell'app di destinazione.
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <h2>4. Dettagli delle funzionalità</h2>
+        <p class="section-intro">
+          Questa sezione spiega cosa fa ogni impostazione e come influisce sulla risposta finale.
+        </p>
+
+        <h3 id="sec-4-1">4.1 Modelli AI e chiavi API</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Opzione modello</th>
+              <th>Impostazione richiesta</th>
+              <th>Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ChatGPT (OpenAI)</td>
+              <td><code>OpenAI_Key</code></td>
+              <td>Usa un endpoint Chat Completions compatibile con OpenAI. Puoi configurare l'URL di base e il nome del modello.</td>
+            </tr>
+            <tr>
+              <td>Gemini (Google)</td>
+              <td><code>Gemini_Key</code></td>
+              <td>Usa Google Gemini. Puoi configurare l'URL di base Gemini e il nome del modello.</td>
+            </tr>
+            <tr>
+              <td>Grok (xAI)</td>
+              <td><code>Grok_Key</code></td>
+              <td>Usa xAI Grok. Puoi configurare l'URL di base, il nome del modello e il messaggio di sistema.</td>
+            </tr>
+            <tr>
+              <td>DeepSeek (DeepSeek)</td>
+              <td><code>Deepseek_Key</code></td>
+              <td>Supporta richieste compatibili con OpenAI o impostazioni di richiesta in stile reasoning di DeepSeek.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note">
+          Il modello selezionato determina quale chiave è necessaria. I provider che non usi possono restare vuoti.
+        </p>
+
+        <h3 id="sec-4-2">4.2 Regole di risposta</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Regola</th>
+              <th>Effetto</th>
+              <th>Consiglio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Scena</td>
+              <td>Definisce la piattaforma o il contesto della risposta, ad esempio social, forum o assistenza.</td>
+              <td>Scegli la scena che meglio corrisponde alla conversazione reale.</td>
+            </tr>
+            <tr>
+              <td>Lingua</td>
+              <td>Controlla la lingua di output. La lingua automatica cerca di seguire il contesto del testo di origine.</td>
+              <td>Scegli una lingua specifica quando la risposta deve restare fissa in una sola lingua.</td>
+            </tr>
+            <tr>
+              <td>Stile</td>
+              <td>Controlla tono, persona e formulazioni.</td>
+              <td>Per commenti pubblici, uno stile naturale, cordiale e non invadente è di solito più sicuro.</td>
+            </tr>
+            <tr>
+              <td>Obiettivo risposta</td>
+              <td>Guida l'intento della risposta, ad esempio raccomandazione, supporto, spiegazione o replica.</td>
+              <td>Conferma l'obiettivo prima di generare, perché influisce molto sulla bozza.</td>
+            </tr>
+            <tr>
+              <td>Lunghezza risposta</td>
+              <td>Controlla se l'output deve essere breve, medio o dettagliato.</td>
+              <td>Sui social, una lunghezza breve o automatica è di solito un buon punto di partenza.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-3">4.3 Dati per raccomandazioni di prodotti</h3>
+        <p>
+          I dati per raccomandazioni di prodotti includono nome e descrizione del prodotto. Quando è selezionato un obiettivo legato a raccomandazioni, OmniReply invia la descrizione del prodotto selezionato come contesto per l'AI. Una buona descrizione del prodotto dovrebbe includere:
+        </p>
+        <ul>
+          <li>Quale problema risolve il prodotto.</li>
+          <li>Funzionalità principali e vantaggi.</li>
+          <li>A chi è rivolto e quando è utile.</li>
+          <li>Se funziona offline, carica dati o ha limitazioni importanti.</li>
+          <li>Formulazioni chiare e realistiche, evitando affermazioni esagerate.</li>
+        </ul>
+
+        <h3 id="sec-4-4">4.4 Monitoraggio appunti</h3>
+        <p>
+          Con il monitoraggio attivo, OmniReply ascolta gli aggiornamenti degli appunti di sistema e legge il nuovo contenuto testuale. Per ridurre attivazioni accidentali, ignora testo vuoto, testo ripetuto e operazioni di copia effettuate mentre la finestra OmniReply è attiva.
+        </p>
+        <div class="note">
+          Se preferisci l'inserimento manuale, non devi affidarti alla cattura automatica. Digita o incolla il testo di origine, quindi usa Aggiorna per richiedere una nuova risposta.
+        </div>
+
+        <h3 id="sec-4-5">4.5 Modifica e emoji</h3>
+        <p>
+          L'area risposta è una casella di testo modificabile. Puoi riscrivere direttamente il testo generato dall'AI oppure inserire emoji Unicode comuni dalla barra emoji o dal popup. Alcuni sistemi o controlli WPF potrebbero non mostrare le emoji a colori, ma i caratteri inseriti restano emoji standard.
+        </p>
+
+        <h3 id="sec-4-6">4.6 Scrittura indietro e scorciatoie</h3>
+        <p>
+          La scrittura indietro nasconde prima la finestra OmniReply, attende brevemente che il campo di destinazione riacquisti il focus, quindi simula l'input da tastiera carattere per carattere. I ritorni a capo vengono gestiti con un tasto Invio simulato. Le scorciatoie predefinite sono:
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Azione</th>
+              <th>Scorciatoia predefinita</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mostra o nascondi la finestra principale</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd></td>
+            </tr>
+            <tr>
+              <td>Avvia o arresta il monitoraggio appunti</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></td>
+            </tr>
+            <tr>
+              <td>Rigenera la risposta</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></td>
+            </tr>
+            <tr>
+              <td>Scrivi indietro la risposta</td>
+              <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-4-7">4.7 Cronologia</h3>
+        <p>
+          Dopo aver selezionato una cartella cronologia nelle impostazioni file, OmniReply può salvare testo di origine, risposte generate e orari delle richieste. Se la cartella cronologia è vuota, non viene scritta alcuna cronologia.
+        </p>
+      </section>
+
+      <section class="section" id="privacy">
+        <h2>5. Dati, privacy e licenza</h2>
+        <p class="section-intro">
+          OmniReply conserva impostazioni e dati del profilo sul tuo dispositivo. Le richieste AI vengono inviate direttamente al servizio AI che scegli.
+        </p>
+
+        <h3 id="sec-5-1">5.1 Dati salvati in locale</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Dato</th>
+              <th>Descrizione</th>
+              <th>Gestione per l'utente</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Impostazioni applicazione</td>
+              <td>Endpoint modello, chiavi API, impostazioni proxy, scorciatoie, impostazioni cronologia e opzioni correlate.</td>
+              <td>Visualizza e modifica nella finestra Impostazioni.</td>
+            </tr>
+            <tr>
+              <td>Profili e dati prodotti</td>
+              <td>Profilo corrente, elenco prodotti, scena selezionata e regole di risposta.</td>
+              <td>Gestisci nella finestra principale e in Gestione prodotti.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="sec-5-2">5.2 Cosa includono le richieste AI</h3>
+        <p>
+          Durante la generazione di una risposta, OmniReply invia al servizio AI selezionato il testo di origine, le regole di risposta correnti, il contesto prodotto necessario e i parametri della richiesta al modello. Le richieste usano la tua chiave API. OmniReply non instrada le richieste tramite un server intermediario.
+        </p>
+
+        <h3 id="sec-5-3">5.3 Sicurezza delle chiavi API</h3>
+        <ul>
+          <li>Non condividere file di configurazione che contengono chiavi API.</li>
+          <li>Su computer condivisi, gestisci in modo appropriato impostazioni e cronologia prima di allontanarti.</li>
+          <li>Prima di copiare contenuti sensibili, consulta le policy sulla privacy e sul trattamento dati del servizio AI selezionato.</li>
+          <li>Se non è configurata una cartella cronologia, OmniReply non salva testo di origine né cronologia delle risposte generate.</li>
+        </ul>
+
+        <h3 id="sec-5-4">5.4 Edizioni Free e Pro</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Edizione</th>
+              <th>Descrizione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Free</td>
+              <td>Consente 10 generazioni con modello al giorno di calendario locale e può limitare alcune selezioni di regole.</td>
+            </tr>
+            <tr>
+              <td>Pro</td>
+              <td>Sblocca le funzionalità Pro. Acquisto e stato della licenza sono mostrati nella finestra licenza dell'app.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section" id="faq">
+        <h2>6. FAQ e risoluzione problemi</h2>
+        <p class="section-intro">
+          Se qualcosa non funziona come previsto, inizia da qui. La maggior parte dei problemi riguarda l'interruttore di monitoraggio, le chiavi API, le impostazioni di rete o proxy, conflitti di scorciatoie o il focus nel campo di destinazione.
+        </p>
+
+        <div class="faq">
+          <details id="faq-6-1" open>
+            <summary>6.1 Non succede nulla dopo la copia</summary>
+            <div>
+              <p>Controlla nell'ordine quanto segue:</p>
+              <ol>
+                <li>Assicurati che il monitoraggio appunti sia attivo nella barra di stato.</li>
+                <li>Assicurati che il contenuto copiato sia testo semplice e non vuoto.</li>
+                <li>Verifica se OmniReply è ancora in attesa del completamento della richiesta AI precedente.</li>
+                <li>Verifica se il testo copiato è identico al testo catturato in precedenza.</li>
+                <li>Verifica se hai copiato all'interno della finestra OmniReply. Le copie dalla finestra OmniReply attiva vengono ignorate.</li>
+              </ol>
+            </div>
+          </details>
+
+          <details id="faq-6-2">
+            <summary>6.2 Chiave API non configurata</summary>
+            <div>
+              <p>Il provider del modello selezionato non ha una chiave configurata. Apri Impostazioni e inserisci la chiave API per quel provider, oppure passa a un modello il cui provider è già configurato.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-3">
+            <summary>6.3 Richiesta AI non riuscita o scaduta</summary>
+            <div>
+              <p>Le cause comuni includono chiave non valida, quota esaurita, congestione del servizio, problemi di rete, proxy configurato male o timeout della richiesta. Verifica prima che browser e proxy di sistema possano raggiungere il servizio AI di destinazione, quindi controlla URL di base, nome modello e chiave API in Impostazioni.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-4">
+            <summary>6.4 La lingua o lo stile della risposta non è quello che mi aspettavo</summary>
+            <div>
+              <p>Controlla lingua, scena, stile, obiettivo e lunghezza della risposta. Per i modelli compatibili con OpenAI, una lingua fissa è inclusa nel prompt di sistema. Se l'output resta incoerente, seleziona una lingua di destinazione specifica e rigenera.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-5">
+            <summary>6.5 La risposta è stata scritta nel posto sbagliato</summary>
+            <div>
+              <p>Prima di scrivere indietro, clicca il campo di input di destinazione e assicurati che il cursore sia nel punto corretto. La scrittura indietro simula l'input da tastiera: se il focus è in un'altra finestra o controllo, la risposta verrà digitata lì.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-6">
+            <summary>6.6 Le scorciatoie non funzionano</summary>
+            <div>
+              <p>La scorciatoia potrebbe essere già usata da un'altra app. Apri la scheda Scorciatoie in Impostazioni e scegli una combinazione che includa Ctrl, Shift, Alt o Win, evitando conflitti con le scorciatoie di sistema.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-7">
+            <summary>6.7 Problemi di visualizzazione emoji</summary>
+            <div>
+              <p>Su alcuni sistemi, le caselle di testo WPF potrebbero non mostrare le emoji a colori in modo affidabile. Anche se in OmniReply le emoji appaiono monocromatiche, quelle inserite e scritte indietro sono di solito caratteri emoji Unicode standard. Se appaiono a colori nell'app di destinazione dipende dall'app e dal supporto dei font di sistema.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-8">
+            <summary>6.8 Cronologia non salvata</summary>
+            <div>
+              <p>La cronologia viene salvata solo quando è selezionata una cartella cronologia nelle impostazioni file. Un'impostazione cartella vuota significa che non viene registrata alcuna cronologia. Assicurati che la cartella esista e che il tuo account utente possa scriverci.</p>
+            </div>
+          </details>
+
+          <details id="faq-6-9">
+            <summary>6.9 Cosa includere in una segnalazione di supporto?</summary>
+            <div>
+              <p>Includi versione dell'app, versione di Windows, modello selezionato, messaggio di errore, se usi un proxy, se il problema è riproducibile, i passaggi per riprodurlo e screenshot se utili. Non inviare chiavi API reali.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <footer>
+        Guida utente OmniReply. Questo documento descrive funzionalità e flussi di lavoro comuni. L'interfaccia effettiva e i limiti dipendono dalla versione installata.
+      </footer>
+    </main>
+  </div>
+  <script>
+    (function () {
+      document.querySelectorAll('.toc-sub a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function () {
+          var id = (a.getAttribute('href') || '').slice(1);
+          if (!id) return;
+          var target = document.getElementById(id);
+          var section = target && target.closest ? target.closest('section[id]') : null;
+          if (!section) return;
+          var chapter = document.querySelector('.toc-chapter[data-chapter="' + section.id + '"]');
+          if (chapter) chapter.open = true;
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
