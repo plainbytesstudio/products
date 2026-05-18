@@ -81,8 +81,7 @@
           <ul class="toc-sublist">
             <li><a href="#concepts-2-1">2.1 Redaction marks</a></li>
             <li><a href="#concepts-2-2">2.2 What “confirm” means</a></li>
-            <li><a href="#concepts-2-3">2.3 Rules vs. on-device AI</a></li>
-            <li><a href="#concepts-2-4">2.4 The batch baseline</a></li>
+            <li><a href="#concepts-2-4">2.3 The batch baseline</a></li>
           </ul>
         </details>
         <details class="toc-chapter">
@@ -195,7 +194,7 @@
 
       <h3 id="positioning-1-2">1.2 What we mean by “local and offline”</h3>
       <ul>
-        <li><strong>Work stays on this PC</strong>: opening the PDF, rule matching, optional on-device AI, writing the redacted file, and validation all run locally.</li>
+        <li><strong>Work stays on this PC</strong>: opening the PDF, rule matching, writing the redacted file, and validation all run locally.</li>
         <li><strong>No document upload for redaction</strong>: the product isn’t designed to ship your files to the cloud as part of the redaction pipeline.</li>
         <li><strong>Separate from Help / updates</strong>: when you open Help, Check for updates, and similar menu items, Windows may launch your browser or the Microsoft Store. That’s unrelated to keeping the redaction path offline.</li>
       </ul>
@@ -216,46 +215,21 @@
       <ul>
         <li><strong>Page and rectangle</strong>: position and size in PDF coordinates.</li>
         <li><strong>State</strong>: <strong>Pending</strong> vs. <strong>Confirmed</strong>—only <strong>confirmed</strong> marks are removed when you export.</li>
-        <li><strong>Source</strong>: <strong>Rules (patterns/regex)</strong>, <strong>AI</strong>, or <strong>manual selection</strong>, so you can tell auto hits from things you drew.</li>
+        <li><strong>Source</strong>: <strong>Rules (patterns/regex)</strong> or <strong>manual selection</strong>, so you can tell auto hits from things you drew.</li>
         <li><strong>Category and risk</strong>: used to filter, sort, and bulk-act in the audit list.</li>
       </ul>
 
       <h3 id="concepts-2-2">2.2 What “confirm” means—and why it’s manual</h3>
       <ul>
-        <li><strong>Automation isn’t the final say</strong>: both rules and AI can <strong>over-flag</strong> normal text or <strong>miss</strong> real sensitive bits, so the app never assumes “everything found should be deleted.”</li>
+        <li><strong>Automation isn’t the final say</strong>: rule matching can <strong>over-flag</strong> normal text or <strong>miss</strong> real sensitive bits, so the app never assumes “everything found should be deleted.”</li>
         <li><strong>Confirm = you’re signing off</strong>: once confirmed, a mark is included in the export set; anything left pending is not treated as final.</li>
         <li><strong>Fits real-world review</strong>: the extra step lines up with two-person review, audit trails, and avoiding one-click wipe of a whole page by mistake.</li>
       </ul>
 
-      <h3 id="concepts-2-3">2.3 Rules vs. on-device AI</h3>
-      <table class="compare">
-        <thead>
-          <tr><th>Aspect</th><th>Rule engine</th><th>On-device AI</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Basis</td>
-            <td>Built-in or custom patterns (keywords, regex), driven by your region and scenario settings.</td>
-            <td>Local ONNX models for semantic / entity-style detection; quality depends on languages and training data.</td>
-          </tr>
-          <tr>
-            <td>Predictability</td>
-            <td>When patterns are clear, behavior is steady and easy to explain.</td>
-            <td>More forgiving with layout and wording; edge cases need a second look.</td>
-          </tr>
-          <tr>
-            <td>Typical use</td>
-            <td>Strongly structured fields—IDs, phones, emails.</td>
-            <td>Looser narrative text—names, addresses, orgs without a fixed format.</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>In practice they often <strong>run together</strong>; the audit list shows everything as marks, and you choose what to confirm.</p>
-
-      <h3 id="concepts-2-4">2.4 The batch baseline</h3>
+      <h3 id="concepts-2-4">2.3 The batch baseline</h3>
       <ul>
         <li>There’s <strong>no</strong> “save this as a named template file and pick it later” flow. What batch uses is an in-memory <strong>geometric baseline</strong>: when you go to batch via <strong>Apply to multiple files</strong>, the app turns every <strong>confirmed</strong> mark on the current document into a <strong>normalized rectangle</strong> (page + coordinates relative to page size) for <strong>that batch session only</strong>.</li>
-        <li>For <strong>each</strong> queued PDF, the batch engine <strong>only stamps those rectangles</strong>—it does <strong>not</strong> run a fresh full-document rule pass or AI pass per file.</li>
+        <li>For <strong>each</strong> queued PDF, the batch engine <strong>only stamps those rectangles</strong>—it does <strong>not</strong> run a fresh full-document rule pass per file.</li>
         <li><strong>When that’s OK</strong>: multiple exports from the same system with the <strong>same layout and sensitive regions in the same places</strong> (e.g. uniform statements). If layouts drift, boxes can land on the wrong spot—spot-check early outputs.</li>
         <li><strong>Rules in the hub</strong>: they help you <strong>find</strong> hits on the <strong>current</strong> single-file workflow; they are <strong>not</strong> automatically re-run for every file in the queue. Batch is driven by the <strong>confirmed positions</strong> you already locked in.</li>
       </ul>
@@ -284,14 +258,14 @@
 
       <h3 id="workflow-step-c">Step C: Run detection</h3>
       <p>On the right, under scan policy, click <strong>Start detection</strong> (or the equivalent control) and let the document model and full pass finish.<br>
-      That turns rule and on-device AI hits into a list of <strong>pending</strong> marks. If you change region, scenario, or rules, run detection again so the list matches.</p>
+      That turns rule hits into a list of <strong>pending</strong> marks. If you change region, scenario, or rules, run detection again so the list matches.</p>
 
       <h3 id="workflow-step-d">Step D: Review in the audit list</h3>
       <p>In the <strong>audit trail</strong> on the right, walk items one by one or use filters. <strong>Confirm</strong> what must go; clear confirmation or remove rows for false positives (exact controls depend on the build). The yellow overlays in preview usually stay in sync—clicking can toggle confirm state.<br>
       This step is what keeps you from deleting the wrong thing or leaving something behind; export only honors <strong>confirmed</strong> marks.</p>
 
       <h3 id="workflow-step-e">Step E: Draw boxes for anything missed</h3>
-      <p>Drag rectangles on the left-hand preview over anything rules/AI didn’t catch but you know must be redacted. Adjust selection colors if it helps on busy backgrounds.<br>
+      <p>Drag rectangles on the left-hand preview over anything rules didn’t catch but you know must be redacted. Adjust selection colors if it helps on busy backgrounds.<br>
       Auto detection won’t catch everything; manual boxes are your <strong>safety net</strong>.</p>
 
       <h3 id="workflow-step-f">Step F: Export</h3>
@@ -301,7 +275,7 @@
       <h3 id="workflow-step-g">Step G (optional): Apply to multiple files</h3>
       <p>After everything that should be redacted is <strong>confirmed</strong> on this PDF, use <strong>Apply to multiple files</strong> (or the equivalent entry). The app builds the <strong>normalized baseline</strong> described above and opens <strong>batch redaction</strong>. Add more PDFs with matching layout, set an output folder, choose whether to strip metadata, and run.<br>
       When layouts truly match, you avoid redoing the same confirmations file by file; batch still <strong>physically removes</strong> the boxed regions.<br>
-      <strong>Important</strong>: this isn’t a reusable named template on disk—there’s <strong>no separate template file</strong>; the baseline comes from <strong>this</strong> confirmed document. Batch also <strong>doesn’t</strong> re-run rules/AI per queued file. If a file’s layout changed, go back through the single-file flow.</p>
+      <strong>Important</strong>: this isn’t a reusable named template on disk—there’s <strong>no separate template file</strong>; the baseline comes from <strong>this</strong> confirmed document. Batch also <strong>doesn’t</strong> re-run rule detection per queued file. If a file’s layout changed, go back through the single-file flow.</p>
     </section>
 
     <section id="main-ui">
@@ -347,7 +321,7 @@
         <li><strong>More (⋯)</strong>: language, Help, feedback, updates, About, etc.</li>
       </ul>
 
-      <p>The status bar shows readiness, the current file name, and whether the on-device AI runtime is ready, among other hints.</p>
+      <p>The status bar shows readiness and the current file name, among other hints.</p>
     </section>
 
     <section id="rules">
@@ -400,7 +374,7 @@
 
       <h3 id="manual-box-7-1">7.1 When to draw your own boxes</h3>
       <ul>
-        <li>Rules and AI <strong>missed</strong> something you know must go—handwritten photo annotations, odd layout pockets, etc.</li>
+        <li>Rules <strong>missed</strong> something you know must go—handwritten photo annotations, odd layout pockets, etc.</li>
         <li>Hits are <strong>fragmented</strong> or <strong>misaligned</strong>: remove the bad auto rows and draw a tighter box.</li>
         <li><strong>Scan-only</strong> content handled as imagery: behavior differs from text PDFs; you’ll often lean on manual boxes (see FAQ).</li>
       </ul>
@@ -452,8 +426,8 @@
       <h2>9. Batch processing</h2>
 
       <h3 id="batch-9-1">9.1 What batch mode actually does</h3>
-      <p>After you enter through <strong>Apply to multiple files</strong> with a baseline, each queued PDF follows a <strong>stamp-only</strong> path: normalized rectangles are mapped to absolute coordinates per page, marks are created, content is physically removed, and metadata can optionally be cleared. It does <strong>not</strong> run rule detection or AI again per file.</p>
-      <div class="note">So the rules and AI you used in single-file mode helped you <strong>find</strong> and <strong>confirm</strong> on the template; batch simply copies <strong>where you confirmed</strong> onto other files that share the same geometry.</div>
+      <p>After you enter through <strong>Apply to multiple files</strong> with a baseline, each queued PDF follows a <strong>stamp-only</strong> path: normalized rectangles are mapped to absolute coordinates per page, marks are created, content is physically removed, and metadata can optionally be cleared. It does <strong>not</strong> run rule detection again per file.</p>
+      <div class="note">So the rules you used in single-file mode helped you <strong>find</strong> and <strong>confirm</strong> on the template; batch simply copies <strong>where you confirmed</strong> onto other files that share the same geometry.</div>
 
       <h3 id="batch-9-2">9.2 Good use cases</h3>
       <ul>
@@ -475,13 +449,13 @@
       <h2>10. FAQ</h2>
 
       <h3 id="faq-false-positives">10.1 Why are there so many false positives?</h3>
-      <p>Both rules and AI lean on heuristics: strings that <strong>look</strong> sensitive, place names colliding with person names, table fragments, and so on. Tuning scenario/rules, turning off a noisy rule, or clearing confirmation in the list usually gets it under control. Manual confirmation is intentional—it lowers the odds of one-click deleting something you still need.</p>
+      <p>Rule matching leans on patterns and heuristics: strings that <strong>look</strong> sensitive, place names colliding with person names, table fragments, and so on. Tuning scenario/rules, turning off a noisy rule, or clearing confirmation in the list usually gets it under control. Manual confirmation is intentional—it lowers the odds of one-click deleting something you still need.</p>
 
       <h3 id="faq-scanned-pdf">10.2 What about scanned PDFs?</h3>
-      <p>If the PDF is effectively a page image with no real text layer, rules and AI have less to work with, so you’ll lean more on <strong>manual boxes</strong> or whatever raster-specific flow the build exposes (follow on-screen hints). It helps to know whether you’re dealing with a born-digital PDF or a scan up front.</p>
+      <p>If the PDF is effectively a page image with no real text layer, rule detection has less to work with, so you’ll lean more on <strong>manual boxes</strong> or whatever raster-specific flow the build exposes (follow on-screen hints). It helps to know whether you’re dealing with a born-digital PDF or a scan up front.</p>
 
       <h3 id="faq-image-no-ocr">10.3 Can I redact images? Why isn’t text in photos recognized?</h3>
-      <p>Yes—common image formats can be opened like a document; you still preview, mark, and export. To keep installer size and runtime cost reasonable, this version <strong>doesn’t ship OCR</strong>: text in photos doesn’t become selectable, so <strong>rule-based and AI text detection barely apply</strong>. Redact sensitive areas by <strong>drawing boxes</strong> (and using keyboard shortcuts to move between marks). If you need “recognize then match,” OCR elsewhere first or supply a text-layer PDF.</p>
+      <p>Yes—common image formats can be opened like a document; you still preview, mark, and export. To keep installer size and runtime cost reasonable, this version <strong>doesn’t ship OCR</strong>: text in photos doesn’t become selectable, so <strong>rule-based detection barely applies</strong>. Redact sensitive areas by <strong>drawing boxes</strong> (and using keyboard shortcuts to move between marks). If you need “recognize then match,” OCR elsewhere first or supply a text-layer PDF.</p>
 
       <h3 id="faq-verify-export">10.4 How do I sanity-check an export?</h3>
       <ul>

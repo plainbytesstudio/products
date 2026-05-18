@@ -81,8 +81,7 @@
           <ul class="toc-sublist">
             <li><a href="#concepts-2-1">2.1 Schwärzungsmarkierungen</a></li>
             <li><a href="#concepts-2-2">2.2 Was „Bestätigen“ bedeutet</a></li>
-            <li><a href="#concepts-2-3">2.3 Regeln und KI auf dem Gerät</a></li>
-            <li><a href="#concepts-2-4">2.4 Die Basis für Stapelverarbeitung</a></li>
+            <li><a href="#concepts-2-4">2.3 Die Basis für Stapelverarbeitung</a></li>
           </ul>
         </details>
         <details class="toc-chapter">
@@ -195,7 +194,7 @@
 
       <h3 id="positioning-1-2">1.2 Was „lokal und offline“ bedeutet</h3>
       <ul>
-        <li><strong>Die Arbeit bleibt auf diesem PC</strong>: PDF öffnen, Regelabgleich, optionale KI auf dem Gerät, Schreiben der geschwärzten Datei und Validierung laufen lokal.</li>
+        <li><strong>Die Arbeit bleibt auf diesem PC</strong>: PDF öffnen, Regelabgleich, Schreiben der geschwärzten Datei und Validierung laufen lokal.</li>
         <li><strong>Kein Dokument-Upload für die Schwärzung</strong>: Das Produkt ist nicht darauf ausgelegt, Ihre Dateien als Teil der Schwärzung in die Cloud zu schicken.</li>
         <li><strong>Getrennt von Hilfe / Updates</strong>: Wenn Sie Hilfe, Nach Updates suchen oder ähnliche Menüpunkte öffnen, kann Windows den Browser oder den Microsoft Store starten. Das hat nichts damit zu tun, dass der Schwärzungsprozess offline bleibt.</li>
       </ul>
@@ -216,46 +215,21 @@
       <ul>
         <li><strong>Seite und Rechteck</strong>: Position und Größe in PDF-Koordinaten.</li>
         <li><strong>Status</strong>: <strong>Ausstehend</strong> oder <strong>Bestätigt</strong>. Beim Export werden nur <strong>bestätigte</strong> Markierungen entfernt.</li>
-        <li><strong>Quelle</strong>: <strong>Regeln (Muster/Regex)</strong>, <strong>KI</strong> oder <strong>manuelle Auswahl</strong>, damit automatische Treffer von selbst gezeichneten Bereichen unterscheidbar bleiben.</li>
+        <li><strong>Quelle</strong>: <strong>Regeln (Muster/Regex)</strong> oder <strong>manuelle Auswahl</strong>, damit automatische Treffer von selbst gezeichneten Bereichen unterscheidbar bleiben.</li>
         <li><strong>Kategorie und Risiko</strong>: Dienen zum Filtern, Sortieren und für Sammelaktionen in der Prüfliste.</li>
       </ul>
 
       <h3 id="concepts-2-2">2.2 Was „Bestätigen“ bedeutet und warum es manuell ist</h3>
       <ul>
-        <li><strong>Automatisierung entscheidet nicht endgültig</strong>: Regeln und KI können normalen Text <strong>zu oft markieren</strong> oder echte sensible Stellen <strong>übersehen</strong>. Die App nimmt daher nie an, dass „alles Gefundene gelöscht werden soll“.</li>
+        <li><strong>Automatisierung entscheidet nicht endgültig</strong>: Der Regelabgleich kann normalen Text <strong>zu oft markieren</strong> oder echte sensible Stellen <strong>übersehen</strong>. Die App nimmt daher nie an, dass „alles Gefundene gelöscht werden soll“.</li>
         <li><strong>Bestätigen = Sie geben es frei</strong>: Nach der Bestätigung gehört eine Markierung zum Exportumfang. Alles, was ausstehend bleibt, gilt nicht als endgültig.</li>
         <li><strong>Passt zu realen Prüfabläufen</strong>: Der zusätzliche Schritt passt zu Vier-Augen-Prüfung, Prüfprotokollen und hilft, ein versehentliches Löschen ganzer Seiten per Klick zu vermeiden.</li>
       </ul>
 
-      <h3 id="concepts-2-3">2.3 Regeln und KI auf dem Gerät</h3>
-      <table class="compare">
-        <thead>
-          <tr><th>Aspekt</th><th>Regel-Engine</th><th>KI auf dem Gerät</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Grundlage</td>
-            <td>Integrierte oder eigene Muster (Schlüsselwörter, Regex), gesteuert durch Region und Szenario.</td>
-            <td>Lokale ONNX-Modelle für semantische bzw. entitätsartige Erkennung; die Qualität hängt von Sprachen und Trainingsdaten ab.</td>
-          </tr>
-          <tr>
-            <td>Vorhersagbarkeit</td>
-            <td>Bei klaren Mustern ist das Verhalten stabil und leicht zu erklären.</td>
-            <td>Toleranter bei Layout und Formulierungen; Randfälle brauchen eine zweite Prüfung.</td>
-          </tr>
-          <tr>
-            <td>Typische Nutzung</td>
-            <td>Stark strukturierte Felder: IDs, Telefonnummern, E-Mails.</td>
-            <td>Freier Fließtext: Namen, Adressen, Organisationen ohne festes Format.</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>In der Praxis laufen sie oft <strong>zusammen</strong>. Die Prüfliste zeigt alles als Markierungen, und Sie entscheiden, was bestätigt wird.</p>
-
-      <h3 id="concepts-2-4">2.4 Die Basis für Stapelverarbeitung</h3>
+      <h3 id="concepts-2-4">2.3 Die Basis für Stapelverarbeitung</h3>
       <ul>
         <li>Es gibt <strong>keinen</strong> Ablauf „als benannte Vorlagendatei speichern und später auswählen“. Die Stapelverarbeitung nutzt eine <strong>geometrische Basis</strong> im Speicher: Wenn Sie über <strong>Auf mehrere Dateien anwenden</strong> in den Stapelmodus wechseln, wandelt die App jede <strong>bestätigte</strong> Markierung im aktuellen Dokument in ein <strong>normalisiertes Rechteck</strong> um (Seite + Koordinaten relativ zur Seitengröße), und zwar nur für <strong>diese Stapelsitzung</strong>.</li>
-        <li>Für <strong>jedes</strong> PDF in der Warteschlange setzt die Stapel-Engine <strong>nur diese Rechtecke</strong>. Sie führt <strong>keinen</strong> neuen vollständigen Regel- oder KI-Durchlauf pro Datei aus.</li>
+        <li>Für <strong>jedes</strong> PDF in der Warteschlange setzt die Stapel-Engine <strong>nur diese Rechtecke</strong>. Sie führt <strong>keinen</strong> neuen vollständigen Regeldurchlauf pro Datei aus.</li>
         <li><strong>Wann das passt</strong>: Mehrere Exporte aus demselben System mit <strong>gleichem Layout und sensiblen Bereichen an denselben Stellen</strong> (z. B. einheitliche Abrechnungen). Wenn Layouts abweichen, können Rahmen falsch landen; prüfen Sie die ersten Ausgaben stichprobenartig.</li>
         <li><strong>Regeln im Bereich</strong>: Sie helfen, Treffer im <strong>aktuellen</strong> Einzeldokument-Ablauf zu <strong>finden</strong>. Sie werden <strong>nicht</strong> automatisch für jede Datei in der Warteschlange erneut ausgeführt. Die Stapelverarbeitung nutzt die bereits festgelegten <strong>bestätigten Positionen</strong>.</li>
       </ul>
@@ -284,14 +258,14 @@
 
       <h3 id="workflow-step-c">Schritt C: Erkennung ausführen</h3>
       <p>Klicken Sie rechts unter der Scanrichtlinie auf <strong>Erkennung starten</strong> (oder die entsprechende Steuerung) und warten Sie, bis Dokumentmodell und vollständiger Durchlauf fertig sind.<br>
-      Regel- und KI-Treffer werden dadurch zu einer Liste <strong>ausstehender</strong> Markierungen. Wenn Sie Region, Szenario oder Regeln ändern, führen Sie die Erkennung erneut aus, damit die Liste dazu passt.</p>
+      Regeltreffer werden dadurch zu einer Liste <strong>ausstehender</strong> Markierungen. Wenn Sie Region, Szenario oder Regeln ändern, führen Sie die Erkennung erneut aus, damit die Liste dazu passt.</p>
 
       <h3 id="workflow-step-d">Schritt D: In der Prüfliste durchgehen</h3>
       <p>Gehen Sie im <strong>Prüfprotokoll</strong> rechts die Einträge einzeln durch oder verwenden Sie Filter. <strong>Bestätigen</strong> Sie, was entfernt werden muss; heben Sie die Bestätigung auf oder entfernen Sie Zeilen bei Fehlalarmen (die genauen Bedienelemente hängen vom Build ab). Die gelben Überlagerungen in der Vorschau bleiben normalerweise synchron; ein Klick kann den Bestätigungsstatus umschalten.<br>
       Dieser Schritt verhindert, dass Sie Falsches löschen oder Wichtiges übersehen. Der Export berücksichtigt nur <strong>bestätigte</strong> Markierungen.</p>
 
       <h3 id="workflow-step-e">Schritt E: Fehlende Stellen manuell markieren</h3>
-      <p>Ziehen Sie in der linken Vorschau Rechtecke über alles, was Regeln/KI nicht erkannt haben, das aber geschwärzt werden muss. Passen Sie bei unruhigem Hintergrund die Auswahlfarben an.<br>
+      <p>Ziehen Sie in der linken Vorschau Rechtecke über alles, was Regeln nicht erkannt haben, das aber geschwärzt werden muss. Passen Sie bei unruhigem Hintergrund die Auswahlfarben an.<br>
       Die automatische Erkennung findet nicht alles; manuelle Rahmen sind Ihr <strong>Sicherheitsnetz</strong>.</p>
 
       <h3 id="workflow-step-f">Schritt F: Exportieren</h3>
@@ -301,7 +275,7 @@
       <h3 id="workflow-step-g">Schritt G (optional): Auf mehrere Dateien anwenden</h3>
       <p>Nachdem in diesem PDF alles, was geschwärzt werden soll, <strong>bestätigt</strong> ist, verwenden Sie <strong>Auf mehrere Dateien anwenden</strong> (oder den entsprechenden Eintrag). Die App erstellt die oben beschriebene <strong>normalisierte Basis</strong> und öffnet die <strong>Stapel-Schwärzung</strong>. Fügen Sie weitere PDFs mit passendem Layout hinzu, wählen Sie einen Ausgabeordner, entscheiden Sie, ob Metadaten entfernt werden sollen, und starten Sie den Lauf.<br>
       Wenn die Layouts wirklich übereinstimmen, müssen Sie dieselben Bestätigungen nicht Datei für Datei wiederholen. Die Stapelverarbeitung <strong>entfernt</strong> die eingerahmten Bereiche weiterhin <strong>physisch</strong>.<br>
-      <strong>Wichtig</strong>: Das ist keine wiederverwendbare benannte Vorlage auf der Festplatte. Es gibt <strong>keine separate Vorlagendatei</strong>; die Basis stammt aus <strong>diesem</strong> bestätigten Dokument. Außerdem führt die Stapelverarbeitung Regeln/KI für Dateien in der Warteschlange <strong>nicht</strong> erneut aus. Wenn sich das Layout einer Datei geändert hat, gehen Sie zurück zum Einzeldokument-Ablauf.</p>
+      <strong>Wichtig</strong>: Das ist keine wiederverwendbare benannte Vorlage auf der Festplatte. Es gibt <strong>keine separate Vorlagendatei</strong>; die Basis stammt aus <strong>diesem</strong> bestätigten Dokument. Außerdem führt die Stapelverarbeitung die Regelerkennung für Dateien in der Warteschlange <strong>nicht</strong> erneut aus. Wenn sich das Layout einer Datei geändert hat, gehen Sie zurück zum Einzeldokument-Ablauf.</p>
     </section>
 
     <section id="main-ui">
@@ -347,7 +321,7 @@
         <li><strong>Mehr (⋯)</strong>: Sprache, Hilfe, Feedback, Updates, Info usw.</li>
       </ul>
 
-      <p>Die Statusleiste zeigt unter anderem Bereitschaft, aktuellen Dateinamen und ob die KI-Laufzeit auf dem Gerät bereit ist.</p>
+      <p>Die Statusleiste zeigt unter anderem Bereitschaft und den aktuellen Dateinamen.</p>
     </section>
 
     <section id="rules">
@@ -400,7 +374,7 @@
 
       <h3 id="manual-box-7-1">7.1 Wann eigene Rahmen sinnvoll sind</h3>
       <ul>
-        <li>Regeln und KI haben etwas <strong>übersehen</strong>, das entfernt werden muss: handschriftliche Fotoanmerkungen, ungewöhnliche Layoutbereiche usw.</li>
+        <li>Regeln haben etwas <strong>übersehen</strong>, das entfernt werden muss: handschriftliche Fotoanmerkungen, ungewöhnliche Layoutbereiche usw.</li>
         <li>Treffer sind <strong>zerstückelt</strong> oder <strong>verschoben</strong>: Entfernen Sie die schlechten automatischen Zeilen und zeichnen Sie einen engeren Rahmen.</li>
         <li><strong>Nur gescannte</strong> Inhalte werden als Bild behandelt: Das Verhalten unterscheidet sich von Text-PDFs; oft sind manuelle Rahmen nötig (siehe FAQ).</li>
       </ul>
@@ -452,8 +426,8 @@
       <h2>9. Stapelverarbeitung</h2>
 
       <h3 id="batch-9-1">9.1 Was der Stapelmodus tatsächlich macht</h3>
-      <p>Wenn Sie mit einer Basis über <strong>Auf mehrere Dateien anwenden</strong> einsteigen, folgt jedes PDF in der Warteschlange einem <strong>Nur-Stempeln</strong>-Pfad: Normalisierte Rechtecke werden pro Seite auf absolute Koordinaten abgebildet, Markierungen werden erstellt, Inhalt wird physisch entfernt, und Metadaten können optional bereinigt werden. Es führt <strong>keine</strong> Regel- oder KI-Erkennung pro Datei erneut aus.</p>
-      <div class="note">Die Regeln und die KI aus dem Einzeldokumentmodus helfen also, in der Vorlage zu <strong>finden</strong> und zu <strong>bestätigen</strong>. Die Stapelverarbeitung kopiert lediglich, <strong>wo Sie bestätigt haben</strong>, auf andere Dateien mit derselben Geometrie.</div>
+      <p>Wenn Sie mit einer Basis über <strong>Auf mehrere Dateien anwenden</strong> einsteigen, folgt jedes PDF in der Warteschlange einem <strong>Nur-Stempeln</strong>-Pfad: Normalisierte Rechtecke werden pro Seite auf absolute Koordinaten abgebildet, Markierungen werden erstellt, Inhalt wird physisch entfernt, und Metadaten können optional bereinigt werden. Es führt <strong>keine</strong> Regelerkennung pro Datei erneut aus.</p>
+      <div class="note">Die Regeln aus dem Einzeldokumentmodus helfen also, in der Vorlage zu <strong>finden</strong> und zu <strong>bestätigen</strong>. Die Stapelverarbeitung kopiert lediglich, <strong>wo Sie bestätigt haben</strong>, auf andere Dateien mit derselben Geometrie.</div>
 
       <h3 id="batch-9-2">9.2 Geeignete Anwendungsfälle</h3>
       <ul>
@@ -475,13 +449,13 @@
       <h2>10. Häufige Fragen</h2>
 
       <h3 id="faq-false-positives">10.1 Warum gibt es so viele Fehlalarme?</h3>
-      <p>Regeln und KI arbeiten mit Heuristiken: Zeichenfolgen, die sensibel <strong>aussehen</strong>, Ortsnamen, die mit Personennamen kollidieren, Tabellenfragmente usw. Szenario/Regeln feinabstimmen, eine laute Regel ausschalten oder Bestätigungen in der Liste aufheben bringt das meist unter Kontrolle. Die manuelle Bestätigung ist Absicht; sie senkt die Wahrscheinlichkeit, etwas Benötigtes per Klick zu löschen.</p>
+      <p>Der Regelabgleich nutzt Muster und Heuristiken: Zeichenfolgen, die sensibel <strong>aussehen</strong>, Ortsnamen, die mit Personennamen kollidieren, Tabellenfragmente usw. Szenario/Regeln feinabstimmen, eine laute Regel ausschalten oder Bestätigungen in der Liste aufheben bringt das meist unter Kontrolle. Die manuelle Bestätigung ist Absicht; sie senkt die Wahrscheinlichkeit, etwas Benötigtes per Klick zu löschen.</p>
 
       <h3 id="faq-scanned-pdf">10.2 Was ist mit gescannten PDFs?</h3>
-      <p>Wenn das PDF im Grunde ein Seitenbild ohne echte Textebene ist, haben Regeln und KI weniger Grundlage. Dann nutzen Sie eher <strong>manuelle Rahmen</strong> oder den rasterbezogenen Ablauf, den der Build anbietet (beachten Sie Hinweise auf dem Bildschirm). Es hilft, vorher zu wissen, ob es ein digital entstandenes PDF oder ein Scan ist.</p>
+      <p>Wenn das PDF im Grunde ein Seitenbild ohne echte Textebene ist, hat die Regelerkennung weniger Grundlage. Dann nutzen Sie eher <strong>manuelle Rahmen</strong> oder den rasterbezogenen Ablauf, den der Build anbietet (beachten Sie Hinweise auf dem Bildschirm). Es hilft, vorher zu wissen, ob es ein digital entstandenes PDF oder ein Scan ist.</p>
 
       <h3 id="faq-image-no-ocr">10.3 Kann ich Bilder schwärzen? Warum wird Text in Fotos nicht erkannt?</h3>
-      <p>Ja. Gängige Bildformate lassen sich wie ein Dokument öffnen; Sie sehen eine Vorschau, markieren und exportieren. Um Installationsgröße und Laufzeitkosten vernünftig zu halten, bringt diese Version <strong>kein OCR mit</strong>: Text in Fotos wird nicht auswählbar, daher greifen <strong>regelbasierte und KI-Text-Erkennung kaum</strong>. Schwärzen Sie sensible Bereiche, indem Sie <strong>Rahmen zeichnen</strong> (und Tastenkürzel nutzen, um zwischen Markierungen zu wechseln). Wenn Sie „erkennen und dann abgleichen“ brauchen, führen Sie OCR vorher anderswo aus oder liefern Sie ein PDF mit Textebene.</p>
+      <p>Ja. Gängige Bildformate lassen sich wie ein Dokument öffnen; Sie sehen eine Vorschau, markieren und exportieren. Um Installationsgröße und Laufzeitkosten vernünftig zu halten, bringt diese Version <strong>kein OCR mit</strong>: Text in Fotos wird nicht auswählbar, daher greift <strong>regelbasierte Erkennung kaum</strong>. Schwärzen Sie sensible Bereiche, indem Sie <strong>Rahmen zeichnen</strong> (und Tastenkürzel nutzen, um zwischen Markierungen zu wechseln). Wenn Sie „erkennen und dann abgleichen“ brauchen, führen Sie OCR vorher anderswo aus oder liefern Sie ein PDF mit Textebene.</p>
 
       <h3 id="faq-verify-export">10.4 Wie prüfe ich einen Export grob?</h3>
       <ul>

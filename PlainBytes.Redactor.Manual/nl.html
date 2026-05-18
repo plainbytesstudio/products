@@ -81,8 +81,7 @@
           <ul class="toc-sublist">
             <li><a href="#concepts-2-1">2.1 Redactiemarkeringen</a></li>
             <li><a href="#concepts-2-2">2.2 Wat “bevestigen” betekent</a></li>
-            <li><a href="#concepts-2-3">2.3 Regels vs. lokale AI</a></li>
-            <li><a href="#concepts-2-4">2.4 De batchbasis</a></li>
+            <li><a href="#concepts-2-4">2.3 De batchbasis</a></li>
           </ul>
         </details>
         <details class="toc-chapter">
@@ -195,7 +194,7 @@
 
       <h3 id="positioning-1-2">1.2 Wat we bedoelen met “lokaal en offline”</h3>
       <ul>
-        <li><strong>Het werk blijft op deze pc</strong>: het openen van de PDF, regelmatching, optionele lokale AI, het schrijven van het geredigeerde bestand en validatie gebeuren allemaal lokaal.</li>
+        <li><strong>Het werk blijft op deze pc</strong>: het openen van de PDF, regelmatching, het schrijven van het geredigeerde bestand en validatie gebeuren allemaal lokaal.</li>
         <li><strong>Geen documentupload voor redactie</strong>: het product is niet ontworpen om uw bestanden als onderdeel van de redactiepijplijn naar de cloud te sturen.</li>
         <li><strong>Los van Help en updates</strong>: wanneer u Help, Controleren op updates of vergelijkbare menu-items opent, kan Windows uw browser of de Microsoft Store starten. Dat staat los van het offline houden van het redactiepad.</li>
       </ul>
@@ -216,46 +215,21 @@
       <ul>
         <li><strong>Pagina en rechthoek</strong>: positie en grootte in PDF-coördinaten.</li>
         <li><strong>Status</strong>: <strong>in behandeling</strong> of <strong>bevestigd</strong>. Alleen <strong>bevestigde</strong> markeringen worden bij export verwijderd.</li>
-        <li><strong>Bron</strong>: <strong>regels (patronen/regex)</strong>, <strong>AI</strong> of <strong>handmatige selectie</strong>, zodat u automatische treffers kunt onderscheiden van wat u zelf hebt getekend.</li>
+        <li><strong>Bron</strong>: <strong>regels (patronen/regex)</strong> of <strong>handmatige selectie</strong>, zodat u automatische treffers kunt onderscheiden van wat u zelf hebt getekend.</li>
         <li><strong>Categorie en risico</strong>: gebruikt om te filteren, sorteren en bulkacties uit te voeren in de auditlijst.</li>
       </ul>
 
       <h3 id="concepts-2-2">2.2 Wat “bevestigen” betekent en waarom dit handmatig is</h3>
       <ul>
-        <li><strong>Automatisering beslist niet definitief</strong>: regels en AI kunnen normale tekst <strong>te vaak markeren</strong> of echte gevoelige gegevens <strong>missen</strong>. De app gaat dus nooit uit van “alles wat gevonden is moet weg”.</li>
+        <li><strong>Automatisering beslist niet definitief</strong>: regelmatching kan normale tekst <strong>te vaak markeren</strong> of echte gevoelige gegevens <strong>missen</strong>. De app gaat dus nooit uit van “alles wat gevonden is moet weg”.</li>
         <li><strong>Bevestigen = goedkeuren na controle</strong>: zodra een markering is bevestigd, wordt die opgenomen in de exportset; alles wat in behandeling blijft, geldt niet als definitief.</li>
         <li><strong>Past bij echte controleprocessen</strong>: deze extra stap sluit aan op vierogencontrole, auditsporen en voorkomt dat per ongeluk met één klik een hele pagina wordt gewist.</li>
       </ul>
 
-      <h3 id="concepts-2-3">2.3 Regels vs. lokale AI</h3>
-      <table class="compare">
-        <thead>
-          <tr><th>Aspect</th><th>Regelengine</th><th>Lokale AI</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Basis</td>
-            <td>Ingebouwde of aangepaste patronen (trefwoorden, regex), bepaald door uw regio- en scenario-instellingen.</td>
-            <td>Lokale ONNX-modellen voor semantische of entiteitsdetectie; kwaliteit hangt af van talen en trainingsdata.</td>
-          </tr>
-          <tr>
-            <td>Voorspelbaarheid</td>
-            <td>Wanneer patronen duidelijk zijn, is het gedrag stabiel en makkelijk uit te leggen.</td>
-            <td>Flexibeler met lay-out en formulering; randgevallen vragen om een extra controle.</td>
-          </tr>
-          <tr>
-            <td>Typisch gebruik</td>
-            <td>Sterk gestructureerde velden: id’s, telefoonnummers, e-mails.</td>
-            <td>Minder strak gestructureerde lopende tekst: namen, adressen, organisaties zonder vast formaat.</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>In de praktijk draaien ze vaak <strong>samen</strong>; de auditlijst toont alles als markeringen, en u kiest wat u bevestigt.</p>
-
-      <h3 id="concepts-2-4">2.4 De batchbasis</h3>
+      <h3 id="concepts-2-4">2.3 De batchbasis</h3>
       <ul>
         <li>Er is <strong>geen</strong> workflow om “dit als benoemd sjabloonbestand op te slaan en later te kiezen”. Batch gebruikt een <strong>geometrische basis</strong> in het geheugen: wanneer u via <strong>Toepassen op meerdere bestanden</strong> naar batch gaat, zet de app elke <strong>bevestigde</strong> markering in het huidige document om in een <strong>genormaliseerde rechthoek</strong> (pagina + coördinaten relatief aan de paginagrootte), alleen voor <strong>die batchsessie</strong>.</li>
-        <li>Voor <strong>elke</strong> PDF in de wachtrij past de batchengine <strong>alleen die rechthoeken toe</strong>: er wordt <strong>geen</strong> nieuwe volledige regel- of AI-analyse per bestand uitgevoerd.</li>
+        <li>Voor <strong>elke</strong> PDF in de wachtrij past de batchengine <strong>alleen die rechthoeken toe</strong>: er wordt <strong>geen</strong> nieuwe volledige regeldetectie per bestand uitgevoerd.</li>
         <li><strong>Wanneer dat werkt</strong>: meerdere exports uit hetzelfde systeem met <strong>dezelfde lay-out en gevoelige gebieden op dezelfde plekken</strong> (bijvoorbeeld uniforme overzichten). Als de lay-out verschuift, kunnen kaders verkeerd terechtkomen: controleer de eerste uitvoer steekproefsgewijs.</li>
         <li><strong>Regels in het centrum</strong>: ze helpen treffers te <strong>vinden</strong> in de <strong>huidige</strong> workflow voor één bestand; ze worden <strong>niet</strong> automatisch opnieuw uitgevoerd voor elk bestand in de wachtrij. Batch gebruikt de <strong>bevestigde posities</strong> die u al hebt vastgelegd.</li>
       </ul>
@@ -284,14 +258,14 @@
 
       <h3 id="workflow-step-c">Stap C: detectie uitvoeren</h3>
       <p>Klik rechts onder scanbeleid op <strong>Detectie starten</strong> (of de gelijkwaardige knop) en wacht tot het documentmodel en de volledige analyse klaar zijn.<br>
-      De treffers van regels en lokale AI worden dan een lijst met <strong>markeringen in behandeling</strong>. Als u regio, scenario of regels wijzigt, voer detectie dan opnieuw uit zodat de lijst klopt.</p>
+      Regeltreffers worden dan een lijst met <strong>markeringen in behandeling</strong>. Als u regio, scenario of regels wijzigt, voer detectie dan opnieuw uit zodat de lijst klopt.</p>
 
       <h3 id="workflow-step-d">Stap D: controleren in de auditlijst</h3>
       <p>Loop in de <strong>auditlijst</strong> rechts de items één voor één na of gebruik filters. <strong>Bevestig</strong> wat weg moet; haal de bevestiging weg of verwijder rijen bij fout-positieven (de exacte bediening hangt af van de versie). Gele overlays in de voorbeeldweergave blijven meestal synchroon: klikken kan de bevestigingsstatus wisselen.<br>
       Deze stap voorkomt dat u het verkeerde verwijdert of iets laat staan; export gebruikt alleen <strong>bevestigde</strong> markeringen.</p>
 
       <h3 id="workflow-step-e">Stap E: kaders tekenen voor gemiste inhoud</h3>
-      <p>Sleep rechthoeken in de voorbeeldweergave links over alles wat regels/AI niet vonden, maar waarvan u weet dat het geredigeerd moet worden. Pas selectiekleuren aan als dat helpt op drukke achtergronden.<br>
+      <p>Sleep rechthoeken in de voorbeeldweergave links over alles wat regels niet vonden, maar waarvan u weet dat het geredigeerd moet worden. Pas selectiekleuren aan als dat helpt op drukke achtergronden.<br>
       Automatische detectie vindt niet alles; handmatige kaders zijn uw <strong>veiligheidsnet</strong>.</p>
 
       <h3 id="workflow-step-f">Stap F: exporteren</h3>
@@ -301,7 +275,7 @@
       <h3 id="workflow-step-g">Stap G (optioneel): toepassen op meer bestanden</h3>
       <p>Nadat alles wat geredigeerd moet worden in deze PDF <strong>bevestigd</strong> is, gebruikt u <strong>Toepassen op meerdere bestanden</strong> (of de gelijkwaardige ingang). De app bouwt de hierboven beschreven <strong>genormaliseerde basis</strong> en opent <strong>batchredactie</strong>. Voeg meer PDF’s met dezelfde lay-out toe, stel een uitvoermap in, kies of metadata moeten worden verwijderd en start.<br>
       Als lay-outs echt overeenkomen, hoeft u dezelfde bevestigingen niet bestand voor bestand opnieuw te doen; batch <strong>verwijdert fysiek</strong> nog steeds de omkaderde gebieden.<br>
-      <strong>Belangrijk</strong>: dit is geen herbruikbaar benoemd sjabloon op schijf. Er is <strong>geen apart sjabloonbestand</strong>; de basis komt uit <strong>dit</strong> bevestigde document. Batch voert ook <strong>geen</strong> regels/AI opnieuw uit per bestand in de wachtrij. Als de lay-out van een bestand is veranderd, ga dan terug naar de workflow voor één bestand.</p>
+      <strong>Belangrijk</strong>: dit is geen herbruikbaar benoemd sjabloon op schijf. Er is <strong>geen apart sjabloonbestand</strong>; de basis komt uit <strong>dit</strong> bevestigde document. Batch voert ook <strong>geen</strong> regeldetectie opnieuw uit per bestand in de wachtrij. Als de lay-out van een bestand is veranderd, ga dan terug naar de workflow voor één bestand.</p>
     </section>
 
     <section id="main-ui">
@@ -347,7 +321,7 @@
         <li><strong>Meer (⋯)</strong>: taal, Help, feedback, updates, Over, enz.</li>
       </ul>
 
-      <p>De statusbalk toont onder meer of de app gereed is, de huidige bestandsnaam en of de lokale AI-runtime klaar is.</p>
+      <p>De statusbalk toont onder meer of de app gereed is en de huidige bestandsnaam.</p>
     </section>
 
     <section id="rules">
@@ -400,7 +374,7 @@
 
       <h3 id="manual-box-7-1">7.1 Wanneer u zelf kaders tekent</h3>
       <ul>
-        <li>Regels en AI hebben iets <strong>gemist</strong> waarvan u weet dat het weg moet: handgeschreven foto-aantekeningen, afwijkende lay-outzones, enz.</li>
+        <li>Regels hebben iets <strong>gemist</strong> waarvan u weet dat het weg moet: handgeschreven foto-aantekeningen, afwijkende lay-outzones, enz.</li>
         <li>Treffers zijn <strong>gefragmenteerd</strong> of <strong>verkeerd uitgelijnd</strong>: verwijder de slechte automatische rijen en teken een strakker kader.</li>
         <li><strong>Alleen gescande</strong> inhoud die als afbeelding wordt behandeld: gedrag verschilt van tekst-PDF’s; vaak gebruikt u handmatige kaders (zie veelgestelde vragen).</li>
       </ul>
@@ -452,8 +426,8 @@
       <h2>9. Batchverwerking</h2>
 
       <h3 id="batch-9-1">9.1 Wat de batchmodus echt doet</h3>
-      <p>Nadat u via <strong>Toepassen op meerdere bestanden</strong> met een basis binnenkomt, volgt elke PDF in de wachtrij een pad waarbij <strong>alleen rechthoeken worden toegepast</strong>: genormaliseerde rechthoeken worden per pagina omgezet naar absolute coördinaten, markeringen worden gemaakt, inhoud wordt fysiek verwijderd en metadata kan optioneel worden gewist. Er wordt <strong>geen</strong> regeldetectie of AI opnieuw per bestand uitgevoerd.</p>
-      <div class="note">De regels en AI die u in de modus voor één bestand gebruikte, hielpen dus om op het sjabloon te <strong>vinden</strong> en te <strong>bevestigen</strong>; batch kopieert simpelweg <strong>waar u bevestigde</strong> naar andere bestanden met dezelfde geometrie.</div>
+      <p>Nadat u via <strong>Toepassen op meerdere bestanden</strong> met een basis binnenkomt, volgt elke PDF in de wachtrij een pad waarbij <strong>alleen rechthoeken worden toegepast</strong>: genormaliseerde rechthoeken worden per pagina omgezet naar absolute coördinaten, markeringen worden gemaakt, inhoud wordt fysiek verwijderd en metadata kan optioneel worden gewist. Er wordt <strong>geen</strong> regeldetectie opnieuw per bestand uitgevoerd.</p>
+      <div class="note">De regels die u in de modus voor één bestand gebruikte, hielpen dus om op het sjabloon te <strong>vinden</strong> en te <strong>bevestigen</strong>; batch kopieert simpelweg <strong>waar u bevestigde</strong> naar andere bestanden met dezelfde geometrie.</div>
 
       <h3 id="batch-9-2">9.2 Geschikte toepassingen</h3>
       <ul>
@@ -475,13 +449,13 @@
       <h2>10. Veelgestelde vragen</h2>
 
       <h3 id="faq-false-positives">10.1 Waarom zijn er zoveel fout-positieven?</h3>
-      <p>Regels en AI gebruiken heuristiek: tekenreeksen die <strong>gevoelig lijken</strong>, plaatsnamen die botsen met persoonsnamen, tabelfragmenten, enzovoort. Scenario/regels bijstellen, een ruisende regel uitzetten of bevestiging in de lijst wissen krijgt dit meestal onder controle. Handmatige bevestiging is bewust: het verkleint de kans dat u met één klik iets verwijdert dat u nog nodig hebt.</p>
+      <p>Regelmatching gebruikt heuristiek: tekenreeksen die <strong>gevoelig lijken</strong>, plaatsnamen die botsen met persoonsnamen, tabelfragmenten, enzovoort. Scenario/regels bijstellen, een ruisende regel uitzetten of bevestiging in de lijst wissen krijgt dit meestal onder controle. Handmatige bevestiging is bewust: het verkleint de kans dat u met één klik iets verwijdert dat u nog nodig hebt.</p>
 
       <h3 id="faq-scanned-pdf">10.2 Hoe zit het met gescande PDF’s?</h3>
-      <p>Als de PDF eigenlijk een pagina-afbeelding is zonder echte tekstlaag, hebben regels en AI minder om mee te werken. U zult dan vaker <strong>handmatige kaders</strong> gebruiken of de raster-specifieke workflow die de versie biedt (volg de aanwijzingen op het scherm). Het helpt om vooraf te weten of u met een digitaal geboren PDF of een scan werkt.</p>
+      <p>Als de PDF eigenlijk een pagina-afbeelding is zonder echte tekstlaag, heeft regeldetectie minder om mee te werken. U zult dan vaker <strong>handmatige kaders</strong> gebruiken of de raster-specifieke workflow die de versie biedt (volg de aanwijzingen op het scherm). Het helpt om vooraf te weten of u met een digitaal geboren PDF of een scan werkt.</p>
 
       <h3 id="faq-image-no-ocr">10.3 Kan ik afbeeldingen redigeren? Waarom wordt tekst in foto’s niet herkend?</h3>
-      <p>Ja. Gangbare afbeeldingsformaten kunnen als document worden geopend; u blijft voorbeeldweergave, markeren en exporteren gebruiken. Om installatiegrootte en runtimekosten redelijk te houden, bevat deze versie <strong>geen OCR</strong>: tekst in foto’s wordt niet selecteerbaar, waardoor <strong>regelgebaseerde en AI-tekstdetectie nauwelijks van toepassing zijn</strong>. Redigeer gevoelige gebieden door <strong>kaders te tekenen</strong> (en gebruik sneltoetsen om tussen markeringen te bewegen). Als u “herkennen en daarna matchen” nodig hebt, voer dan eerst elders OCR uit of lever een PDF met tekstlaag aan.</p>
+      <p>Ja. Gangbare afbeeldingsformaten kunnen als document worden geopend; u blijft voorbeeldweergave, markeren en exporteren gebruiken. Om installatiegrootte en runtimekosten redelijk te houden, bevat deze versie <strong>geen OCR</strong>: tekst in foto’s wordt niet selecteerbaar, waardoor <strong>regelgebaseerde detectie nauwelijks van toepassing zijn</strong>. Redigeer gevoelige gebieden door <strong>kaders te tekenen</strong> (en gebruik sneltoetsen om tussen markeringen te bewegen). Als u “herkennen en daarna matchen” nodig hebt, voer dan eerst elders OCR uit of lever een PDF met tekstlaag aan.</p>
 
       <h3 id="faq-verify-export">10.4 Hoe controleer ik een export snel?</h3>
       <ul>

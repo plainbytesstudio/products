@@ -81,8 +81,7 @@
           <ul class="toc-sublist">
             <li><a href="#concepts-2-1">2.1 Marcature di redazione</a></li>
             <li><a href="#concepts-2-2">2.2 Cosa significa “confermare”</a></li>
-            <li><a href="#concepts-2-3">2.3 Regole vs IA locale</a></li>
-            <li><a href="#concepts-2-4">2.4 La base geometrica per il batch</a></li>
+            <li><a href="#concepts-2-4">2.3 La base geometrica per il batch</a></li>
           </ul>
         </details>
         <details class="toc-chapter">
@@ -195,7 +194,7 @@
 
       <h3 id="positioning-1-2">1.2 Cosa intendiamo per “locale e offline”</h3>
       <ul>
-        <li><strong>Il lavoro resta su questo PC</strong>: apertura del PDF, corrispondenza delle regole, IA locale facoltativa, scrittura del file redatto e convalida avvengono in locale.</li>
+        <li><strong>Il lavoro resta su questo PC</strong>: apertura del PDF, corrispondenza delle regole, scrittura del file redatto e convalida avvengono in locale.</li>
         <li><strong>Nessun caricamento del documento per la redazione</strong>: il prodotto non è progettato per inviare i vostri file al cloud durante il flusso di redazione.</li>
         <li><strong>Da distinguere da guida e aggiornamenti</strong>: quando aprite Guida, Controlla aggiornamenti o voci simili, Windows può avviare il browser o Microsoft Store. Questo è separato dal mantenere offline il percorso di redazione.</li>
       </ul>
@@ -216,46 +215,21 @@
       <ul>
         <li><strong>Pagina e rettangolo</strong>: posizione e dimensioni nelle coordinate del PDF.</li>
         <li><strong>Stato</strong>: <strong>in sospeso</strong> o <strong>confermata</strong>. Solo le marcature <strong>confermate</strong> vengono rimosse all’esportazione.</li>
-        <li><strong>Origine</strong>: <strong>regole (pattern/regex)</strong>, <strong>IA</strong> o <strong>selezione manuale</strong>, per distinguere i risultati automatici dai riquadri tracciati a mano.</li>
+        <li><strong>Origine</strong>: <strong>regole (pattern/regex)</strong> o <strong>selezione manuale</strong>, per distinguere i risultati automatici dai riquadri tracciati a mano.</li>
         <li><strong>Categoria e rischio</strong>: usati per filtrare, ordinare e applicare azioni in blocco nell’elenco di audit.</li>
       </ul>
 
       <h3 id="concepts-2-2">2.2 Cosa significa “confermare” e perché è manuale</h3>
       <ul>
-        <li><strong>L’automazione non decide da sola</strong>: sia le regole sia l’IA possono <strong>segnalare troppo</strong> testo normale o <strong>mancare</strong> dati sensibili reali. L’app quindi non presume mai che “tutto ciò che è stato trovato vada eliminato”.</li>
+        <li><strong>L’automazione non decide da sola</strong>: la corrispondenza delle regole può <strong>segnalare troppo</strong> testo normale o <strong>mancare</strong> dati sensibili reali. L’app quindi non presume mai che “tutto ciò che è stato trovato vada eliminato”.</li>
         <li><strong>Confermare = approvare dopo la revisione</strong>: una volta confermata, la marcatura entra nell’insieme da esportare; ciò che resta in sospeso non viene trattato come definitivo.</li>
         <li><strong>Allineato alla revisione reale</strong>: questo passaggio aggiuntivo rispecchia controlli a due persone, tracciabilità di audit ed evita di cancellare per errore un’intera pagina con un clic.</li>
       </ul>
 
-      <h3 id="concepts-2-3">2.3 Regole vs IA locale</h3>
-      <table class="compare">
-        <thead>
-          <tr><th>Aspetto</th><th>Motore di regole</th><th>IA locale</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Base</td>
-            <td>Pattern integrati o personalizzati (parole chiave, regex), guidati dalle impostazioni di area e scenario.</td>
-            <td>Modelli ONNX locali per rilevamento semantico o di entità; la qualità dipende da lingue e dati di addestramento.</td>
-          </tr>
-          <tr>
-            <td>Prevedibilità</td>
-            <td>Quando i pattern sono chiari, il comportamento è stabile e facile da spiegare.</td>
-            <td>Più flessibile con impaginazione e formulazioni; i casi limite richiedono una seconda verifica.</td>
-          </tr>
-          <tr>
-            <td>Uso tipico</td>
-            <td>Campi molto strutturati: ID, telefoni, e-mail.</td>
-            <td>Testo narrativo meno strutturato: nomi, indirizzi, organizzazioni senza formato fisso.</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>In pratica spesso <strong>girano insieme</strong>; l’elenco di audit mostra tutto come marcature, e voi scegliete cosa confermare.</p>
-
-      <h3 id="concepts-2-4">2.4 La base geometrica per il batch</h3>
+      <h3 id="concepts-2-4">2.3 La base geometrica per il batch</h3>
       <ul>
         <li>Non esiste un flusso del tipo “salva come modello nominato e sceglilo più tardi”. Il batch usa una <strong>base geometrica</strong> in memoria: quando si passa al batch tramite <strong>Applica a più file</strong>, l’app trasforma ogni marcatura <strong>confermata</strong> del documento corrente in un <strong>rettangolo normalizzato</strong> (pagina + coordinate relative alla dimensione della pagina), solo per <strong>quella sessione batch</strong>.</li>
-        <li>Per <strong>ogni</strong> PDF in coda, il motore batch <strong>applica solo quei rettangoli</strong>: non esegue <strong>né</strong> un nuovo passaggio completo di regole né un passaggio IA per ogni file.</li>
+        <li>Per <strong>ogni</strong> PDF in coda, il motore batch <strong>applica solo quei rettangoli</strong>: non esegue <strong>un nuovo passaggio completo di regole per ogni file.</li>
         <li><strong>Quando va bene</strong>: più esportazioni dallo stesso sistema con la <strong>stessa impaginazione e le aree sensibili negli stessi punti</strong> (per esempio estratti uniformi). Se l’impaginazione cambia, i riquadri possono finire nel punto sbagliato: controllate i primi risultati.</li>
         <li><strong>Regole nel centro</strong>: aiutano a <strong>trovare</strong> corrispondenze nel flusso a file singolo <strong>corrente</strong>; non vengono rieseguite automaticamente per ogni file in coda. Il batch usa le <strong>posizioni confermate</strong> che avete già fissato.</li>
       </ul>
@@ -284,14 +258,14 @@
 
       <h3 id="workflow-step-c">Passaggio C: avviare il rilevamento</h3>
       <p>A destra, nella strategia di scansione, fate clic su <strong>Avvia rilevamento</strong> (o sul controllo equivalente) e attendete che il modello del documento e l’analisi completa finiscano.<br>
-      I risultati di regole e IA locale diventano un elenco di marcature <strong>in sospeso</strong>. Se cambiate area, scenario o regole, avviate di nuovo il rilevamento per aggiornare l’elenco.</p>
+      I risultati delle regole diventano un elenco di marcature <strong>in sospeso</strong>. Se cambiate area, scenario o regole, avviate di nuovo il rilevamento per aggiornare l’elenco.</p>
 
       <h3 id="workflow-step-d">Passaggio D: controllare nell’elenco di audit</h3>
       <p>Nel <strong>tracciato di audit</strong> a destra, esaminate gli elementi uno per uno o usate i filtri. <strong>Confermate</strong> ciò che deve sparire; annullate la conferma o rimuovete le righe per i falsi positivi (i controlli esatti dipendono dalla versione). Le sovrapposizioni gialle nell’anteprima di solito restano sincronizzate: un clic può cambiare lo stato di conferma.<br>
       Questo passaggio evita di eliminare la cosa sbagliata o lasciare dati indietro; l’esportazione considera solo le marcature <strong>confermate</strong>.</p>
 
       <h3 id="workflow-step-e">Passaggio E: tracciare riquadri per ciò che manca</h3>
-      <p>Trascinate rettangoli nell’anteprima a sinistra su ciò che regole o IA non hanno trovato, ma che sapete debba essere redatto. Regolate i colori della selezione se aiuta su sfondi complessi.<br>
+      <p>Trascinate rettangoli nell’anteprima a sinistra su ciò che regole non hanno trovato, ma che sapete debba essere redatto. Regolate i colori della selezione se aiuta su sfondi complessi.<br>
       Il rilevamento automatico non trova tutto; i riquadri manuali sono la vostra <strong>rete di sicurezza</strong>.</p>
 
       <h3 id="workflow-step-f">Passaggio F: esportare</h3>
@@ -301,7 +275,7 @@
       <h3 id="workflow-step-g">Passaggio G (facoltativo): applicare ad altri file</h3>
       <p>Dopo aver <strong>confermato</strong> in questo PDF tutto ciò che deve essere redatto, usate <strong>Applica a più file</strong> (o la voce equivalente). L’app costruisce la <strong>base normalizzata</strong> descritta sopra e apre la <strong>redazione batch</strong>. Aggiungete altri PDF con la stessa impaginazione, impostate una cartella di output, scegliete se rimuovere i metadati e avviate.<br>
       Quando le impaginazioni coincidono davvero, evitate di rifare le stesse conferme file per file; il batch <strong>rimuove fisicamente</strong> comunque le aree nei riquadri.<br>
-      <strong>Importante</strong>: non è un modello nominato riutilizzabile su disco. Non esiste un <strong>file modello separato</strong>; la base deriva da <strong>questo</strong> documento confermato. Il batch inoltre <strong>non</strong> riesegue regole o IA per ogni file in coda. Se l’impaginazione di un file è cambiata, tornate al flusso a file singolo.</p>
+      <strong>Importante</strong>: non è un modello nominato riutilizzabile su disco. Non esiste un <strong>file modello separato</strong>; la base deriva da <strong>questo</strong> documento confermato. Il batch inoltre <strong>non</strong> riesegue il rilevamento regole per ogni file in coda. Se l’impaginazione di un file è cambiata, tornate al flusso a file singolo.</p>
     </section>
 
     <section id="main-ui">
@@ -347,7 +321,7 @@
         <li><strong>Altro (⋯)</strong>: lingua, guida, feedback, aggiornamenti, informazioni e così via.</li>
       </ul>
 
-      <p>La barra di stato mostra, tra le altre indicazioni, se l’app è pronta, il nome del file corrente e se il runtime di IA locale è disponibile.</p>
+      <p>La barra di stato mostra, tra le altre indicazioni, se l’app è pronta e il nome del file corrente.</p>
     </section>
 
     <section id="rules">
@@ -400,7 +374,7 @@
 
       <h3 id="manual-box-7-1">7.1 Quando tracciare riquadri manuali</h3>
       <ul>
-        <li>Regole e IA hanno <strong>mancato</strong> qualcosa che sapete di dover rimuovere: annotazioni manoscritte in foto, aree con layout insolito, ecc.</li>
+        <li>Le regole hanno <strong>mancato</strong> qualcosa che sapete di dover rimuovere: annotazioni manoscritte in foto, aree con layout insolito, ecc.</li>
         <li>I risultati sono <strong>frammentati</strong> o <strong>disallineati</strong>: rimuovete le righe automatiche errate e tracciate un riquadro più preciso.</li>
         <li>Contenuto <strong>solo scansionato</strong> trattato come immagine: il comportamento differisce dai PDF testuali; spesso userete riquadri manuali (vedere le FAQ).</li>
       </ul>
@@ -452,8 +426,8 @@
       <h2>9. Elaborazione batch</h2>
 
       <h3 id="batch-9-1">9.1 Cosa fa davvero la modalità batch</h3>
-      <p>Dopo l’accesso tramite <strong>Applica a più file</strong> con una base, ogni PDF in coda segue un percorso <strong>solo a rettangoli</strong>: i rettangoli normalizzati vengono convertiti in coordinate assolute per pagina, le marcature vengono create, il contenuto viene rimosso fisicamente e i metadati possono essere puliti opzionalmente. Non esegue <strong>di nuovo</strong> il rilevamento regole o IA per ogni file.</p>
-      <div class="note">Le regole e l’IA usate in modalità file singolo vi hanno quindi aiutato a <strong>trovare</strong> e <strong>confermare</strong> sul modello; il batch copia semplicemente <strong>le posizioni confermate</strong> sugli altri file con la stessa geometria.</div>
+      <p>Dopo l’accesso tramite <strong>Applica a più file</strong> con una base, ogni PDF in coda segue un percorso <strong>solo a rettangoli</strong>: i rettangoli normalizzati vengono convertiti in coordinate assolute per pagina, le marcature vengono create, il contenuto viene rimosso fisicamente e i metadati possono essere puliti opzionalmente. Non esegue <strong>di nuovo</strong> il rilevamento regole per ogni file.</p>
+      <div class="note">Le regole usate in modalità file singolo vi hanno quindi aiutato a <strong>trovare</strong> e <strong>confermare</strong> sul modello; il batch copia semplicemente <strong>le posizioni confermate</strong> sugli altri file con la stessa geometria.</div>
 
       <h3 id="batch-9-2">9.2 Casi d’uso adatti</h3>
       <ul>
@@ -475,13 +449,13 @@
       <h2>10. Domande frequenti</h2>
 
       <h3 id="faq-false-positives">10.1 Perché ci sono così tanti falsi positivi?</h3>
-      <p>Sia le regole sia l’IA usano euristiche: stringhe che <strong>sembrano</strong> sensibili, nomi di luoghi confusi con nomi di persone, frammenti di tabella e così via. Regolare scenario/regole, disattivare una regola rumorosa o annullare la conferma nell’elenco di solito basta a controllare il problema. La conferma manuale è intenzionale: riduce il rischio di eliminare con un clic qualcosa che serve ancora.</p>
+      <p>La corrispondenza delle regole usa euristiche: stringhe che <strong>sembrano</strong> sensibili, nomi di luoghi confusi con nomi di persone, frammenti di tabella e così via. Regolare scenario/regole, disattivare una regola rumorosa o annullare la conferma nell’elenco di solito basta a controllare il problema. La conferma manuale è intenzionale: riduce il rischio di eliminare con un clic qualcosa che serve ancora.</p>
 
       <h3 id="faq-scanned-pdf">10.2 E i PDF scansionati?</h3>
-      <p>Se il PDF è di fatto un’immagine di pagina senza un vero livello di testo, regole e IA hanno meno materiale su cui lavorare; userete quindi più spesso i <strong>riquadri manuali</strong> o il flusso specifico per raster esposto dalla versione (seguite i suggerimenti a schermo). È utile capire subito se si tratta di un PDF nato digitale o di una scansione.</p>
+      <p>Se il PDF è di fatto un’immagine di pagina senza un vero livello di testo, il rilevamento regole ha meno materiale su cui lavorare; userete quindi più spesso i <strong>riquadri manuali</strong> o il flusso specifico per raster esposto dalla versione (seguite i suggerimenti a schermo). È utile capire subito se si tratta di un PDF nato digitale o di una scansione.</p>
 
       <h3 id="faq-image-no-ocr">10.3 Posso redigere immagini? Perché il testo nelle foto non viene riconosciuto?</h3>
-      <p>Sì. I formati immagine comuni possono essere aperti come documenti; continuerete a usare anteprima, marcature ed esportazione. Per mantenere ragionevoli dimensioni dell’installer e costo di esecuzione, questa versione <strong>non include OCR</strong>: il testo nelle foto non diventa selezionabile, quindi la <strong>rilevazione testuale basata su regole o IA si applica pochissimo</strong>. Redigete le aree sensibili <strong>tracciando riquadri</strong> (e usando le scorciatoie da tastiera per spostarvi tra le marcature). Se vi serve “riconoscere e poi confrontare”, eseguite prima l’OCR altrove o fornite un PDF con livello di testo.</p>
+      <p>Sì. I formati immagine comuni possono essere aperti come documenti; continuerete a usare anteprima, marcature ed esportazione. Per mantenere ragionevoli dimensioni dell’installer e costo di esecuzione, questa versione <strong>non include OCR</strong>: il testo nelle foto non diventa selezionabile, quindi la <strong>rilevazione basata su regole si applica pochissimo</strong>. Redigete le aree sensibili <strong>tracciando riquadri</strong> (e usando le scorciatoie da tastiera per spostarvi tra le marcature). Se vi serve “riconoscere e poi confrontare”, eseguite prima l’OCR altrove o fornite un PDF con livello di testo.</p>
 
       <h3 id="faq-verify-export">10.4 Come controllare rapidamente un’esportazione?</h3>
       <ul>

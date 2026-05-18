@@ -81,8 +81,7 @@
           <ul class="toc-sublist">
             <li><a href="#concepts-2-1">2.1 Marques de caviardage</a></li>
             <li><a href="#concepts-2-2">2.2 Ce que signifie « confirmer »</a></li>
-            <li><a href="#concepts-2-3">2.3 Règles vs IA locale</a></li>
-            <li><a href="#concepts-2-4">2.4 Le repère de traitement par lot</a></li>
+            <li><a href="#concepts-2-4">2.3 Le repère de traitement par lot</a></li>
           </ul>
         </details>
         <details class="toc-chapter">
@@ -195,7 +194,7 @@
 
       <h3 id="positioning-1-2">1.2 Ce que signifie « local et hors ligne »</h3>
       <ul>
-        <li><strong>Le travail reste sur ce PC</strong> : ouverture du PDF, correspondance des règles, IA locale facultative, écriture du fichier caviardé et validation s’exécutent localement.</li>
+        <li><strong>Le travail reste sur ce PC</strong> : ouverture du PDF, correspondance des règles, écriture du fichier caviardé et validation s’exécutent localement.</li>
         <li><strong>Aucun téléversement de document pour le caviardage</strong> : le produit n’est pas conçu pour envoyer vos fichiers vers le cloud dans le cadre du traitement de caviardage.</li>
         <li><strong>À distinguer de l’aide et des mises à jour</strong> : lorsque vous ouvrez l’aide, la recherche de mises à jour ou des menus similaires, Windows peut lancer votre navigateur ou le Microsoft Store. Cela ne remet pas en cause le traitement de caviardage hors ligne.</li>
       </ul>
@@ -216,46 +215,21 @@
       <ul>
         <li><strong>Page et rectangle</strong> : position et taille dans les coordonnées du PDF.</li>
         <li><strong>État</strong> : <strong>en attente</strong> ou <strong>confirmée</strong>. Seules les marques <strong>confirmées</strong> sont supprimées lors de l’export.</li>
-        <li><strong>Source</strong> : <strong>règles (motifs/regex)</strong>, <strong>IA</strong> ou <strong>sélection manuelle</strong>, afin de distinguer les détections automatiques de ce que vous avez tracé vous-même.</li>
+        <li><strong>Source</strong> : <strong>règles (motifs/regex)</strong> ou <strong>sélection manuelle</strong>, afin de distinguer les détections automatiques de ce que vous avez tracé vous-même.</li>
         <li><strong>Catégorie et risque</strong> : utilisés pour filtrer, trier et effectuer des actions en masse dans la liste d’audit.</li>
       </ul>
 
       <h3 id="concepts-2-2">2.2 Ce que signifie « confirmer », et pourquoi c’est manuel</h3>
       <ul>
-        <li><strong>L’automatisation ne décide pas à votre place</strong> : les règles comme l’IA peuvent <strong>signaler à tort</strong> du texte normal ou <strong>manquer</strong> de vraies données sensibles. L’application ne suppose donc jamais que « tout ce qui est trouvé doit être supprimé ».</li>
+        <li><strong>L’automatisation ne décide pas à votre place</strong> : la correspondance par règles peut <strong>signaler à tort</strong> du texte normal ou <strong>manquer</strong> de vraies données sensibles. L’application ne suppose donc jamais que « tout ce qui est trouvé doit être supprimé ».</li>
         <li><strong>Confirmer = valider après revue</strong> : une fois confirmée, une marque est incluse dans l’ensemble exporté ; ce qui reste en attente n’est pas traité comme définitif.</li>
         <li><strong>Adapté aux revues réelles</strong> : cette étape supplémentaire correspond aux pratiques de double revue, de traçabilité et évite d’effacer par erreur toute une page en un clic.</li>
       </ul>
 
-      <h3 id="concepts-2-3">2.3 Règles vs IA locale</h3>
-      <table class="compare">
-        <thead>
-          <tr><th>Aspect</th><th>Moteur de règles</th><th>IA locale</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Base</td>
-            <td>Motifs intégrés ou personnalisés (mots-clés, regex), selon vos paramètres de région et de scénario.</td>
-            <td>Modèles ONNX locaux pour la détection sémantique ou d’entités ; la qualité dépend des langues et des données d’entraînement.</td>
-          </tr>
-          <tr>
-            <td>Prévisibilité</td>
-            <td>Lorsque les motifs sont clairs, le comportement est stable et facile à expliquer.</td>
-            <td>Plus souple avec la mise en page et la formulation ; les cas limites méritent une vérification humaine.</td>
-          </tr>
-          <tr>
-            <td>Usage typique</td>
-            <td>Champs très structurés : identifiants, téléphones, e-mails.</td>
-            <td>Texte narratif moins structuré : noms, adresses, organisations sans format fixe.</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>En pratique, les deux fonctionnent souvent <strong>ensemble</strong> ; la liste d’audit affiche tout sous forme de marques, et vous choisissez ce qu’il faut confirmer.</p>
-
-      <h3 id="concepts-2-4">2.4 Le repère de traitement par lot</h3>
+      <h3 id="concepts-2-4">2.3 Le repère de traitement par lot</h3>
       <ul>
         <li>Il n’existe <strong>pas</strong> de flux du type « enregistrer ceci comme modèle nommé et le choisir plus tard ». Le mode lot utilise un <strong>repère géométrique</strong> en mémoire : lorsque vous accédez au mode lot via <strong>Appliquer à plusieurs fichiers</strong>, l’application transforme chaque marque <strong>confirmée</strong> du document actuel en <strong>rectangle normalisé</strong> (page + coordonnées relatives à la taille de page), uniquement pour <strong>cette session de lot</strong>.</li>
-        <li>Pour <strong>chaque</strong> PDF de la file, le moteur de lot <strong>applique uniquement ces rectangles</strong> : il ne relance <strong>pas</strong> une analyse complète par règles ou par IA pour chaque fichier.</li>
+        <li>Pour <strong>chaque</strong> PDF de la file, le moteur de lot <strong>applique uniquement ces rectangles</strong> : il ne relance <strong>pas</strong> une analyse complète par règles pour chaque fichier.</li>
         <li><strong>Quand c’est adapté</strong> : plusieurs exports issus du même système, avec la <strong>même mise en page et les zones sensibles aux mêmes emplacements</strong> (par exemple des relevés uniformes). Si la mise en page varie, les cadres peuvent tomber au mauvais endroit : contrôlez les premiers résultats.</li>
         <li><strong>Règles du centre</strong> : elles vous aident à <strong>trouver</strong> des correspondances dans le flux <strong>actuel</strong> à fichier unique ; elles ne sont <strong>pas</strong> relancées automatiquement pour chaque fichier de la file. Le lot s’appuie sur les <strong>positions confirmées</strong> que vous avez déjà validées.</li>
       </ul>
@@ -284,14 +258,14 @@
 
       <h3 id="workflow-step-c">Étape C : lancer la détection</h3>
       <p>À droite, dans la stratégie d’analyse, cliquez sur <strong>Démarrer la détection</strong> (ou le contrôle équivalent) et laissez le modèle du document et l’analyse complète se terminer.<br>
-      Les résultats des règles et de l’IA locale deviennent alors une liste de marques <strong>en attente</strong>. Si vous changez la région, le scénario ou les règles, relancez la détection pour mettre la liste à jour.</p>
+      Les résultats des règles deviennent alors une liste de marques <strong>en attente</strong>. Si vous changez la région, le scénario ou les règles, relancez la détection pour mettre la liste à jour.</p>
 
       <h3 id="workflow-step-d">Étape D : vérifier dans la liste d’audit</h3>
       <p>Dans le <strong>suivi d’audit</strong> à droite, parcourez les éléments un par un ou utilisez les filtres. <strong>Confirmez</strong> ce qui doit disparaître ; annulez la confirmation ou supprimez les lignes correspondant à des faux positifs (les contrôles exacts dépendent de la version). Les surbrillances jaunes dans l’aperçu restent généralement synchronisées : un clic peut changer l’état de confirmation.<br>
       Cette étape évite de supprimer le mauvais contenu ou d’oublier une donnée ; l’export ne tient compte que des marques <strong>confirmées</strong>.</p>
 
       <h3 id="workflow-step-e">Étape E : encadrer ce qui a été oublié</h3>
-      <p>Tracez des rectangles dans l’aperçu de gauche sur tout ce que les règles ou l’IA n’ont pas détecté, mais qui doit selon vous être caviardé. Ajustez les couleurs de sélection si cela aide sur les arrière-plans chargés.<br>
+      <p>Tracez des rectangles dans l’aperçu de gauche sur tout ce que les règles n’ont pas détecté, mais qui doit selon vous être caviardé. Ajustez les couleurs de sélection si cela aide sur les arrière-plans chargés.<br>
       La détection automatique ne peut pas tout trouver ; les cadres manuels sont votre <strong>filet de sécurité</strong>.</p>
 
       <h3 id="workflow-step-f">Étape F : exporter</h3>
@@ -301,7 +275,7 @@
       <h3 id="workflow-step-g">Étape G (facultatif) : appliquer à d’autres fichiers</h3>
       <p>Une fois que tout ce qui doit être caviardé est <strong>confirmé</strong> dans ce PDF, utilisez <strong>Appliquer à plusieurs fichiers</strong> (ou l’entrée équivalente). L’application construit le <strong>repère normalisé</strong> décrit plus haut et ouvre le <strong>caviardage par lot</strong>. Ajoutez d’autres PDF ayant la même mise en page, choisissez un dossier de sortie, indiquez s’il faut supprimer les métadonnées, puis lancez le traitement.<br>
       Lorsque les mises en page correspondent vraiment, vous évitez de refaire les mêmes confirmations fichier par fichier ; le lot <strong>supprime physiquement</strong> les zones encadrées.<br>
-      <strong>Important</strong> : il ne s’agit pas d’un modèle nommé réutilisable sur disque. Il n’y a <strong>pas de fichier modèle séparé</strong> ; le repère vient de <strong>ce</strong> document confirmé. Le lot ne relance pas non plus les règles ou l’IA pour chaque fichier de la file. Si la mise en page d’un fichier a changé, repassez par le flux à fichier unique.</p>
+      <strong>Important</strong> : il ne s’agit pas d’un modèle nommé réutilisable sur disque. Il n’y a <strong>pas de fichier modèle séparé</strong> ; le repère vient de <strong>ce</strong> document confirmé. Le lot ne ne relance pas la détection par règles pour chaque fichier de la file. Si la mise en page d’un fichier a changé, repassez par le flux à fichier unique.</p>
     </section>
 
     <section id="main-ui">
@@ -347,7 +321,7 @@
         <li><strong>Plus (⋯)</strong> : langue, aide, commentaires, mises à jour, à propos, etc.</li>
       </ul>
 
-      <p>La barre d’état indique notamment si l’application est prête, le nom du fichier actuel et si le moteur d’IA locale est disponible.</p>
+      <p>La barre d’état indique notamment si l’application est prête et le nom du fichier actuel.</p>
     </section>
 
     <section id="rules">
@@ -400,7 +374,7 @@
 
       <h3 id="manual-box-7-1">7.1 Quand tracer vos propres cadres</h3>
       <ul>
-        <li>Les règles et l’IA ont <strong>manqué</strong> un élément que vous savez devoir retirer : annotations manuscrites sur photo, zone de mise en page atypique, etc.</li>
+        <li>Les règles ont <strong>manqué</strong> un élément que vous savez devoir retirer : annotations manuscrites sur photo, zone de mise en page atypique, etc.</li>
         <li>Les résultats sont <strong>fragmentés</strong> ou <strong>mal alignés</strong> : supprimez les mauvaises lignes automatiques et tracez un cadre plus précis.</li>
         <li>Contenu <strong>uniquement numérisé</strong> traité comme image : le comportement diffère des PDF textuels ; vous vous appuierez souvent sur les cadres manuels (voir la FAQ).</li>
       </ul>
@@ -452,8 +426,8 @@
       <h2>9. Traitement par lot</h2>
 
       <h3 id="batch-9-1">9.1 Ce que fait réellement le mode lot</h3>
-      <p>Après être entré par <strong>Appliquer à plusieurs fichiers</strong> avec un repère, chaque PDF de la file suit un chemin <strong>par application de rectangles uniquement</strong> : les rectangles normalisés sont convertis en coordonnées absolues par page, les marques sont créées, le contenu est supprimé physiquement et les métadonnées peuvent être nettoyées en option. Le mode lot ne relance <strong>pas</strong> la détection par règles ou par IA pour chaque fichier.</p>
-      <div class="note">Les règles et l’IA utilisées en mode fichier unique vous ont donc aidé à <strong>trouver</strong> et <strong>confirmer</strong> les zones sur le modèle ; le lot se contente de recopier <strong>les emplacements confirmés</strong> sur les autres fichiers ayant la même géométrie.</div>
+      <p>Après être entré par <strong>Appliquer à plusieurs fichiers</strong> avec un repère, chaque PDF de la file suit un chemin <strong>par application de rectangles uniquement</strong> : les rectangles normalisés sont convertis en coordonnées absolues par page, les marques sont créées, le contenu est supprimé physiquement et les métadonnées peuvent être nettoyées en option. Le mode lot ne relance <strong>pas</strong> la détection par règles pour chaque fichier.</p>
+      <div class="note">Les règles utilisées en mode fichier unique vous ont donc aidé à <strong>trouver</strong> et <strong>confirmer</strong> les zones sur le modèle ; le lot se contente de recopier <strong>les emplacements confirmés</strong> sur les autres fichiers ayant la même géométrie.</div>
 
       <h3 id="batch-9-2">9.2 Cas d’usage adaptés</h3>
       <ul>
@@ -475,13 +449,13 @@
       <h2>10. Questions fréquentes</h2>
 
       <h3 id="faq-false-positives">10.1 Pourquoi y a-t-il autant de faux positifs ?</h3>
-      <p>Les règles comme l’IA reposent sur des heuristiques : chaînes qui <strong>ressemblent</strong> à des données sensibles, noms de lieux confondus avec des noms de personnes, fragments de tableau, etc. Ajuster le scénario ou les règles, désactiver une règle trop bruyante ou annuler la confirmation dans la liste suffit généralement à reprendre le contrôle. La confirmation manuelle est volontaire : elle réduit le risque de supprimer en un clic un élément dont vous avez encore besoin.</p>
+      <p>La correspondance par règles repose sur des heuristiques : chaînes qui <strong>ressemblent</strong> à des données sensibles, noms de lieux confondus avec des noms de personnes, fragments de tableau, etc. Ajuster le scénario ou les règles, désactiver une règle trop bruyante ou annuler la confirmation dans la liste suffit généralement à reprendre le contrôle. La confirmation manuelle est volontaire : elle réduit le risque de supprimer en un clic un élément dont vous avez encore besoin.</p>
 
       <h3 id="faq-scanned-pdf">10.2 Qu’en est-il des PDF numérisés ?</h3>
-      <p>Si le PDF est en réalité une image de page sans vraie couche de texte, les règles et l’IA ont moins de matière à exploiter. Vous utiliserez donc davantage les <strong>cadres manuels</strong> ou le flux spécifique aux documents raster proposé par la version (suivez les indications à l’écran). Il est utile de savoir dès le départ si vous avez affaire à un PDF nativement numérique ou à un scan.</p>
+      <p>Si le PDF est en réalité une image de page sans vraie couche de texte, la détection par règles a moins de matière à exploiter. Vous utiliserez donc davantage les <strong>cadres manuels</strong> ou le flux spécifique aux documents raster proposé par la version (suivez les indications à l’écran). Il est utile de savoir dès le départ si vous avez affaire à un PDF nativement numérique ou à un scan.</p>
 
       <h3 id="faq-image-no-ocr">10.3 Puis-je caviarder des images ? Pourquoi le texte des photos n’est-il pas reconnu ?</h3>
-      <p>Oui. Les formats d’image courants peuvent être ouverts comme un document ; vous continuez à prévisualiser, marquer et exporter. Pour conserver une taille d’installation et un coût d’exécution raisonnables, cette version <strong>n’intègre pas d’OCR</strong> : le texte des photos ne devient pas sélectionnable, donc la <strong>détection textuelle par règles ou par IA s’applique très peu</strong>. Caviardez les zones sensibles en <strong>traçant des cadres</strong> (et en utilisant les raccourcis clavier pour passer d’une marque à l’autre). Si vous devez « reconnaître puis faire correspondre », effectuez d’abord l’OCR ailleurs ou fournissez un PDF avec couche de texte.</p>
+      <p>Oui. Les formats d’image courants peuvent être ouverts comme un document ; vous continuez à prévisualiser, marquer et exporter. Pour conserver une taille d’installation et un coût d’exécution raisonnables, cette version <strong>n’intègre pas d’OCR</strong> : le texte des photos ne devient pas sélectionnable, donc la <strong>détection par règles s’applique très peu</strong>. Caviardez les zones sensibles en <strong>traçant des cadres</strong> (et en utilisant les raccourcis clavier pour passer d’une marque à l’autre). Si vous devez « reconnaître puis faire correspondre », effectuez d’abord l’OCR ailleurs ou fournissez un PDF avec couche de texte.</p>
 
       <h3 id="faq-verify-export">10.4 Comment vérifier rapidement un export ?</h3>
       <ul>

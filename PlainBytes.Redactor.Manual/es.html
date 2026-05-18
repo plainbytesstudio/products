@@ -81,8 +81,7 @@
           <ul class="toc-sublist">
             <li><a href="#concepts-2-1">2.1 Marcas de redacción</a></li>
             <li><a href="#concepts-2-2">2.2 Qué significa “confirmar”</a></li>
-            <li><a href="#concepts-2-3">2.3 Reglas frente a IA local</a></li>
-            <li><a href="#concepts-2-4">2.4 La base para procesamiento por lotes</a></li>
+            <li><a href="#concepts-2-4">2.3 La base para procesamiento por lotes</a></li>
           </ul>
         </details>
         <details class="toc-chapter">
@@ -195,7 +194,7 @@
 
       <h3 id="positioning-1-2">1.2 Qué significa “local y sin conexión”</h3>
       <ul>
-        <li><strong>El trabajo permanece en este PC</strong>: abrir el PDF, aplicar reglas, usar IA local opcional, escribir el archivo redactado y validar se ejecutan localmente.</li>
+        <li><strong>El trabajo permanece en este PC</strong>: abrir el PDF, aplicar reglas, escribir el archivo redactado y validar se ejecutan localmente.</li>
         <li><strong>No se suben documentos para redactar</strong>: el producto no está diseñado para enviar sus archivos a la nube como parte del proceso de redacción.</li>
         <li><strong>Distinto de la ayuda y las actualizaciones</strong>: al abrir Ayuda, Buscar actualizaciones u opciones similares, Windows puede iniciar el navegador o Microsoft Store. Eso no afecta a que el flujo de redacción se mantenga sin conexión.</li>
       </ul>
@@ -216,46 +215,21 @@
       <ul>
         <li><strong>Página y rectángulo</strong>: posición y tamaño en coordenadas del PDF.</li>
         <li><strong>Estado</strong>: <strong>pendiente</strong> o <strong>confirmada</strong>. Solo las marcas <strong>confirmadas</strong> se eliminan al exportar.</li>
-        <li><strong>Origen</strong>: <strong>reglas (patrones/regex)</strong>, <strong>IA</strong> o <strong>selección manual</strong>, para distinguir los aciertos automáticos de lo que dibujó usted.</li>
+        <li><strong>Origen</strong>: <strong>reglas (patrones/regex)</strong> o <strong>selección manual</strong>, para distinguir los aciertos automáticos de lo que dibujó usted.</li>
         <li><strong>Categoría y riesgo</strong>: se usan para filtrar, ordenar y actuar en bloque en la lista de auditoría.</li>
       </ul>
 
       <h3 id="concepts-2-2">2.2 Qué significa “confirmar” y por qué es manual</h3>
       <ul>
-        <li><strong>La automatización no tiene la última palabra</strong>: tanto las reglas como la IA pueden <strong>marcar de más</strong> texto normal o <strong>pasar por alto</strong> datos sensibles reales, así que la aplicación nunca presupone que “todo lo encontrado debe eliminarse”.</li>
+        <li><strong>La automatización no tiene la última palabra</strong>: la coincidencia por reglas puede <strong>marcar de más</strong> texto normal o <strong>pasar por alto</strong> datos sensibles reales, así que la aplicación nunca presupone que “todo lo encontrado debe eliminarse”.</li>
         <li><strong>Confirmar = aprobar tras revisar</strong>: una vez confirmada, la marca se incluye en el conjunto de exportación; lo que queda pendiente no se trata como definitivo.</li>
         <li><strong>Encaja con revisiones reales</strong>: este paso adicional se alinea con la revisión por dos personas, los rastros de auditoría y evita borrar por error una página entera con un clic.</li>
       </ul>
 
-      <h3 id="concepts-2-3">2.3 Reglas frente a IA local</h3>
-      <table class="compare">
-        <thead>
-          <tr><th>Aspecto</th><th>Motor de reglas</th><th>IA local</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Base</td>
-            <td>Patrones integrados o personalizados (palabras clave, regex), según la región y el escenario configurados.</td>
-            <td>Modelos ONNX locales para detección semántica o de entidades; la calidad depende de los idiomas y de los datos de entrenamiento.</td>
-          </tr>
-          <tr>
-            <td>Previsibilidad</td>
-            <td>Cuando los patrones son claros, el comportamiento es estable y fácil de explicar.</td>
-            <td>Más flexible con el diseño y la redacción; los casos límite requieren una segunda mirada.</td>
-          </tr>
-          <tr>
-            <td>Uso típico</td>
-            <td>Campos muy estructurados: identificaciones, teléfonos, correos.</td>
-            <td>Texto narrativo menos estructurado: nombres, direcciones u organizaciones sin formato fijo.</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>En la práctica suelen <strong>ejecutarse juntos</strong>; la lista de auditoría muestra todo como marcas, y usted decide qué confirmar.</p>
-
-      <h3 id="concepts-2-4">2.4 La base para procesamiento por lotes</h3>
+      <h3 id="concepts-2-4">2.3 La base para procesamiento por lotes</h3>
       <ul>
         <li><strong>No</strong> existe un flujo de “guardar esto como plantilla con nombre y elegirla después”. Lo que usa el lote es una <strong>base geométrica</strong> en memoria: al entrar al lote mediante <strong>Aplicar a varios archivos</strong>, la aplicación convierte cada marca <strong>confirmada</strong> del documento actual en un <strong>rectángulo normalizado</strong> (página + coordenadas relativas al tamaño de página), solo para <strong>esa sesión por lotes</strong>.</li>
-        <li>Para <strong>cada</strong> PDF de la cola, el motor por lotes <strong>solo aplica esos rectángulos</strong>: <strong>no</strong> ejecuta un nuevo pase completo de reglas ni de IA por archivo.</li>
+        <li>Para <strong>cada</strong> PDF de la cola, el motor por lotes <strong>solo aplica esos rectángulos</strong>: <strong>no</strong> ejecuta un nuevo pase completo de reglas por archivo.</li>
         <li><strong>Cuándo está bien</strong>: varias exportaciones del mismo sistema con el <strong>mismo diseño y las regiones sensibles en los mismos lugares</strong> (por ejemplo, extractos uniformes). Si el diseño cambia, los cuadros pueden caer en el lugar equivocado: revise los primeros resultados.</li>
         <li><strong>Reglas del centro</strong>: ayudan a <strong>encontrar</strong> coincidencias en el flujo de archivo único <strong>actual</strong>; <strong>no</strong> se vuelven a ejecutar automáticamente para cada archivo de la cola. El lote se basa en las <strong>posiciones confirmadas</strong> que ya dejó fijadas.</li>
       </ul>
@@ -284,14 +258,14 @@
 
       <h3 id="workflow-step-c">Paso C: ejecutar la detección</h3>
       <p>A la derecha, en la política de escaneo, haga clic en <strong>Iniciar detección</strong> (o el control equivalente) y espere a que terminen el modelo del documento y el pase completo.<br>
-      Los resultados de reglas e IA local se convierten en una lista de marcas <strong>pendientes</strong>. Si cambia región, escenario o reglas, ejecute de nuevo la detección para actualizar la lista.</p>
+      Los resultados de las reglas se convierten en una lista de marcas <strong>pendientes</strong>. Si cambia región, escenario o reglas, ejecute de nuevo la detección para actualizar la lista.</p>
 
       <h3 id="workflow-step-d">Paso D: revisar en la lista de auditoría</h3>
       <p>En el <strong>seguimiento de auditoría</strong> de la derecha, revise los elementos uno por uno o use filtros. <strong>Confirme</strong> lo que debe desaparecer; quite la confirmación o elimine filas para falsos positivos (los controles exactos dependen de la versión). Las superposiciones amarillas de la vista previa suelen mantenerse sincronizadas: un clic puede alternar el estado de confirmación.<br>
       Este paso evita borrar lo equivocado o dejar algo atrás; la exportación solo respeta las marcas <strong>confirmadas</strong>.</p>
 
       <h3 id="workflow-step-e">Paso E: dibujar cuadros para lo que falte</h3>
-      <p>Arrastre rectángulos en la vista previa izquierda sobre cualquier cosa que las reglas o la IA no hayan detectado, pero que usted sabe que debe redactarse. Ajuste los colores de selección si ayuda sobre fondos cargados.<br>
+      <p>Arrastre rectángulos en la vista previa izquierda sobre cualquier cosa que las reglas no hayan detectado, pero que usted sabe que debe redactarse. Ajuste los colores de selección si ayuda sobre fondos cargados.<br>
       La detección automática no lo encontrará todo; los cuadros manuales son su <strong>red de seguridad</strong>.</p>
 
       <h3 id="workflow-step-f">Paso F: exportar</h3>
@@ -301,7 +275,7 @@
       <h3 id="workflow-step-g">Paso G (opcional): aplicar a más archivos</h3>
       <p>Cuando todo lo que deba redactarse esté <strong>confirmado</strong> en este PDF, use <strong>Aplicar a varios archivos</strong> (o la entrada equivalente). La aplicación genera la <strong>base normalizada</strong> descrita arriba y abre la <strong>redacción por lotes</strong>. Añada más PDF con el mismo diseño, elija una carpeta de salida, indique si desea eliminar metadatos y ejecute.<br>
       Si los diseños coinciden realmente, evita repetir las mismas confirmaciones archivo por archivo; el lote aun así <strong>elimina físicamente</strong> las regiones encuadradas.<br>
-      <strong>Importante</strong>: esto no es una plantilla reutilizable con nombre en disco. <strong>No hay un archivo de plantilla separado</strong>; la base procede de <strong>este</strong> documento confirmado. El lote tampoco vuelve a ejecutar reglas/IA por cada archivo de la cola. Si el diseño de un archivo cambió, vuelva al flujo de archivo único.</p>
+      <strong>Importante</strong>: esto no es una plantilla reutilizable con nombre en disco. <strong>No hay un archivo de plantilla separado</strong>; la base procede de <strong>este</strong> documento confirmado. El lote tampoco vuelve a ejecutar la detección por reglas en cada archivo de la cola. Si el diseño de un archivo cambió, vuelva al flujo de archivo único.</p>
     </section>
 
     <section id="main-ui">
@@ -347,7 +321,7 @@
         <li><strong>Más (⋯)</strong>: idioma, ayuda, comentarios, actualizaciones, acerca de, etc.</li>
       </ul>
 
-      <p>La barra de estado muestra, entre otras cosas, si la aplicación está lista, el nombre del archivo actual y si el entorno de IA local está preparado.</p>
+      <p>La barra de estado muestra, entre otras cosas, si la aplicación está lista y el nombre del archivo actual.</p>
     </section>
 
     <section id="rules">
@@ -400,7 +374,7 @@
 
       <h3 id="manual-box-7-1">7.1 Cuándo dibujar sus propios cuadros</h3>
       <ul>
-        <li>Las reglas y la IA <strong>pasaron por alto</strong> algo que sabe que debe quitarse: anotaciones manuscritas en fotos, zonas de diseño poco habituales, etc.</li>
+        <li>Las reglas <strong>pasaron por alto</strong> algo que sabe que debe quitarse: anotaciones manuscritas en fotos, zonas de diseño poco habituales, etc.</li>
         <li>Los resultados están <strong>fragmentados</strong> o <strong>desalineados</strong>: elimine las filas automáticas incorrectas y dibuje un cuadro más preciso.</li>
         <li>Contenido <strong>solo escaneado</strong> tratado como imagen: el comportamiento difiere de los PDF con texto; a menudo dependerá de cuadros manuales (véanse las preguntas frecuentes).</li>
       </ul>
@@ -452,8 +426,8 @@
       <h2>9. Procesamiento por lotes</h2>
 
       <h3 id="batch-9-1">9.1 Qué hace realmente el modo por lotes</h3>
-      <p>Después de entrar por <strong>Aplicar a varios archivos</strong> con una base, cada PDF de la cola sigue una ruta de <strong>solo aplicación de rectángulos</strong>: los rectángulos normalizados se convierten a coordenadas absolutas por página, se crean marcas, el contenido se elimina físicamente y los metadatos pueden limpiarse opcionalmente. <strong>No</strong> ejecuta de nuevo detección por reglas ni IA por archivo.</p>
-      <div class="note">Así, las reglas y la IA usadas en modo de archivo único le ayudaron a <strong>encontrar</strong> y <strong>confirmar</strong> en el modelo; el lote simplemente copia <strong>donde confirmó</strong> a otros archivos con la misma geometría.</div>
+      <p>Después de entrar por <strong>Aplicar a varios archivos</strong> con una base, cada PDF de la cola sigue una ruta de <strong>solo aplicación de rectángulos</strong>: los rectángulos normalizados se convierten a coordenadas absolutas por página, se crean marcas, el contenido se elimina físicamente y los metadatos pueden limpiarse opcionalmente. <strong>No</strong> ejecuta de nuevo la detección por reglas en cada archivo.</p>
+      <div class="note">Así, las reglas usadas en modo de archivo único le ayudaron a <strong>encontrar</strong> y <strong>confirmar</strong> en el modelo; el lote simplemente copia <strong>donde confirmó</strong> a otros archivos con la misma geometría.</div>
 
       <h3 id="batch-9-2">9.2 Casos de uso adecuados</h3>
       <ul>
@@ -475,13 +449,13 @@
       <h2>10. Preguntas frecuentes</h2>
 
       <h3 id="faq-false-positives">10.1 ¿Por qué hay tantos falsos positivos?</h3>
-      <p>Tanto las reglas como la IA se basan en heurísticas: cadenas que <strong>parecen</strong> sensibles, nombres de lugares que coinciden con nombres de personas, fragmentos de tablas, etc. Ajustar escenario/reglas, desactivar una regla ruidosa o limpiar la confirmación en la lista suele bastar para controlarlo. La confirmación manual es intencional: reduce la probabilidad de eliminar con un clic algo que todavía necesita.</p>
+      <p>La coincidencia por reglas se basa en patrones y heurísticas: cadenas que <strong>parecen</strong> sensibles, nombres de lugares que coinciden con nombres de personas, fragmentos de tablas, etc. Ajustar escenario/reglas, desactivar una regla ruidosa o limpiar la confirmación en la lista suele bastar para controlarlo. La confirmación manual es intencional: reduce la probabilidad de eliminar con un clic algo que todavía necesita.</p>
 
       <h3 id="faq-scanned-pdf">10.2 ¿Qué ocurre con los PDF escaneados?</h3>
-      <p>Si el PDF es en realidad una imagen de página sin una capa de texto real, las reglas y la IA tienen menos con qué trabajar, por lo que dependerá más de <strong>cuadros manuales</strong> o del flujo específico para raster que ofrezca la versión (siga las indicaciones en pantalla). Conviene saber desde el principio si se trata de un PDF nativo digital o de un escaneo.</p>
+      <p>Si el PDF es en realidad una imagen de página sin una capa de texto real, la detección por reglas tiene menos con qué trabajar, por lo que dependerá más de <strong>cuadros manuales</strong> o del flujo específico para raster que ofrezca la versión (siga las indicaciones en pantalla). Conviene saber desde el principio si se trata de un PDF nativo digital o de un escaneo.</p>
 
       <h3 id="faq-image-no-ocr">10.3 ¿Puedo redactar imágenes? ¿Por qué no se reconoce el texto en fotos?</h3>
-      <p>Sí. Los formatos de imagen comunes pueden abrirse como documentos; seguirá usando vista previa, marcas y exportación. Para mantener razonables el tamaño del instalador y el coste en ejecución, esta versión <strong>no incluye OCR</strong>: el texto de las fotos no se vuelve seleccionable, por lo que la <strong>detección textual por reglas o IA apenas aplica</strong>. Redacte las áreas sensibles <strong>dibujando cuadros</strong> (y usando atajos de teclado para moverse entre marcas). Si necesita “reconocer y luego comparar”, haga OCR antes en otra herramienta o proporcione un PDF con capa de texto.</p>
+      <p>Sí. Los formatos de imagen comunes pueden abrirse como documentos; seguirá usando vista previa, marcas y exportación. Para mantener razonables el tamaño del instalador y el coste en ejecución, esta versión <strong>no incluye OCR</strong>: el texto de las fotos no se vuelve seleccionable, por lo que la <strong>detección por reglas apenas aplica</strong>. Redacte las áreas sensibles <strong>dibujando cuadros</strong> (y usando atajos de teclado para moverse entre marcas). Si necesita “reconocer y luego comparar”, haga OCR antes en otra herramienta o proporcione un PDF con capa de texto.</p>
 
       <h3 id="faq-verify-export">10.4 ¿Cómo hago una comprobación rápida de una exportación?</h3>
       <ul>
