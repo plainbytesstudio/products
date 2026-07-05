@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-lang="zh-Hant" data-base="../" data-page="manual">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PlainBytes Redactor 使用手冊</title>
+<meta name="description" content="PlainBytes Redactor 完整使用手冊：工作流程、規則中心、批次處理與常見問題。" />
+<link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+
+  :root{
+    --bg-dark:#232323;
+    --red:#b3362b;
+    --red-dk:#8c2920;
+    --accent:#9a0413;
+    --accent-text:#fcebeb;
+    --ink:#1c1a17;
+    --gray:#5c5650;
+    --muted:#9a938b;
+    --rule:#e8e3dc;
+    --bg:#faf8f5;
+    --card:#ffffff;
+    --accent-lt:#fbeceb;
+    --serif:'DM Serif Display',Georgia,serif;
+    --sans:'DM Sans',system-ui,sans-serif;
+    --side-w:240px;
+    --layout-gap:2.5rem;
+    --maxw:1080px;
+  }
+
+  html{font-size:16px;scroll-behavior:smooth}
+  body.manual-page{
+    margin:0;
+    padding-top:64px;
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+
+  /* ── TOP BAR (self-contained; matches website/css/site.css) ── */
+  .manual-page .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    background:rgba(35,35,35,.92);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:.5px solid rgba(255,255,255,.08);
+  }
+  .manual-page .site-header .inner{
+    width:100%;max-width:var(--maxw);margin:0 auto;padding:0 24px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;min-height:64px;flex-wrap:wrap;
+  }
+  .manual-page .site-header .brand{
+    display:flex;align-items:center;gap:10px;
+    color:#fff;font-weight:500;font-size:.875rem;text-decoration:none;
+  }
+  .manual-page .site-header .brand:hover{color:#f5f4f0;text-decoration:none}
+  .manual-page .site-header .brand-logo{
+    width:28px;height:28px;flex-shrink:0;object-fit:contain;display:block;
+  }
+  .manual-page .site-header .header-actions{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .manual-page .site-header .site-nav-link{
+    font-size:.8125rem;color:#d0cec8;text-decoration:none;white-space:nowrap;
+  }
+  .manual-page .site-header .site-nav-link:hover{color:#fff;text-decoration:none}
+  .manual-page .site-header .site-nav-link--current{color:#fff;font-weight:500}
+  .manual-page .site-header .lang-select{
+    background:transparent;color:#d0cec8;border:none;border-radius:6px;
+    padding:8px 4px;font-size:.8125rem;cursor:pointer;
+  }
+  .manual-page .site-header .lang-select option{color:var(--ink);background:#fff}
+  .manual-page .site-header .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:11px 22px;font-size:.875rem;font-weight:500;line-height:1.6;
+    border-radius:6px;border:none;cursor:pointer;text-decoration:none;
+    transition:background .15s ease,color .15s ease;
+  }
+  .manual-page .site-header .btn-accent{
+    background:var(--accent);color:var(--accent-text);
+  }
+  .manual-page .site-header .btn-accent:hover{
+    background:#7f0310;color:var(--accent-text);text-decoration:none;
+  }
+  .manual-page .site-header .btn-accent--sm{padding:9px 18px;font-size:.8125rem}
+
+  /* ── TOP hero ── */
+  .manual-top{
+    background:linear-gradient(180deg,#232323 0%,#2d2d2d 58%,#352626 100%);
+    margin-top:-64px;
+    padding-top:64px;
+  }
+
+  .manual-hero{padding:32px 0 48px}
+  .manual-hero__inner{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .manual-hero__copy{max-width:640px;margin:0 auto;text-align:center}
+  .manual-hero__kicker{
+    margin:0 0 20px;font-size:.8125rem;font-weight:500;letter-spacing:.03em;
+    color:#e8a0a0;text-transform:lowercase;
+  }
+  .manual-hero h1{
+    margin:0 0 20px;font-family:var(--serif);
+    font-size:clamp(1.75rem,4vw,2.375rem);font-weight:500;line-height:1.3;color:#fff;
+  }
+  .manual-hero__lead{
+    margin:0;font-size:1rem;line-height:1.7;color:#c8c6c0;font-weight:300;
+  }
+
+  /* ── LAYOUT ──────────────────────────────────────────── */
+  .page-wrap{
+    max-width:var(--maxw);margin:0 auto;
+    padding:3rem 24px 6rem;
+    display:grid;grid-template-columns:var(--side-w) 1fr;gap:var(--layout-gap);
+    align-items:start;
+  }
+
+  /* ── SIDEBAR NAV ─────────────────────────────────────── */
+  .toc-sidebar{position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto}
+  .toc-sidebar::-webkit-scrollbar{width:4px}
+  .toc-sidebar::-webkit-scrollbar-thumb{background:var(--rule);border-radius:4px}
+
+  .toc-block{margin-bottom:1.5rem}
+  .toc-block-label{
+    font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:.6rem;padding-left:.2rem;
+  }
+  .toc-item{display:block}
+  .toc-link{
+    display:block;font-size:.85rem;color:var(--gray);text-decoration:none;
+    padding:.4rem .6rem;border-radius:6px;border-left:2px solid transparent;
+    transition:color .15s,background .15s,border-color .15s;
+  }
+  .toc-link:hover{background:var(--accent-lt);color:var(--red-dk)}
+  .toc-link.active{color:var(--red);border-left-color:var(--red);font-weight:600;background:var(--accent-lt)}
+  .toc-sub{padding-left:1rem}
+  .toc-sub .toc-link{font-size:.79rem}
+
+  /* ── MAIN CONTENT ────────────────────────────────────── */
+  .content{min-width:0}
+
+  .content h2{
+    font-family:var(--serif);font-size:1.55rem;color:var(--ink);
+    letter-spacing:-.02em;margin:3rem 0 1rem;padding-top:.5rem;
+    border-top:1px solid var(--rule);
+  }
+  .content h2:first-child{margin-top:0;border-top:none;padding-top:0}
+  .content > h2 .num{color:var(--red);margin-right:.5rem;font-style:normal}
+
+  .content h3{
+    font-size:1.08rem;font-weight:700;color:var(--ink);
+    margin:2rem 0 .75rem;letter-spacing:-.01em;
+  }
+
+  .content p{margin-bottom:1.1rem;font-weight:300;color:#2a2724}
+  .content strong{font-weight:600;color:var(--ink)}
+  .content em{font-style:italic}
+
+  .content ul,.content ol{padding-left:1.3rem;margin-bottom:1.1rem}
+  .content li{margin-bottom:.4rem;font-weight:300}
+  .content li strong{font-weight:600}
+
+  .content a{color:var(--red-dk);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px}
+  .content a:hover{text-decoration-color:var(--red-dk)}
+
+  /* Quick start video card */
+  .video-card{
+    background:var(--bg-dark);border-radius:14px;overflow:hidden;
+    margin:1.5rem 0 2.5rem;
+  }
+  .video-frame{
+    aspect-ratio:16/9;background:linear-gradient(135deg,#241a14 0%,#1a1410 100%);
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .play-btn{
+    width:64px;height:64px;border-radius:50%;background:var(--red);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(179,54,43,.4);
+    transition:transform .2s;cursor:pointer;
+  }
+  .play-btn:hover{transform:scale(1.06)}
+  .play-btn::after{
+    content:'';width:0;height:0;
+    border-style:solid;border-width:9px 0 9px 15px;
+    border-color:transparent transparent transparent #fff;
+    margin-left:3px;
+  }
+  .video-caption{padding:1rem 1.25rem;color:rgba(255,255,255,.55);font-size:.82rem}
+
+  /* Table */
+  .content table{
+    width:100%;border-collapse:collapse;font-size:.86rem;margin:1.5rem 0 2rem;
+    border-radius:8px;overflow:hidden;border:1px solid var(--rule);
+  }
+  .content th{
+    background:var(--bg-dark);color:#fff;font-weight:600;
+    padding:.7rem 1rem;text-align:left;font-size:.78rem;
+    letter-spacing:.02em;
+  }
+  .content td{
+    padding:.7rem 1rem;border-bottom:1px solid var(--rule);
+    vertical-align:top;font-weight:300;
+  }
+  .content tr:last-child td{border-bottom:none}
+  .content tr:nth-child(even) td{background:#f7f4f0}
+  .content td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+
+  /* Callout boxes */
+  .callout{
+    border-left:3px solid var(--red);background:var(--accent-lt);
+    padding:1rem 1.25rem;border-radius:0 10px 10px 0;margin:1.5rem 0;
+  }
+  .callout-label{
+    font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--red-dk);margin-bottom:.35rem;
+  }
+  .callout p{margin:0;font-weight:400;color:var(--ink)}
+  .callout p+p{margin-top:.5rem}
+
+  .callout.tip{border-color:#2e6b4f;background:#eaf5ef}
+  .callout.tip .callout-label{color:#1f4d38}
+  .callout.warn{border-color:#a35a0e;background:#fbf0e4}
+  .callout.warn .callout-label{color:#7a4209}
+
+  /* Step cards for workflow */
+  .step-card{
+    background:var(--card);border:1px solid var(--rule);border-radius:12px;
+    padding:1.4rem 1.5rem;margin-bottom:1rem;
+  }
+  .step-card .step-label{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--red);margin-bottom:.6rem;
+  }
+  .step-card .step-label .step-num{
+    width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:.72rem;
+  }
+  .step-card h4{font-size:1.02rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+  .step-card p{margin-bottom:0;font-size:.92rem}
+
+  /* Keyboard key */
+  kbd{
+    display:inline-block;font-family:'SF Mono','Fira Code',monospace;
+    font-size:.78em;background:var(--bg-dark);color:#fff;
+    padding:.15em .5em;border-radius:5px;font-weight:500;
+  }
+
+  .content code{
+    font-family:'SF Mono','Fira Code',monospace;
+    font-size:.85em;background:#f0ebe4;color:var(--ink);
+    padding:.12em .45em;border-radius:4px;
+  }
+
+  /* Image figure */
+  figure{margin:1.75rem 0;border-radius:12px;overflow:hidden;border:1px solid var(--rule)}
+  figure img{width:100%;display:block}
+  figcaption{
+    font-size:.78rem;color:var(--muted);padding:.65rem 1rem;
+    background:var(--card);border-top:1px solid var(--rule);text-align:center;
+  }
+
+  /* FAQ accordion-style */
+  .faq-item{border-bottom:1px solid var(--rule);padding:1.3rem 0}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{font-weight:700;color:var(--ink);margin-bottom:.5rem;display:flex;gap:.6rem}
+  .faq-q .q-mark{color:var(--red);flex-shrink:0}
+  .faq-a{font-size:.92rem;font-weight:300;color:#2a2724;padding-left:1.4rem}
+
+  /* Footer note */
+  .footer-note{
+    margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);
+    font-size:.8rem;color:var(--muted);
+  }
+
+  .checklist{list-style:none;padding-left:0}
+  .checklist li{padding-left:1.5rem;position:relative;margin-bottom:.4rem}
+  .checklist li::before{content:"☐";position:absolute;left:0;color:var(--red-dk)}
+
+  /* ── MOBILE ──────────────────────────────────────────── */
+  .mobile-toc-toggle{display:none}
+
+  @media (max-width:980px){
+    .page-wrap{grid-template-columns:1fr;gap:0}
+    .toc-sidebar{
+      position:static;max-height:none;overflow:visible;
+      margin-bottom:2rem;border:1px solid var(--rule);border-radius:12px;
+      padding:1rem 1.25rem;background:var(--card);
+    }
+    .toc-sidebar.collapsed .toc-content{display:none}
+    .mobile-toc-toggle{
+      display:flex;align-items:center;justify-content:space-between;
+      width:100%;background:none;border:none;cursor:pointer;
+      font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--ink);
+      padding:0;
+    }
+  }
+  @media (max-width:560px){
+    .manual-hero__inner{padding:0 1.25rem}
+    .page-wrap{padding:2rem 1.25rem 4rem}
+    .content h2{font-size:1.3rem}
+  }
+</style>
+</head>
+<body class="manual-page">
+
+<header class="site-header site-header--on-dark">
+  <div class="container inner">
+    <a class="brand" href="../zh-hant/index.html">
+      <img
+        class="brand-logo"
+        src="../assets/Redactor_Logo.png"
+        alt=""
+        aria-hidden="true"
+        width="28"
+        height="28"
+      />
+      <span>PlainBytes Redactor</span>
+    </a>
+    <div class="header-actions">
+      <a class="site-nav-link" href="../zh-hant/index.html">首頁</a>
+      <a class="site-nav-link site-nav-link--current" href="zh-Hant.html" aria-current="page">使用手冊</a>
+      <label class="visually-hidden" for="lang-select">Language</label>
+      <select id="lang-select" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="zh-Hant">繁體中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="pt">Português</option>
+        <option value="it">Italiano</option>
+        <option value="es">Español</option>
+        <option value="nl">Nederlands</option>
+        <option value="ru">Русский</option>
+      </select>
+      <a
+        class="btn btn-accent btn-accent--sm js-store-link"
+        href="https://apps.microsoft.com/detail/9n2vlpn4wdk1"
+        target="_blank"
+        rel="noopener noreferrer"
+        >在 Microsoft Store 取得</a
+      >
+    </div>
+  </div>
+</header>
+
+<div class="manual-top">
+  <section class="manual-hero">
+    <div class="manual-hero__inner">
+      <div class="manual-hero__copy">
+        <p class="manual-hero__kicker">使用手冊</p>
+        <h1>PlainBytes Redactor 使用手冊</h1>
+        <p class="manual-hero__lead">本手冊依目前 Windows 用戶端功能撰寫；若與您安裝的版本不完全一致，請以軟體內的介面為準。</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════ MAIN LAYOUT ═══════════════════ -->
+<div class="page-wrap">
+
+  <aside class="toc-sidebar" id="tocSidebar">
+    <button class="mobile-toc-toggle" onclick="document.getElementById('tocSidebar').classList.toggle('collapsed')">
+      <span>目錄</span><span>▾</span>
+    </button>
+    <div class="toc-content">
+      <div class="toc-block">
+        <a href="#quick-start" class="toc-link">快速上手</a>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">1. 產品定位</div>
+        <div class="toc-sub">
+          <a href="#positioning-1-1" class="toc-link">1.1 實體移除 vs 視覺遮蓋</a>
+          <a href="#positioning-1-2" class="toc-link">1.2 「本機離線」代表什麼</a>
+          <a href="#positioning-1-3" class="toc-link">1.3 適合哪些情境</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">2. 核心概念</div>
+        <div class="toc-sub">
+          <a href="#concepts-2-1" class="toc-link">2.1 什麼是遮蔽標記</a>
+          <a href="#concepts-2-2" class="toc-link">2.2 什麼是「確認」</a>
+          <a href="#concepts-2-4" class="toc-link">2.3 「批次基準」是什麼</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">3. 完整工作流程</div>
+        <div class="toc-sub">
+          <a href="#workflow-example" class="toc-link">範例背景</a>
+          <a href="#workflow-step-a" class="toc-link">步驟 A：開啟文件</a>
+          <a href="#workflow-step-b" class="toc-link">步驟 B：地區與業務情境</a>
+          <a href="#workflow-step-c" class="toc-link">步驟 C：開始辨識</a>
+          <a href="#workflow-step-d" class="toc-link">步驟 D：在稽核側欄複核</a>
+          <a href="#workflow-step-e" class="toc-link">步驟 E：手動框選補漏</a>
+          <a href="#workflow-step-f" class="toc-link">步驟 F：匯出</a>
+          <a href="#workflow-step-g" class="toc-link">步驟 G：套用到多個檔案</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">4. 主畫面說明</div>
+        <div class="toc-sub">
+          <a href="#main-ui-4-1" class="toc-link">4.1 左側預覽區</a>
+          <a href="#main-ui-4-2" class="toc-link">4.2 「掃描策略」面板</a>
+          <a href="#main-ui-4-3" class="toc-link">4.3 「框選外觀」面板</a>
+          <a href="#main-ui-4-4" class="toc-link">4.4 「稽核追蹤」面板</a>
+          <a href="#main-ui-4-5" class="toc-link">4.5 工具列各按鈕</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">5. 本機規則中心</div>
+        <div class="toc-sub">
+          <a href="#rules-5-1" class="toc-link">5.1 地區與業務情境</a>
+          <a href="#rules-5-2" class="toc-link">5.2 內建規則 vs 自訂規則</a>
+          <a href="#rules-5-3" class="toc-link">5.3 什麼時候需要調整規則</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">6. 稽核側欄詳解</div>
+        <div class="toc-sub">
+          <a href="#audit-6-1" class="toc-link">6.1 確認機制的設計邏輯</a>
+          <a href="#audit-6-2" class="toc-link">6.2 篩選與批次確認</a>
+          <a href="#audit-6-3" class="toc-link">6.3 風險等級代表什麼</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">7. 手動框選</div>
+        <div class="toc-sub">
+          <a href="#manual-box-7-1" class="toc-link">7.1 什麼情況下需要手動框選</a>
+          <a href="#manual-box-7-2" class="toc-link">7.2 如何搭配自動偵測結果</a>
+          <a href="#manual-box-7-3" class="toc-link">7.3 鍵盤快速鍵（預覽與遮蔽標記）</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">8. 匯出</div>
+        <div class="toc-sub">
+          <a href="#export-8-1" class="toc-link">8.1 匯出前檢查清單</a>
+          <a href="#export-8-2" class="toc-link">8.2 清理中繼資料的必要性</a>
+          <a href="#export-8-3" class="toc-link">8.3 如何閱讀完成摘要</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">9. 批次處理</div>
+        <div class="toc-sub">
+          <a href="#batch-9-1" class="toc-link">9.1 批次處理實際做了什麼</a>
+          <a href="#batch-9-2" class="toc-link">9.2 適合的使用情境</a>
+          <a href="#batch-9-3" class="toc-link">9.3 注意事項</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">10. 常見問題</div>
+        <div class="toc-sub">
+          <a href="#faq-false-positives" class="toc-link">10.1 為什麼偵測結果會有誤判？</a>
+          <a href="#faq-scanned-pdf" class="toc-link">10.2 掃描件要怎麼處理？</a>
+          <a href="#faq-image-no-ocr" class="toc-link">10.3 圖片遮蔽與 OCR</a>
+          <a href="#faq-verify-export" class="toc-link">10.4 匯出後如何驗證？</a>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <main class="content">
+<h2 id="quick-start">快速上手</h2>
+      <p>以下影片完整演示從開啟文件到匯出的全流程：自動識別，以及必要時的手動補充。</p>
+      <!-- [插入视频] -->
+      <div class="video-card">
+      <div class="video-frame">
+        <div class="play-btn" onclick="document.getElementById('qsVideo').play(); this.style.display='none'"></div>
+        <video id="qsVideo" controls style="position:absolute;inset:0;width:100%;height:100%;display:none" onplay="this.style.display='block'; this.previousElementSibling.style.display='none'">
+          <source src="videos/zh-Hant/quickstart.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="video-caption">完整流程演示 · 2 分鐘</div>
+    </div>
+    
+
+    
+      <h2><span class="num">1</span>產品定位</h2>
+
+      <h3 id="positioning-1-1">1.1 實體移除 vs 視覺遮蓋</h3>
+      <p>兩者對「合規與安全」的意義完全不同，可以用下表理解：</p>
+      <table>
+        <thead>
+          <tr><th>比較項目</th><th>視覺遮蓋（常見的「塗黑」預覽）</th><th>實體移除（本應用目標）</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>底層 PDF</td>
+            <td>文字、向量或影像物件仍可能留在檔案裡，只是被圖形蓋住。</td>
+            <td>在內容流中<strong>刪除</strong>對應字元/物件，讓敏感資訊無法透過標準解析路徑還原。</td>
+          </tr>
+          <tr>
+            <td>複製 / 搜尋</td>
+            <td>有些文件仍可能複製到被「蓋住」的文字（取決於實作方式）。</td>
+            <td>目標是移除後，可複製文字中不再出現原本的敏感內容（以實際匯出結果為準）。</td>
+          </tr>
+          <tr>
+            <td>適用情境</td>
+            <td>閱讀展示、臨時遮擋。</td>
+            <td>對外分享、歸檔、受稽核、盡職調查等需要<strong>不可逆抹除</strong>的情境。</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">PlainBytes Redactor 的設計目標是<strong>實體移除敏感內容</strong>；匯出前，請透過「確認」明確指定哪些地區要真正刪除。</div>
+
+      <h3 id="positioning-1-2">1.2 「本機離線」代表什麼</h3>
+      <ul>
+        <li><strong>處理都在本機完成</strong>：開啟 PDF、規則比對、遮蔽寫入與驗證，都是在目前這台電腦上執行。</li>
+        <li><strong>應用程式不會把文件中傳到雲端</strong>：作為產品的安全邊界，遮蔽流程不會主動把你的檔案送到網路上。</li>
+        <li><strong>與系統行為的差別</strong>：當你主動使用「使用說明」「檢查更新」等選單時，連結會由<strong>系統預設瀏覽器或 Microsoft Store</strong>開啟；這和「遮蔽處理流程離線」是兩件獨立的事。</li>
+      </ul>
+
+      <h3 id="positioning-1-3">1.3 適合哪些情境</h3>
+      <ul>
+        <li>法律、金融、醫療、政府機關、稽核等需要<strong>留下複核紀錄</strong>，並<strong>盡量降低外洩面</strong>的工作流程。</li>
+        <li>需要對外提供 PDF 副本，但必須移除身分證號、帳號、聯絡方式等<strong>可辨識資訊</strong>。</li>
+        <li>版面高度一致的 PDF，可先在單一檔案中確認，再透過<strong>套用到多個檔案</strong>，對多份副本執行<strong>同一幾何基準</strong>的批次遮蔽（見第 3 節步驟 G、第 9 節）。</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">2</span>核心概念</h2>
+
+      <h3 id="concepts-2-1">2.1 什麼是遮蔽標記（<code>RedactionMark</code>）</h3>
+      <p>在軟體內部，每一處待遮蔽區域都會對應一筆<strong>遮蔽標記</strong>，可以理解成「頁面上的一個矩形框 + 中繼資料」，主要包含：</p>
+      <ul>
+        <li><strong>頁碼與矩形範圍</strong>：在 PDF 頁面座標系中的位置與大小。</li>
+        <li><strong>狀態</strong>：<strong>待確認</strong>與<strong>已確認</strong>，只有<strong>已確認</strong>的標記會參與匯出時的實體刪除。</li>
+        <li><strong>來源</strong>：<strong>規則（正規表示式/模式）</strong>或<strong>手動框選</strong>，用來區分是自動命中，還是人工補上的。</li>
+        <li><strong>類別與風險等級</strong>：方便在稽核側欄篩選、排序與批次操作。</li>
+      </ul>
+
+      <h3 id="concepts-2-2">2.2 什麼是「確認」？為什麼需要人工確認</h3>
+      <ul>
+        <li><strong>自動結果不等於最後決定</strong>：規則比對可能產生<strong>誤判</strong>（把正常內容標成敏感）或<strong>漏判</strong>（沒有命中），因此軟體預設不會假設「所有自動命中的內容都應該刪除」。</li>
+        <li><strong>確認 = 你已經複核並同意處理該區域</strong>：標記為已確認後，匯出時會把該區域納入實體移除集合；未確認的項目不會當成最終遮蔽範圍。</li>
+        <li><strong>合規與可追溯</strong>：人工確認環節對應實際業務中的「雙人複核」「留痕」習慣，可避免一鍵誤刪整頁或誤刪非敏感段落。</li>
+      </ul>
+
+      <h3 id="concepts-2-4">2.3 「批次基準」是什麼</h3>
+      <ul>
+        <li>當你在單一檔案中完成確認後，透過<strong>套用到多個檔案</strong>進入批次對話框時，程式會把<strong>目前文件中每一個已確認標記</strong>換算成相對頁面寬高的<strong>標準化矩形</strong>（頁碼 + 相對座標），僅用於<strong>本次批次會話</strong>。</li>
+        <li>對佇列裡的<strong>每一份</strong>目標 PDF，批次引擎<strong>只按這些矩形去套用遮蔽</strong>，<strong>不會</strong>對每份檔案重新執行一遍規則掃描。</li>
+        <li><strong>什麼時候适合用</strong>：多份 PDF 的<strong>版面、頁碼與敏感塊位置</strong>與目前這份「樣板」基本一致（例如同一套系統匯出的對帳單）。版面不一致時，套用可能錯頁、錯位，需抽樣檢查。</li>
+        <li><strong>規則中心裡的規則</strong>：用來在<strong>目前單一檔案</strong>上找出命中並供你確認；它們<strong>不會</strong>在批次佇列的每個檔案上自動再跑一輪——批次階段依賴的是你已確認下來的<strong>位置基準</strong>。</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">3</span>完整工作流程</h2>
+
+      <div class="example">
+        <h3 id="workflow-example">範例背景</h3>
+        <p>法務同事收到一份 8 頁的<strong>員工離職交接 PDF</strong>，需要對外提供副本，但必須移除<strong>手機號碼、銀行卡號片段、個人電子郵件</strong>等資訊。這份文件是可以選取文字的電子 PDF（不是純掃描圖）。</p>
+      </div>
+
+      <figure class="doc-screenshot doc-flowchart">
+        <img src="images/zh-Hant/flowchart.jpg" alt="單一檔案遮蔽工作流程：從開啟文件、設定規則與辨識、複核與補框到匯出及可選批次套用。" loading="lazy" decoding="async" />
+        <figcaption>工作流程概覽</figcaption>
+      </figure>
+
+      <h3 id="workflow-step-a">步驟 A：開啟文件</h3>
+      <p>透過「開啟檔案」或拖曳匯入，載入這份 PDF（也支援常見圖片格式，但處理路徑可能不同）。<br>
+      後續所有預覽、辨識與標記都會綁定到這份來源檔；請先確認開啟的是最終要處理的版本，避免做錯檔案。</p>
+
+      <h3 id="workflow-step-b">步骤 B：在規則中心選擇地區與業務情境</h3>
+      <p>開啟「本機規則中心」，選擇國家/地區等<strong>地區</strong>，再選<strong>業務情境</strong>（如通用、金融等），必要時啟用/關閉部分內建規則或新增自訂規則。<br>
+      規則組合随地區與情境變化；選錯情境可能導致該啟用的規則未啟用，或誤報增多。關閉文件前可儲存偏好，下次同類文件更省事。</p>
+
+      <h3 id="workflow-step-c">步驟 C：開始辨識</h3>
+      <p>在主畫面右側「掃描策略」相關區域點選<strong>開始辨識</strong>（或同等按鈕），等待構建文件模型與全文件掃描完成。<br>
+      把規則命中結果變成大量「待確認」標記；若你修改了地區/情境/規則，應重新辨識以刷新清單。</p>
+
+      <h3 id="workflow-step-d">步骤 D：在稽核側欄複核</h3>
+      <p>在右側<strong>稽核追蹤</strong>清單中逐條或按篩選查看；對確需抹除的項目<strong>確認</strong>，對誤報<strong>取消確認</strong>或從清單移除（按介面實際能力操作）。預覽區的黃色區域可與清單聯動，點選可切換確認狀態。<br>
+      這是避免誤刪與漏刪的核心步驟；匯出只會採用「已確認」項目。</p>
+
+      <h3 id="workflow-step-e">步驟 E：手動框選補漏</h3>
+      <p>在左側預覽上拖曳矩形，覆蓋規則沒有命中但你知道必須去掉的內容；必要時調整「選區外觀」顏色以便辨認。<br>
+      自動偵測無法保證 100% 涵蓋，人工框選就是<strong>最後一道安全網</strong>。</p>
+
+      <h3 id="workflow-step-f">步驟 F：匯出</h3>
+      <p>點選「匯出已遮蔽」，選擇儲存路徑；閱讀完成摘要（實體移除條數、中繼資料清理、驗證提示等）。<br>
+      你會得到可對外分享的終稿；摘要可用來快速判斷本次匯出是否「看起來完整」。若有警告，請開啟匯出檔人工抽查。</p>
+
+      <h3 id="workflow-step-g">步骤 G（可選）：套用到多個檔案</h3>
+      <p>同事在本 PDF 上把所有該遮蔽的區域都<strong>確認</strong>無誤後，在稽核側欄使用<strong>套用到多個檔案</strong>（或同等入口）。軟體會據此產生上述<strong>標準化幾何基準</strong>並開啟<strong>批次遮蔽</strong>視窗；接著把多份<strong>版面一致</strong>的 PDF 加入佇列、指定輸出資料夾，勾選是否清理中繼資料，再執行批次。<br>
+      在「同一套版面、敏感項位置相同」的前提下，避免對每一份文件重複畫框確認；批次階段按基準<strong>直接實體刪除對應矩形範圍</strong>。<br>
+      <strong>重要限制</strong>：這不是「儲存規則範本下次再選」——<strong>不會另外儲存範本檔</strong>；基準來自<strong>目前這一份</strong>已確認文件。且批次<strong>不會</strong>對佇列中每個檔案重新跑規則掃描，若某份檔案版面變了，應回到單一檔案流程重新辨識與確認。</p>
+    
+
+    
+      <h2><span class="num">4</span>主畫面說明</h2>
+
+      <figure class="doc-screenshot">
+        <img src="images/zh-Hant/PlainBytes.Redactor.jpg" alt="PlainBytes Redactor 主畫面：左側為文件預覽區，右側為稽核與策略等面板，具體以已安裝版本為準。" loading="lazy" decoding="async" />
+        <figcaption>主畫面概覽</figcaption>
+      </figure>
+
+      <h3 id="main-ui-4-1">4.1 左側預覽區</h3>
+      <ul>
+        <li><strong>用途</strong>：按頁渲染 PDF（或圖片），真實反映頁碼與版面。</li>
+        <li><strong>與標記的關係</strong>：自動或手動產生的待遮蔽區域會以高亮框等形式叠加；<strong>點選</strong>某區域常可與「確認/取消確認」聯動（以黃色提示與介面為準）。</li>
+        <li><strong>手動框選</strong>：在預覽上按下拖曳即可新增矩形標記。</li>
+      </ul>
+      <h3 id="main-ui-4-4">4.2 右側「掃描策略」面板</h3>
+      <ul>
+        <li><strong>用途</strong>：展示與目前文件相關的辨識策略入口（如<strong>開始辨識</strong>），並與規則中心裡設定的地區、情境、規則集相對應。</li>
+        <li><strong>為什麼單獨一塊</strong>：把「何時觸發全文件掃描」與「稽核清單裡怎麼改標記」在資訊架構上分開，避免混淆。</li>
+      </ul>
+
+      <h3 id="main-ui-4-3">4.3 右側「框選外觀」面板</h3>
+      <ul>
+        <li><strong>用途</strong>：調整手動/選區相關顯示效果，例如<strong>外框顏色、填滿顏色、自訂顏色</strong>，在複雜背景上仍看清待確認框。</li>
+        <li><strong>注意</strong>：這是<strong>介面輔助</strong>，不改變遮蔽是否發生；是否匯出遮蔽仍由「確認」與匯出動作決定。</li>
+      </ul>
+
+      <h3 id="main-ui-4-2">4.4 右側「稽核追蹤」面板</h3>
+      <ul>
+        <li><strong>用途</strong>：列出目前文件中聚合後的敏感項，支援按類別、風險等級篩選，以及對單條或批次執行確認/取消等操作。</li>
+        <li><strong>與預覽如何聯動</strong>：選取或操作清單項時，預覽通常捲動/高亮到對應頁與區域；在預覽點選標記也會反映到清單中的確認狀態。</li>
+      </ul>
+
+      <h3 id="main-ui-4-5">4.5 工具列各按鈕（自上而下邏輯）</h3>
+      <ul>
+        <li><strong>開啟檔案</strong>：選擇本機 PDF 或支援的圖片。</li>
+        <li><strong>關閉文件</strong>：關閉目前文件。</li>
+        <li><strong>上一頁 / 下一頁</strong>：在文件頁面之間切換，請使用工具列按鈕。</li>
+        <li><strong>本機規則</strong>：開啟規則中心，設定地區、情境、內建規則與自訂規則。</li>
+        <li><strong>批次</strong>：進入批次遮蔽控制台。</li>
+        <li><strong>匯出已遮蔽</strong>：在存在已確認標記時匯出 PDF。</li>
+        <li><strong>更多選項（⋯）</strong>：語言、使用說明、意見回饋與支援、檢查更新、關於等。</li>
+      </ul>
+
+      <p>狀態欄會顯示就緒狀態、目前檔名等摘要資訊。</p>
+    
+
+    
+      <h2><span class="num">5</span>本機規則中心</h2>
+
+      <h3 id="rules-5-1">5.1 地區與業務情境的關係</h3>
+      <ul>
+        <li><strong>地區</strong>：偏向國家/地區維度，影響「哪些內建規則适用」（如當地證件、電話格式）。</li>
+        <li><strong>業務情境</strong>：在相同地區下进一步收缩或強調規則集（通用、金融、醫療、法律政務等），使預設開啟的規則更贴近文件類型。</li>
+        <li><strong>二者關係</strong>：先定地區，再選情境；組合變化後建議<strong>重新執行辨識</strong>，否則清單仍可能是舊策略下的結果。</li>
+      </ul>
+
+      <h3 id="rules-5-2">5.2 內建規則 vs 自訂規則</h3>
+      <ul>
+        <li><strong>內建規則</strong>：随產品提供，按類別分組（身分、金融、地址、聯絡方式等），可單獨開關，數據來自本機設定，可完全離線使用。</li>
+        <li><strong>自訂規則</strong>：由你定義顯示名稱與比對模式；支援<strong>一般子字串</strong>（不分大小寫）或 <strong>.NET 正規表示式</strong>。适合內部代號、專案專用格式等內建未覆蓋的情況。自訂規則數量可能有上限。</li>
+      </ul>
+
+      <h3 id="rules-5-3">5.3 什麼時候需要調整規則</h3>
+      <ul>
+        <li>某類文件<strong>誤報很多</strong>：可暂時關閉高風險或過於寬泛的內建規則，或改選更貼切的業務情境。</li>
+        <li><strong>反覆出現固定格式</strong>但內建未覆蓋：新增自訂規則，減少手動框選量。</li>
+        <li><strong>誤調亂了設定</strong>：使用「恢復預設」清空本機覆蓋（操作前有確認）。</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">6</span>稽核側欄詳解</h2>
+
+      <h3 id="audit-6-1">6.1 確認機制的設計邏輯</h3>
+      <ul>
+        <li>清單中的每一項往往對應「同一敏感類型或同一聚合鍵」在多頁多次出現，你對項目執行確認，相當於<strong>認可這些出現均應被實體刪除</strong>。</li>
+        <li><strong>待確認</strong>狀態用來區隔「機器推測」與「人工決定」；避免未複核即整批寫入。</li>
+        <li>匯出引擎只使用<strong>已確認</strong>集合，這是產品與合規預期對齊的關鍵設計。</li>
+      </ul>
+
+      <h3 id="audit-6-2">6.2 篩選與批次確認怎麼用</h3>
+      <ul>
+        <li><strong>篩選</strong>：按類別、風險等級缩小清單，優先處理高風險或某一類欄位（如僅看「聯絡方式」）。</li>
+        <li><strong>批次</strong>：對目前篩選下可見項目一次切換確認狀態（具體按鈕文案以介面為準），适合「這一批都是真的敏感資訊」或「這一批都是誤判」的情境。</li>
+        <li><strong>建議</strong>：批次操作前先確認篩選條件，避免把未看见的項目一併誤處理。</li>
+      </ul>
+
+      <h3 id="audit-6-3">6.3 風險等級代表什麼</h3>
+      <p>風險等級（如嚴重、高、可疑、中、低）用來<strong>排序與篩選優先順序</strong>，幫助你先處理最可能造成洩露的命中；它不自動等同於「必須確認」——最終仍由你決定是否遮蔽。</p>
+    
+
+    
+      <h2><span class="num">7</span>手動框選</h2>
+
+      <h3 id="manual-box-7-1">7.1 什麼情況下需要手動框選</h3>
+      <ul>
+        <li>規則<strong>沒有命中</strong>，但你從業務上知道必須去掉的內容（如手寫批註照片、特殊排版中的欄位）。</li>
+        <li>命中<strong>分散</strong>或<strong>邊界不準</strong>：可刪除不準的自動項目後，用手動框精確覆蓋。</li>
+        <li><strong>純掃描件</strong>若以圖片形式處理：可選取文字的 PDF 與純圖片路徑不同，圖片類往往更依賴框選或專門流程（見常見問題）。</li>
+      </ul>
+
+      <h3 id="manual-box-7-2">7.2 如何搭配自動偵測結果</h3>
+      <p>推薦順序：<strong>先跑自動辨識 → 稽核側欄批次消化明顯誤報/漏報趨勢 → 少量用手動框補關鍵漏網之魚 → 最後全頁快速掃一眼預覽</strong>。手動標記與自動標記在匯出前統一以「是否已確認」為準。</p>
+
+      <h3 id="manual-box-7-3">7.3 鍵盤快速鍵</h3>
+      <p>單一檔案頁在載入時向<strong>主視窗</strong>註冊 <code>PreviewKeyDown</code>。僅在<strong>已開啟文件</strong>且<strong>應用程式不忙碌</strong>時，下列按鍵會被該處理邏輯響應（與工具列「上一頁 / 下一頁」沒有直接綁定）。</p>
+      <table aria-label="鍵盤快速鍵">
+        <thead>
+          <tr><th scope="col">按鍵</th><th scope="col">作用</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Tab</code></td><td>選取下一個遮蔽標記。</td></tr>
+          <tr><td><code>Shift</code> + <code>Tab</code></td><td>選取上一個遮蔽標記。</td></tr>
+          <tr><td><code>←</code> <code>↑</code> <code>→</code> <code>↓</code></td><td>當<strong>未按</strong>任何修飾鍵時：<code>←</code><code>↑</code> 為上一標記，<code>→</code><code>↓</code> 為下一標記。當<strong>已按</strong>任一修飾鍵時：僅 <code>↑</code><code>↓</code> 會按固定步長垂直捲動預覽；<code>←</code><code>→</code> 不在此處理程式中響應。</td></tr>
+          <tr><td><code>Enter</code></td><td>僅當<strong>未按</strong>修飾鍵時：切換目前選取標記的確認狀態。</td></tr>
+          <tr><td><code>Delete</code></td><td>僅當<strong>未按</strong>修飾鍵時：刪除目前選取的標記。</td></tr>
+          <tr><td><code>Page Up</code> / <code>Page Down</code></td><td>垂直捲動預覽區（步長由目前預覽檢視區高度決定）。</td></tr>
+          <tr><td><code>Home</code> / <code>End</code></td><td>預覽區捲動到頂端 / 底部。</td></tr>
+        </tbody>
+      </table>
+    
+
+    
+      <h2><span class="num">8</span>匯出</h2>
+
+      <h3 id="export-8-1">8.1 匯出前檢查清單</h3>
+      <ul class="checklist">
+        <li>目前文件是否為<strong>最終要對外</strong>的版本（頁碼、附件頁無誤）。</li>
+        <li>稽核側欄中，所有應刪除項均已<strong>確認</strong>；明確不應刪的已取消確認或移除。</li>
+        <li>已用預覽檢查關鍵頁面，手動補框是否已覆蓋掃描件或特殊區域。</li>
+        <li>知悉匯出將寫入<strong>新檔案</strong>（或你選擇的儲存路徑），來源檔預設不被本流程覆蓋（以實際另存行為為準）。</li>
+      </ul>
+
+      <h3 id="export-8-2">8.2 清理中繼資料的必要性</h3>
+      <p>PDF 除了正文外，常會帶有作者、建立程式、修改時間、XMP 等<strong>中繼資料</strong>。如果只抹除正文卻保留中繼資料，仍可能洩露內部帳號或編輯軌跡。本應用在匯出（以及批次處理的可選選項）中支援清理這類資訊；對外分享時，建議<strong>預設開啟清理</strong>（若介面提供勾選）。</p>
+
+      <h3 id="export-8-3">8.3 如何閱讀完成摘要</h3>
+      <ul>
+        <li>確認<strong>已實體移除的敏感項數量</strong>是否與預期量級一致。</li>
+        <li>確認<strong>中繼資料已清理</strong>的說明是否出現。</li>
+        <li>若存在<strong>文字驗證警告</strong>：表示自動抽樣比對發現疑點，需要人工開啟匯出的 PDF 做抽查，不可只靠摘要就斷言「絕對無殘留」。</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">9</span>批次處理</h2>
+
+      <h3 id="batch-9-1">9.1 批次處理實際做了什麼</h3>
+      <p>從<strong>套用到多個檔案</strong>進入並携帶基準後，對每個佇列中的 PDF，程式調用<strong>僅按基準套用</strong>的路徑：把標準化矩形換算成該檔案各頁上的絕對座標，生成待遮蔽標記並執行實體刪除與（可選）中繼資料清理。<strong>不會對每個檔案再執行規則掃描。</strong></p>
+      <div class="note">因此：單一檔案裡用來「找字」的規則，只服務於你在樣板檔案上的確認結果；批次只是把「你已確認的位置」複製到多份幾何結構相同的文件中。</div>
+
+      <h3 id="batch-9-2">9.2 適合的使用情境</h3>
+      <ul>
+        <li>同一系統、同一版面匯出的多份 PDF，敏感區域在頁面上的<strong>相對位置固定</strong>。</li>
+        <li>已在<strong>一份樣板</strong>上完整跑過辨識、人工確認，並希望其他副本<strong>省略重複確認</strong>。</li>
+      </ul>
+
+      <h3 id="batch-9-3">9.3 注意事項</h3>
+      <ul>
+        <li><strong>沒有持久化範本</strong>：關閉批次視窗後，本次基準不當作「命名範本」留在磁碟上；下次批次需從新的樣板檔案再次執行<strong>套用到多個檔案</strong>。</li>
+        <li>若從工具列單獨開啟<strong>批次</strong>而未先經過上述入口，可能沒有有效基準，<strong><strong>開始</strong>按鈕可能無法使用（以介面為準）。</li>
+        <li>版面略有差異就會導致漏刪或誤刪地區，首批結果務必<strong>抽樣開啟檢查</strong>。</li>
+        <li>建議勾選<strong>清除檔案內容與隱藏資料</strong>（若提供），方便對外分享。</li>
+        <li>該功能對<strong>文件類型與授權版本</strong>可能有限制（如部分柵格 PDF），以<strong>套用到多個檔案</strong>是否可點選為準。</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">10</span>常見問題</h2>
+
+      <h3 id="faq-false-positives">10.1 為什麼偵測結果會有誤判？</h3>
+      <p>規則比對採用模式與啟發式：<strong>看起來像敏感資訊</strong>的字串、地名重疊、表格中的數字片段都可能被標出。透過調整情境/規則、關閉某條規則、或在側欄取消確認即可控制；設計上故意要求<strong>人工確認</strong>以降低一鍵誤刪風險。</p>
+
+      <h3 id="faq-scanned-pdf">10.2 掃描件要怎麼處理？</h3>
+      <p>若 PDF 實為整頁點陣圖、無法抽取可選取文字，則規則掃描能發揮的空間會受限，往往更依賴<strong>手動框選</strong>或產品內針對柵格文件的處理路徑（以開啟檔案時的實際行為與提示為準）。處理前可先確認來源檔是否為「真正的電子 PDF」還是「掃描件」。</p>
+
+      <h3 id="faq-image-no-ocr">10.3 可以直接開啟圖片做遮蔽嗎？為什麼不會自動辨識圖片裡的文字？</h3>
+      <p>可以。本應用支援開啟常見<strong>圖片檔</strong>作為待遮蔽文件，流程上仍以預覽 + 標記 + 匯出為主。考量<strong>安裝包大小</strong>與<strong>本機效能</strong>，目前版本<strong>未整合 OCR（光學字元辨識）</strong>：圖片中的文字不會自動轉成可選取文字，因此<strong>規則掃描基本不適用</strong>，敏感區域需要你透過<strong>手動框選</strong>（以及用鍵盤在標記間切換、確認）完成。</p>
+
+      <h3 id="faq-verify-export">10.4 匯出後如何驗證遮蔽是否完整？</h3>
+      <ul>
+        <li>在 PDF 閱讀器中嘗試<strong>複製全文</strong>、<strong>搜尋</strong>已知敏感關鍵字。</li>
+        <li>對關鍵頁做<strong>目視檢查</strong>（尤其頁眉頁尾、小字註解）。</li>
+        <li>參考軟體提供的<strong>匯出驗證摘要</strong>；若有警告，優先針對警告頁複查。</li>
+        <li>對極高風險情境，可搭配貴單位既有流程（二次工具抽檢、抽樣列印審閱等）。</li>
+      </ul>
+
+    <div class="footer-note">
+      © PlainBytes Studio · 文件隨產品迭代更新，請以最新軟體為準。
+    </div>
+  </main>
+</div>
+
+<script>
+  // Highlight active TOC item on scroll
+  const sections = document.querySelectorAll('main h2[id], main h3[id], .step-card[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+<script>
+(function () {
+  var MANUAL = {
+    en: "en.html", zh: "zh-Hans.html", "zh-Hant": "zh-Hant.html",
+    ja: "ja.html", ko: "ko.html", de: "de.html", fr: "fr.html",
+    pt: "pt.html", it: "it.html", es: "es.html", nl: "nl.html", ru: "ru.html"
+  };
+  var STORE_WEB = "https://apps.microsoft.com/detail/9n2vlpn4wdk1";
+  var STORE_WIN = "ms-windows-store://pdp/?ProductId=9N2VLPN4WDK1";
+
+  var sel = document.getElementById("lang-select");
+  if (sel && sel.getAttribute("data-lang-nav") !== "1") {
+    sel.setAttribute("data-lang-nav", "1");
+    var current = document.documentElement.getAttribute("data-lang") || "en";
+    sel.value = current;
+    sel.addEventListener("change", function () {
+      var file = MANUAL[sel.value];
+      if (file && sel.value !== current) window.location.href = file;
+    });
+  }
+
+  document.querySelectorAll(".js-store-link").forEach(function (a) {
+    if (a.getAttribute("data-store-link") === "1") return;
+    a.setAttribute("data-store-link", "1");
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (/Windows/i.test(navigator.userAgent || "")) {
+        var link = document.createElement("a");
+        link.href = STORE_WIN;
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        window.open(STORE_WEB, "_blank", "noopener,noreferrer");
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+
