@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="de" data-lang="de" data-base="../" data-page="manual">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Benutzerhandbuch — PlainBytes Redactor</title>
+<meta name="description" content="Benutzerhandbuch für PlainBytes Redactor: Workflow, Regeln, Stapelverarbeitung und FAQ." />
+<link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+
+  :root{
+    --bg-dark:#232323;
+    --red:#b3362b;
+    --red-dk:#8c2920;
+    --accent:#9a0413;
+    --accent-text:#fcebeb;
+    --ink:#1c1a17;
+    --gray:#5c5650;
+    --muted:#9a938b;
+    --rule:#e8e3dc;
+    --bg:#faf8f5;
+    --card:#ffffff;
+    --accent-lt:#fbeceb;
+    --serif:'DM Serif Display',Georgia,serif;
+    --sans:'DM Sans',system-ui,sans-serif;
+    --side-w:240px;
+    --layout-gap:2.5rem;
+    --maxw:1080px;
+  }
+
+  html{font-size:16px;scroll-behavior:smooth}
+  body.manual-page{
+    margin:0;
+    padding-top:64px;
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+
+  /* ── TOP BAR (self-contained; matches website/css/site.css) ── */
+  .manual-page .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    background:rgba(35,35,35,.92);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:.5px solid rgba(255,255,255,.08);
+  }
+  .manual-page .site-header .inner{
+    width:100%;max-width:var(--maxw);margin:0 auto;padding:0 24px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;min-height:64px;flex-wrap:wrap;
+  }
+  .manual-page .site-header .brand{
+    display:flex;align-items:center;gap:10px;
+    color:#fff;font-weight:500;font-size:.875rem;text-decoration:none;
+  }
+  .manual-page .site-header .brand:hover{color:#f5f4f0;text-decoration:none}
+  .manual-page .site-header .brand-logo{
+    width:28px;height:28px;flex-shrink:0;object-fit:contain;display:block;
+  }
+  .manual-page .site-header .header-actions{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .manual-page .site-header .site-nav-link{
+    font-size:.8125rem;color:#d0cec8;text-decoration:none;white-space:nowrap;
+  }
+  .manual-page .site-header .site-nav-link:hover{color:#fff;text-decoration:none}
+  .manual-page .site-header .site-nav-link--current{color:#fff;font-weight:500}
+  .manual-page .site-header .lang-select{
+    background:transparent;color:#d0cec8;border:none;border-radius:6px;
+    padding:8px 4px;font-size:.8125rem;cursor:pointer;
+  }
+  .manual-page .site-header .lang-select option{color:var(--ink);background:#fff}
+  .manual-page .site-header .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:11px 22px;font-size:.875rem;font-weight:500;line-height:1.6;
+    border-radius:6px;border:none;cursor:pointer;text-decoration:none;
+    transition:background .15s ease,color .15s ease;
+  }
+  .manual-page .site-header .btn-accent{
+    background:var(--accent);color:var(--accent-text);
+  }
+  .manual-page .site-header .btn-accent:hover{
+    background:#7f0310;color:var(--accent-text);text-decoration:none;
+  }
+  .manual-page .site-header .btn-accent--sm{padding:9px 18px;font-size:.8125rem}
+
+  /* ── TOP hero ── */
+  .manual-top{
+    background:linear-gradient(180deg,#232323 0%,#2d2d2d 58%,#352626 100%);
+    margin-top:-64px;
+    padding-top:64px;
+  }
+
+  .manual-hero{padding:32px 0 48px}
+  .manual-hero__inner{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .manual-hero__copy{max-width:640px;margin:0 auto;text-align:center}
+  .manual-hero__kicker{
+    margin:0 0 20px;font-size:.8125rem;font-weight:500;letter-spacing:.03em;
+    color:#e8a0a0;text-transform:lowercase;
+  }
+  .manual-hero h1{
+    margin:0 0 20px;font-family:var(--serif);
+    font-size:clamp(1.75rem,4vw,2.375rem);font-weight:500;line-height:1.3;color:#fff;
+  }
+  .manual-hero__lead{
+    margin:0;font-size:1rem;line-height:1.7;color:#c8c6c0;font-weight:300;
+  }
+
+  /* ── LAYOUT ──────────────────────────────────────────── */
+  .page-wrap{
+    max-width:var(--maxw);margin:0 auto;
+    padding:3rem 24px 6rem;
+    display:grid;grid-template-columns:var(--side-w) 1fr;gap:var(--layout-gap);
+    align-items:start;
+  }
+
+  /* ── SIDEBAR NAV ─────────────────────────────────────── */
+  .toc-sidebar{position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto}
+  .toc-sidebar::-webkit-scrollbar{width:4px}
+  .toc-sidebar::-webkit-scrollbar-thumb{background:var(--rule);border-radius:4px}
+
+  .toc-block{margin-bottom:1.5rem}
+  .toc-block-label{
+    font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:.6rem;padding-left:.2rem;
+  }
+  .toc-item{display:block}
+  .toc-link{
+    display:block;font-size:.85rem;color:var(--gray);text-decoration:none;
+    padding:.4rem .6rem;border-radius:6px;border-left:2px solid transparent;
+    transition:color .15s,background .15s,border-color .15s;
+  }
+  .toc-link:hover{background:var(--accent-lt);color:var(--red-dk)}
+  .toc-link.active{color:var(--red);border-left-color:var(--red);font-weight:600;background:var(--accent-lt)}
+  .toc-sub{padding-left:1rem}
+  .toc-sub .toc-link{font-size:.79rem}
+
+  /* ── MAIN CONTENT ────────────────────────────────────── */
+  .content{min-width:0}
+
+  .content h2{
+    font-family:var(--serif);font-size:1.55rem;color:var(--ink);
+    letter-spacing:-.02em;margin:3rem 0 1rem;padding-top:.5rem;
+    border-top:1px solid var(--rule);
+  }
+  .content h2:first-child{margin-top:0;border-top:none;padding-top:0}
+  .content > h2 .num{color:var(--red);margin-right:.5rem;font-style:normal}
+
+  .content h3{
+    font-size:1.08rem;font-weight:700;color:var(--ink);
+    margin:2rem 0 .75rem;letter-spacing:-.01em;
+  }
+
+  .content p{margin-bottom:1.1rem;font-weight:300;color:#2a2724}
+  .content strong{font-weight:600;color:var(--ink)}
+  .content em{font-style:italic}
+
+  .content ul,.content ol{padding-left:1.3rem;margin-bottom:1.1rem}
+  .content li{margin-bottom:.4rem;font-weight:300}
+  .content li strong{font-weight:600}
+
+  .content a{color:var(--red-dk);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px}
+  .content a:hover{text-decoration-color:var(--red-dk)}
+
+  /* Quick start video card */
+  .video-card{
+    background:var(--bg-dark);border-radius:14px;overflow:hidden;
+    margin:1.5rem 0 2.5rem;
+  }
+  .video-frame{
+    aspect-ratio:16/9;background:linear-gradient(135deg,#241a14 0%,#1a1410 100%);
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .play-btn{
+    width:64px;height:64px;border-radius:50%;background:var(--red);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(179,54,43,.4);
+    transition:transform .2s;cursor:pointer;
+  }
+  .play-btn:hover{transform:scale(1.06)}
+  .play-btn::after{
+    content:'';width:0;height:0;
+    border-style:solid;border-width:9px 0 9px 15px;
+    border-color:transparent transparent transparent #fff;
+    margin-left:3px;
+  }
+  .video-caption{padding:1rem 1.25rem;color:rgba(255,255,255,.55);font-size:.82rem}
+
+  /* Table */
+  .content table{
+    width:100%;border-collapse:collapse;font-size:.86rem;margin:1.5rem 0 2rem;
+    border-radius:8px;overflow:hidden;border:1px solid var(--rule);
+  }
+  .content th{
+    background:var(--bg-dark);color:#fff;font-weight:600;
+    padding:.7rem 1rem;text-align:left;font-size:.78rem;
+    letter-spacing:.02em;
+  }
+  .content td{
+    padding:.7rem 1rem;border-bottom:1px solid var(--rule);
+    vertical-align:top;font-weight:300;
+  }
+  .content tr:last-child td{border-bottom:none}
+  .content tr:nth-child(even) td{background:#f7f4f0}
+  .content td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+
+  /* Callout boxes */
+  .callout{
+    border-left:3px solid var(--red);background:var(--accent-lt);
+    padding:1rem 1.25rem;border-radius:0 10px 10px 0;margin:1.5rem 0;
+  }
+  .callout-label{
+    font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--red-dk);margin-bottom:.35rem;
+  }
+  .callout p{margin:0;font-weight:400;color:var(--ink)}
+  .callout p+p{margin-top:.5rem}
+
+  .callout.tip{border-color:#2e6b4f;background:#eaf5ef}
+  .callout.tip .callout-label{color:#1f4d38}
+  .callout.warn{border-color:#a35a0e;background:#fbf0e4}
+  .callout.warn .callout-label{color:#7a4209}
+
+  /* Step cards for workflow */
+  .step-card{
+    background:var(--card);border:1px solid var(--rule);border-radius:12px;
+    padding:1.4rem 1.5rem;margin-bottom:1rem;
+  }
+  .step-card .step-label{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--red);margin-bottom:.6rem;
+  }
+  .step-card .step-label .step-num{
+    width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:.72rem;
+  }
+  .step-card h4{font-size:1.02rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+  .step-card p{margin-bottom:0;font-size:.92rem}
+
+  /* Keyboard key */
+  kbd{
+    display:inline-block;font-family:'SF Mono','Fira Code',monospace;
+    font-size:.78em;background:var(--bg-dark);color:#fff;
+    padding:.15em .5em;border-radius:5px;font-weight:500;
+  }
+
+  .content code{
+    font-family:'SF Mono','Fira Code',monospace;
+    font-size:.85em;background:#f0ebe4;color:var(--ink);
+    padding:.12em .45em;border-radius:4px;
+  }
+
+  /* Image figure */
+  figure{margin:1.75rem 0;border-radius:12px;overflow:hidden;border:1px solid var(--rule)}
+  figure img{width:100%;display:block}
+  figcaption{
+    font-size:.78rem;color:var(--muted);padding:.65rem 1rem;
+    background:var(--card);border-top:1px solid var(--rule);text-align:center;
+  }
+
+  /* FAQ accordion-style */
+  .faq-item{border-bottom:1px solid var(--rule);padding:1.3rem 0}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{font-weight:700;color:var(--ink);margin-bottom:.5rem;display:flex;gap:.6rem}
+  .faq-q .q-mark{color:var(--red);flex-shrink:0}
+  .faq-a{font-size:.92rem;font-weight:300;color:#2a2724;padding-left:1.4rem}
+
+  /* Footer note */
+  .footer-note{
+    margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);
+    font-size:.8rem;color:var(--muted);
+  }
+
+  .checklist{list-style:none;padding-left:0}
+  .checklist li{padding-left:1.5rem;position:relative;margin-bottom:.4rem}
+  .checklist li::before{content:"☐";position:absolute;left:0;color:var(--red-dk)}
+
+  /* ── MOBILE ──────────────────────────────────────────── */
+  .mobile-toc-toggle{display:none}
+
+  @media (max-width:980px){
+    .page-wrap{grid-template-columns:1fr;gap:0}
+    .toc-sidebar{
+      position:static;max-height:none;overflow:visible;
+      margin-bottom:2rem;border:1px solid var(--rule);border-radius:12px;
+      padding:1rem 1.25rem;background:var(--card);
+    }
+    .toc-sidebar.collapsed .toc-content{display:none}
+    .mobile-toc-toggle{
+      display:flex;align-items:center;justify-content:space-between;
+      width:100%;background:none;border:none;cursor:pointer;
+      font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--ink);
+      padding:0;
+    }
+  }
+  @media (max-width:560px){
+    .manual-hero__inner{padding:0 1.25rem}
+    .page-wrap{padding:2rem 1.25rem 4rem}
+    .content h2{font-size:1.3rem}
+  }
+</style>
+</head>
+<body class="manual-page">
+
+<header class="site-header site-header--on-dark">
+  <div class="container inner">
+    <a class="brand" href="../de/index.html">
+      <img
+        class="brand-logo"
+        src="../assets/Redactor_Logo.png"
+        alt=""
+        aria-hidden="true"
+        width="28"
+        height="28"
+      />
+      <span>PlainBytes Redactor</span>
+    </a>
+    <div class="header-actions">
+      <a class="site-nav-link" href="../de/index.html">Startseite</a>
+      <a class="site-nav-link site-nav-link--current" href="de.html" aria-current="page">Benutzerhandbuch</a>
+      <label class="visually-hidden" for="lang-select">Language</label>
+      <select id="lang-select" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="zh-Hant">繁體中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="pt">Português</option>
+        <option value="it">Italiano</option>
+        <option value="es">Español</option>
+        <option value="nl">Nederlands</option>
+        <option value="ru">Русский</option>
+      </select>
+      <a
+        class="btn btn-accent btn-accent--sm js-store-link"
+        href="https://apps.microsoft.com/detail/9n2vlpn4wdk1"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Im Microsoft Store</a
+      >
+    </div>
+  </div>
+</header>
+
+<div class="manual-top">
+  <section class="manual-hero">
+    <div class="manual-hero__inner">
+      <div class="manual-hero__copy">
+        <p class="manual-hero__kicker">dokumentation</p>
+        <h1>PlainBytes Redactor Benutzerhandbuch</h1>
+        <p class="manual-hero__lead">Geschrieben für die aktuelle Windows-Desktop-App. Wenn etwas hier von Ihrer installierten Version abweicht, gilt die Benutzeroberfläche in der App.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════ MAIN LAYOUT ═══════════════════ -->
+<div class="page-wrap">
+
+  <aside class="toc-sidebar" id="tocSidebar">
+    <button class="mobile-toc-toggle" onclick="document.getElementById('tocSidebar').classList.toggle('collapsed')">
+      <span>Inhalt</span><span>▾</span>
+    </button>
+    <div class="toc-content">
+      <div class="toc-block">
+        <a href="#quick-start" class="toc-link">Schnellstart</a>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">1. Wofür diese App gedacht ist</div>
+        <div class="toc-sub">
+          <a href="#positioning-1-1" class="toc-link">1.1 Echte Schwärzung statt nur darübergelegter Balken</a>
+          <a href="#positioning-1-2" class="toc-link">1.2 Was „lokal und offline“ bedeutet</a>
+          <a href="#positioning-1-3" class="toc-link">1.3 Wann die App gut passt</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">2. Grundprinzipien</div>
+        <div class="toc-sub">
+          <a href="#concepts-2-1" class="toc-link">2.1 Schwärzungsmarkierungen</a>
+          <a href="#concepts-2-2" class="toc-link">2.2 Was „Bestätigen“ bedeutet</a>
+          <a href="#concepts-2-4" class="toc-link">2.3 Die Basis für Stapelverarbeitung</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">3. Ablauf von Anfang bis Ende</div>
+        <div class="toc-sub">
+          <a href="#workflow-example" class="toc-link">Beispielszenario</a>
+          <a href="#workflow-step-a" class="toc-link">Schritt A: Dokument öffnen</a>
+          <a href="#workflow-step-b" class="toc-link">Schritt B: Region und Szenario</a>
+          <a href="#workflow-step-c" class="toc-link">Schritt C: Erkennung ausführen</a>
+          <a href="#workflow-step-d" class="toc-link">Schritt D: In der Prüfliste durchgehen</a>
+          <a href="#workflow-step-e" class="toc-link">Schritt E: Fehlende Stellen manuell markieren</a>
+          <a href="#workflow-step-f" class="toc-link">Schritt F: Exportieren</a>
+          <a href="#workflow-step-g" class="toc-link">Schritt G (optional): Auf weitere Dateien anwenden</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">4. Überblick über das Hauptfenster</div>
+        <div class="toc-sub">
+          <a href="#main-ui-4-1" class="toc-link">4.1 Vorschau (links)</a>
+          <a href="#main-ui-4-4" class="toc-link">4.2 Bereich für Scanrichtlinie</a>
+          <a href="#main-ui-4-3" class="toc-link">4.3 Darstellung von Auswahlen</a>
+          <a href="#main-ui-4-2" class="toc-link">4.4 Prüfprotokollliste</a>
+          <a href="#main-ui-4-5" class="toc-link">4.5 Symbolleisten-Schaltflächen</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">5. Regelbereich</div>
+        <div class="toc-sub">
+          <a href="#rules-5-1" class="toc-link">5.1 Region und Geschäftsszenario</a>
+          <a href="#rules-5-2" class="toc-link">5.2 Integrierte und eigene Regeln</a>
+          <a href="#rules-5-3" class="toc-link">5.3 Wann Regeln angepasst werden sollten</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">6. Prüfseitenleiste</div>
+        <div class="toc-sub">
+          <a href="#audit-6-1" class="toc-link">6.1 Warum die Bestätigung so funktioniert</a>
+          <a href="#audit-6-2" class="toc-link">6.2 Filter und Sammelbestätigung</a>
+          <a href="#audit-6-3" class="toc-link">6.3 Risikostufen</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">7. Manuelle Auswahlen</div>
+        <div class="toc-sub">
+          <a href="#manual-box-7-1" class="toc-link">7.1 Wann eigene Rahmen sinnvoll sind</a>
+          <a href="#manual-box-7-2" class="toc-link">7.2 Mit automatisch erkannten Markierungen arbeiten</a>
+          <a href="#manual-box-7-3" class="toc-link">7.3 Tastenkürzel</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">8. Export</div>
+        <div class="toc-sub">
+          <a href="#export-8-1" class="toc-link">8.1 Checkliste vor dem Export</a>
+          <a href="#export-8-2" class="toc-link">8.2 Warum Metadaten entfernt werden sollten</a>
+          <a href="#export-8-3" class="toc-link">8.3 Die Zusammenfassung lesen</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">9. Stapelverarbeitung</div>
+        <div class="toc-sub">
+          <a href="#batch-9-1" class="toc-link">9.1 Was der Stapelmodus tatsächlich macht</a>
+          <a href="#batch-9-2" class="toc-link">9.2 Geeignete Anwendungsfälle</a>
+          <a href="#batch-9-3" class="toc-link">9.3 Worauf Sie achten sollten</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">10. Häufige Fragen</div>
+        <div class="toc-sub">
+          <a href="#faq-false-positives" class="toc-link">10.1 Warum gibt es so viele Fehlalarme?</a>
+          <a href="#faq-scanned-pdf" class="toc-link">10.2 Gescannte PDFs</a>
+          <a href="#faq-image-no-ocr" class="toc-link">10.3 Bilder und OCR</a>
+          <a href="#faq-verify-export" class="toc-link">10.4 Export prüfen</a>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <main class="content">
+<h2 id="quick-start">Schnellstart</h2>
+      <p>Das Video unten zeigt den kompletten Ablauf von Anfang bis Ende: automatische Erkennung und bei Bedarf manuelle Ergänzung.</p>
+      <!-- [Insert video] -->
+      <div class="video-card">
+      <div class="video-frame">
+        <div class="play-btn" onclick="document.getElementById('qsVideo').play(); this.style.display='none'"></div>
+        <video id="qsVideo" controls style="position:absolute;inset:0;width:100%;height:100%;display:none" onplay="this.style.display='block'; this.previousElementSibling.style.display='none'">
+          <source src="videos/de/quickstart.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="video-caption">Vollständige Workflow-Demo · 2 Min.</div>
+    </div>
+    
+
+    
+      <h2><span class="num">1</span>Wofür diese App gedacht ist</h2>
+
+      <h3 id="positioning-1-1">1.1 Echte Schwärzung statt nur darübergelegter Balken</h3>
+      <p>Für Compliance und Sicherheit bedeuten diese beiden Ansätze sehr unterschiedliche Dinge:</p>
+      <table>
+        <thead>
+          <tr><th>Aspekt</th><th>Darübergelegte Vorschau (der übliche „schwarze Balken“)</th><th>Echte Schwärzung (darauf zielt diese App ab)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Im PDF</td>
+            <td>Text, Vektoren oder Bilder können weiterhin in der Datei stecken und sind oft nur von einer anderen Grafik überdeckt.</td>
+            <td>Treffende Inhalte werden aus dem Inhaltsstrom <strong>entfernt</strong>, sodass sie mit normaler Analyse nicht wiederherstellbar sind.</td>
+          </tr>
+          <tr>
+            <td>Kopieren / Suchen</td>
+            <td>Je nach Werkzeug lässt sich „versteckter“ Text trotzdem kopieren.</td>
+            <td>Ziel ist, dass auswählbarer Text die sensiblen Zeichenfolgen nicht mehr enthält (prüfen Sie die exportierte Datei).</td>
+          </tr>
+          <tr>
+            <td>Am besten für</td>
+            <td>Lesen am Bildschirm oder schnelles Abdecken.</td>
+            <td>Externe Weitergabe, Archivierung, Audits, Due Diligence: überall dort, wo Inhalte <strong>endgültig weg</strong> sein müssen.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">PlainBytes Redactor ist auf <strong>echte Schwärzung</strong> ausgelegt. Verwenden Sie <strong>Bestätigen</strong>, damit klar ist, welche Bereiche beim Export wirklich entfernt werden.</div>
+
+      <h3 id="positioning-1-2">1.2 Was „lokal und offline“ bedeutet</h3>
+      <ul>
+        <li><strong>Die Arbeit bleibt auf diesem PC</strong>: PDF öffnen, Regelabgleich, Schreiben der geschwärzten Datei und Validierung laufen lokal.</li>
+        <li><strong>Kein Dokument-Upload für die Schwärzung</strong>: Das Produkt ist nicht darauf ausgelegt, Ihre Dateien als Teil der Schwärzung in die Cloud zu schicken.</li>
+        <li><strong>Getrennt von Hilfe / Updates</strong>: Wenn Sie Hilfe, Nach Updates suchen oder ähnliche Menüpunkte öffnen, kann Windows den Browser oder den Microsoft Store starten. Das hat nichts damit zu tun, dass der Schwärzungsprozess offline bleibt.</li>
+      </ul>
+
+      <h3 id="positioning-1-3">1.3 Wann die App gut passt</h3>
+      <ul>
+        <li>Abläufe in Recht, Finanzen, Gesundheitswesen, öffentlichem Sektor oder Prüfung, bei denen <strong>menschliche Kontrolle</strong> und ein <strong>kleinerer Schadensradius</strong> bei Leaks wichtig sind.</li>
+        <li>Sie müssen ein PDF weitergeben, aber IDs, Kontonummern, Kontaktdaten und andere <strong>identifizierende</strong> Informationen entfernen.</li>
+        <li>Sie haben viele PDFs mit <strong>demselben Layout</strong>: Nach der Bestätigung in einer „Vorlagen“-Datei können Sie mit <strong>Auf mehrere Dateien anwenden</strong> dieselbe Geometrie für die übrigen Dateien wiederverwenden (siehe Schritt G in §3 und §9).</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">2</span>Grundprinzipien</h2>
+
+      <h3 id="concepts-2-1">2.1 Schwärzungsmarkierungen (<code>RedactionMark</code>)</h3>
+      <p>Intern ist jeder mögliche Schwärzungsbereich eine <strong>Schwärzungsmarkierung</strong>, also vereinfacht gesagt „ein Rechteck auf einer Seite plus Metadaten“:</p>
+      <ul>
+        <li><strong>Seite und Rechteck</strong>: Position und Größe in PDF-Koordinaten.</li>
+        <li><strong>Status</strong>: <strong>Ausstehend</strong> oder <strong>Bestätigt</strong>. Beim Export werden nur <strong>bestätigte</strong> Markierungen entfernt.</li>
+        <li><strong>Quelle</strong>: <strong>Regeln (Muster/Regex)</strong> oder <strong>manuelle Auswahl</strong>, damit automatische Treffer von selbst gezeichneten Bereichen unterscheidbar bleiben.</li>
+        <li><strong>Kategorie und Risiko</strong>: Dienen zum Filtern, Sortieren und für Sammelaktionen in der Prüfliste.</li>
+      </ul>
+
+      <h3 id="concepts-2-2">2.2 Was „Bestätigen“ bedeutet und warum es manuell ist</h3>
+      <ul>
+        <li><strong>Automatisierung entscheidet nicht endgültig</strong>: Der Regelabgleich kann normalen Text <strong>zu oft markieren</strong> oder echte sensible Stellen <strong>übersehen</strong>. Die App nimmt daher nie an, dass „alles Gefundene gelöscht werden soll“.</li>
+        <li><strong>Bestätigen = Sie geben es frei</strong>: Nach der Bestätigung gehört eine Markierung zum Exportumfang. Alles, was ausstehend bleibt, gilt nicht als endgültig.</li>
+        <li><strong>Passt zu realen Prüfabläufen</strong>: Der zusätzliche Schritt passt zu Vier-Augen-Prüfung, Prüfprotokollen und hilft, ein versehentliches Löschen ganzer Seiten per Klick zu vermeiden.</li>
+      </ul>
+
+      <h3 id="concepts-2-4">2.3 Die Basis für Stapelverarbeitung</h3>
+      <ul>
+        <li>Es gibt <strong>keinen</strong> Ablauf „als benannte Vorlagendatei speichern und später auswählen“. Die Stapelverarbeitung nutzt eine <strong>geometrische Basis</strong> im Speicher: Wenn Sie über <strong>Auf mehrere Dateien anwenden</strong> in den Stapelmodus wechseln, wandelt die App jede <strong>bestätigte</strong> Markierung im aktuellen Dokument in ein <strong>normalisiertes Rechteck</strong> um (Seite + Koordinaten relativ zur Seitengröße), und zwar nur für <strong>diese Stapelsitzung</strong>.</li>
+        <li>Für <strong>jedes</strong> PDF in der Warteschlange setzt die Stapel-Engine <strong>nur diese Rechtecke</strong>. Sie führt <strong>keinen</strong> neuen vollständigen Regeldurchlauf pro Datei aus.</li>
+        <li><strong>Wann das passt</strong>: Mehrere Exporte aus demselben System mit <strong>gleichem Layout und sensiblen Bereichen an denselben Stellen</strong> (z. B. einheitliche Abrechnungen). Wenn Layouts abweichen, können Rahmen falsch landen; prüfen Sie die ersten Ausgaben stichprobenartig.</li>
+        <li><strong>Regeln im Bereich</strong>: Sie helfen, Treffer im <strong>aktuellen</strong> Einzeldokument-Ablauf zu <strong>finden</strong>. Sie werden <strong>nicht</strong> automatisch für jede Datei in der Warteschlange erneut ausgeführt. Die Stapelverarbeitung nutzt die bereits festgelegten <strong>bestätigten Positionen</strong>.</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">3</span>Ablauf von Anfang bis Ende</h2>
+
+      <div class="example">
+        <h3 id="workflow-example">Beispielszenario</h3>
+        <p>In diesem Beispiel muss eine juristische Prüferin ein achtseitiges <strong>PDF zum Austritt eines Mitarbeiters</strong> extern freigeben. Mobilnummern, Teile von Bankkartendaten und private E-Mail-Adressen sollen entfernt werden. Die Datei ist ein echtes elektronisches PDF mit auswählbarem Text, kein flacher Scan.</p>
+      </div>
+
+      <figure class="doc-screenshot doc-flowchart">
+        <img src="images/de/flowchart.jpg" alt="Schwärzungsablauf für eine einzelne Datei: Dokument öffnen, Regeln konfigurieren und Erkennung ausführen, prüfen und manuelle Rahmen hinzufügen, exportieren und optional stapelweise anwenden." loading="lazy" decoding="async" />
+        <figcaption>Ablauf auf einen Blick</figcaption>
+      </figure>
+
+      <h3 id="workflow-step-a">Schritt A: Dokument öffnen</h3>
+      <p>Laden Sie das PDF über <strong>Öffnen</strong> oder per Drag-and-drop (gängige Bildformate werden ebenfalls unterstützt; der Weg durch die App kann abweichen).<br>
+      Vorschau, Erkennung und Markierungen beziehen sich alle auf diese eine Quelldatei. Öffnen Sie daher die Version, die Sie tatsächlich schwärzen möchten.</p>
+
+      <h3 id="workflow-step-b">Schritt B: Region und Szenario im Regelbereich wählen</h3>
+      <p>Öffnen Sie <strong>Regeln</strong>, wählen Sie eine <strong>Region</strong> (Land/Gebiet) und anschließend ein <strong>Geschäftsszenario</strong> (allgemein, Finanzen usw.). Aktivieren oder deaktivieren Sie integrierte Regeln oder fügen Sie bei Bedarf eigene hinzu.<br>
+      Der tatsächlich verwendete Regelsatz hängt von Region und Szenario ab. Ein falsches Szenario kann nützliche Regeln deaktivieren oder zusätzliches Rauschen erzeugen. Speichern Sie die Einstellungen vor dem Schließen, damit ähnliche Dokumente beim nächsten Mal schneller gehen.</p>
+
+      <h3 id="workflow-step-c">Schritt C: Erkennung ausführen</h3>
+      <p>Klicken Sie rechts unter der Scanrichtlinie auf <strong>Erkennung starten</strong> (oder die entsprechende Steuerung) und warten Sie, bis Dokumentmodell und vollständiger Durchlauf fertig sind.<br>
+      Regeltreffer werden dadurch zu einer Liste <strong>ausstehender</strong> Markierungen. Wenn Sie Region, Szenario oder Regeln ändern, führen Sie die Erkennung erneut aus, damit die Liste dazu passt.</p>
+
+      <h3 id="workflow-step-d">Schritt D: In der Prüfliste durchgehen</h3>
+      <p>Gehen Sie im <strong>Prüfprotokoll</strong> rechts die Einträge einzeln durch oder verwenden Sie Filter. <strong>Bestätigen</strong> Sie, was entfernt werden muss; heben Sie die Bestätigung auf oder entfernen Sie Zeilen bei Fehlalarmen (die genauen Bedienelemente hängen vom Build ab). Die gelben Überlagerungen in der Vorschau bleiben normalerweise synchron; ein Klick kann den Bestätigungsstatus umschalten.<br>
+      Dieser Schritt verhindert, dass Sie Falsches löschen oder Wichtiges übersehen. Der Export berücksichtigt nur <strong>bestätigte</strong> Markierungen.</p>
+
+      <h3 id="workflow-step-e">Schritt E: Fehlende Stellen manuell markieren</h3>
+      <p>Ziehen Sie in der linken Vorschau Rechtecke über alles, was Regeln nicht erkannt haben, das aber geschwärzt werden muss. Passen Sie bei unruhigem Hintergrund die Auswahlfarben an.<br>
+      Die automatische Erkennung findet nicht alles; manuelle Rahmen sind Ihr <strong>Sicherheitsnetz</strong>.</p>
+
+      <h3 id="workflow-step-f">Schritt F: Exportieren</h3>
+      <p>Wählen Sie <strong>Geschwärzt exportieren</strong>, legen Sie den Speicherort fest und lesen Sie die Abschlusszusammenfassung (wie viele Elemente entfernt wurden, Metadatenbereinigung, Validierungsmeldungen).<br>
+      Sie erhalten eine weitergabefertige Kopie. Die Zusammenfassung ist eine schnelle Plausibilitätsprüfung. Bei Warnungen öffnen Sie das exportierte PDF und prüfen Sie stichprobenartig.</p>
+
+      <h3 id="workflow-step-g">Schritt G (optional): Auf mehrere Dateien anwenden</h3>
+      <p>Nachdem in diesem PDF alles, was geschwärzt werden soll, <strong>bestätigt</strong> ist, verwenden Sie <strong>Auf mehrere Dateien anwenden</strong> (oder den entsprechenden Eintrag). Die App erstellt die oben beschriebene <strong>normalisierte Basis</strong> und öffnet die <strong>Stapel-Schwärzung</strong>. Fügen Sie weitere PDFs mit passendem Layout hinzu, wählen Sie einen Ausgabeordner, entscheiden Sie, ob Metadaten entfernt werden sollen, und starten Sie den Lauf.<br>
+      Wenn die Layouts wirklich übereinstimmen, müssen Sie dieselben Bestätigungen nicht Datei für Datei wiederholen. Die Stapelverarbeitung <strong>entfernt</strong> die eingerahmten Bereiche weiterhin <strong>physisch</strong>.<br>
+      <strong>Wichtig</strong>: Das ist keine wiederverwendbare benannte Vorlage auf der Festplatte. Es gibt <strong>keine separate Vorlagendatei</strong>; die Basis stammt aus <strong>diesem</strong> bestätigten Dokument. Außerdem führt die Stapelverarbeitung die Regelerkennung für Dateien in der Warteschlange <strong>nicht</strong> erneut aus. Wenn sich das Layout einer Datei geändert hat, gehen Sie zurück zum Einzeldokument-Ablauf.</p>
+    
+
+    
+      <h2><span class="num">4</span>Überblick über das Hauptfenster</h2>
+
+      <figure class="doc-screenshot">
+        <img src="images/de/PlainBytes.Redactor.jpg" alt="Hauptfenster von PlainBytes Redactor mit Dokumentvorschau links und Prüf- sowie Richtlinienbereichen rechts; das Layout kann je nach Version abweichen." loading="lazy" decoding="async" />
+        <figcaption>Hauptfenster</figcaption>
+      </figure>
+
+      <h3 id="main-ui-4-1">4.1 Vorschau (links)</h3>
+      <ul>
+        <li><strong>Zweck</strong>: Zeigt jede Seite des PDFs (oder Bildes) so an, dass Seitenzahlen und Layout zur Datei passen.</li>
+        <li><strong>Markierungen</strong>: Automatische und manuell erstellte ausstehende Bereiche erscheinen als Hervorhebungen. Ein <strong>Klick</strong> auf einen Bereich schaltet oft zusammen mit der Liste den Bestätigungsstatus um (gelbe Hinweise hängen vom Build ab).</li>
+        <li><strong>Manuelle Rahmen</strong>: Klicken und ziehen Sie in der Vorschau, um eine rechteckige Markierung hinzuzufügen.</li>
+      </ul>
+      <h3 id="main-ui-4-4">4.2 Bereich für Scanrichtlinie</h3>
+      <ul>
+        <li><strong>Zweck</strong>: Einstiegspunkt für die Erkennung (z. B. <strong>Erkennung starten</strong>), abgestimmt auf Region, Szenario und Regelsätze aus dem Regelbereich.</li>
+        <li><strong>Warum getrennt</strong>: Trennt „wann das ganze Dokument gescannt wird“ von „wie die Prüfliste bearbeitet wird“ und reduziert so Verwirrung.</li>
+      </ul>
+
+      <h3 id="main-ui-4-3">4.3 Darstellung von Auswahlen</h3>
+      <ul>
+        <li><strong>Zweck</strong>: Passt das Aussehen manueller Auswahlen an: <strong>Rahmen, Füllung, eigene Farben</strong>, damit sie auf unruhigem Hintergrund sichtbar bleiben.</li>
+        <li><strong>Hinweis</strong>: Das ist <strong>nur eine visuelle Hilfe</strong>. Die Schwärzung hängt weiterhin von Bestätigung und Export ab.</li>
+      </ul>
+
+      <h3 id="main-ui-4-2">4.4 Prüfprotokollliste</h3>
+      <ul>
+        <li><strong>Zweck</strong>: Sammelt sensible Treffer für das geöffnete Dokument, mit Filtern nach Kategorie und Risiko sowie Bestätigen/Aufheben pro Zeile oder gesammelt.</li>
+        <li><strong>Synchron mit der Vorschau</strong>: Eine Zeile auszuwählen oder zu bearbeiten scrollt bzw. markiert normalerweise die Seite. Ein Klick auf eine Markierung in der Vorschau aktualisiert den Listenstatus.</li>
+      </ul>
+
+      <h3 id="main-ui-4-5">4.5 Symbolleiste (von oben nach unten)</h3>
+      <ul>
+        <li><strong>Öffnen</strong>: Lokales PDF oder unterstütztes Bild wählen.</li>
+        <li><strong>Dokument schließen</strong>: Schließt die aktuelle Datei.</li>
+        <li><strong>Vorherige / nächste Seite</strong>: Verwenden Sie die Symbolleiste. <code>Page Up</code> / <code>Page Down</code> auf der Einzeldokumentseite werden separat für das Scrollen der Vorschau behandelt (siehe §7.3).</li>
+        <li><strong>Regeln</strong>: Öffnet den Regelbereich.</li>
+        <li><strong>Stapel</strong>: Öffnet die Stapel-Schwärzung.</li>
+        <li><strong>Geschwärzt exportieren</strong>: Verfügbar, wenn bestätigte Markierungen vorhanden sind.</li>
+        <li><strong>Mehr (⋯)</strong>: Sprache, Hilfe, Feedback, Updates, Info usw.</li>
+      </ul>
+
+      <p>Die Statusleiste zeigt unter anderem Bereitschaft und den aktuellen Dateinamen.</p>
+    
+
+    
+      <h2><span class="num">5</span>Regelbereich</h2>
+
+      <h3 id="rules-5-1">5.1 Region und Geschäftsszenario</h3>
+      <ul>
+        <li><strong>Region</strong>: Länder-/Gebietsausprägung; steuert, welche integrierten Muster gelten (ID-Formate, Telefonregeln usw.).</li>
+        <li><strong>Geschäftsszenario</strong>: Grenzt Regelpakete ein oder gewichtet sie (allgemein, Finanzen, Gesundheitswesen, Recht/Behörden), damit die Voreinstellungen zum Dokumenttyp passen.</li>
+        <li><strong>Zusammen</strong>: Erst Region, dann Szenario setzen. Nach Änderungen <strong>Erkennung erneut ausführen</strong>, sonst sehen Sie möglicherweise noch einen alten Durchlauf.</li>
+      </ul>
+
+      <h3 id="rules-5-2">5.2 Integrierte und eigene Regeln</h3>
+      <ul>
+        <li><strong>Integriert</strong>: Wird mit der App geliefert, gruppiert nach Bereichen (Identität, Finanzen, Adresse, Kontakt, …), pro Regel schaltbar und durch lokale Daten unterstützt; vollständig offline.</li>
+        <li><strong>Eigen</strong>: Ihr Label plus ein Muster: einfacher Teilstring (ohne Beachtung der Groß-/Kleinschreibung) oder <strong>.NET-Regular-Expression</strong>. Praktisch für interne Codes, die die integrierten Regeln nicht kennen. Es kann eine Obergrenze geben.</li>
+      </ul>
+
+      <h3 id="rules-5-3">5.3 Wann Regeln angepasst werden sollten</h3>
+      <ul>
+        <li><strong>Zu viel Rauschen</strong>: Deaktivieren Sie vorübergehend zu breite Regeln oder wählen Sie ein passenderes Szenario.</li>
+        <li><strong>Dasselbe Muster taucht immer wieder auf</strong> und nichts Integriertes passt: Fügen Sie eine eigene Regel hinzu, um manuelle Rahmen zu reduzieren.</li>
+        <li><strong>Konfiguration driftet ab</strong>: <strong>Standards wiederherstellen</strong> löscht lokale Überschreibungen (Sie werden zur Bestätigung gefragt).</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">6</span>Prüfseitenleiste</h2>
+
+      <h3 id="audit-6-1">6.1 Warum die Bestätigung so funktioniert</h3>
+      <ul>
+        <li>Eine Zeile fasst oft mehrere Vorkommen desselben sensiblen Typs oder Schlüssels über Seiten hinweg zusammen. Bestätigen bedeutet: <strong>Alle diese Stellen sollen entfernt werden</strong>.</li>
+        <li><strong>Ausstehend</strong> trennt „Modellvermutung“ von „menschlicher Entscheidung“, damit nichts ohne Prüfung gesammelt geschrieben wird.</li>
+        <li>Die Export-Engine verarbeitet absichtlich nur <strong>bestätigte</strong> Markierungen.</li>
+      </ul>
+
+      <h3 id="audit-6-2">6.2 Filter und Sammelbestätigung</h3>
+      <ul>
+        <li><strong>Filter</strong>: Nach Kategorie oder Risiko eingrenzen, damit Sie zuerst Hochrisiko- oder bestimmte Feldtypen bearbeiten (z. B. nur Kontakt).</li>
+        <li><strong>Sammelaktion</strong>: Bestätigungsstatus für alles Sichtbare unter dem aktuellen Filter umschalten (Wortlaut hängt vom Build ab). Praktisch, wenn ein ganzer Ausschnitt eindeutig richtig oder falsch ist.</li>
+        <li><strong>Tipp</strong>: Prüfen Sie vor einer Sammelaktion den aktiven Filter, damit Sie keine Zeilen einbeziehen, die nicht gemeint waren.</li>
+      </ul>
+
+      <h3 id="audit-6-3">6.3 Risikostufen</h3>
+      <p>Stufen (z. B. kritisch, hoch, verdächtig, mittel, niedrig) helfen beim <strong>Sortieren und Filtern</strong>, damit die riskantesten Treffer zuerst erscheinen. Sie sind <strong>keine</strong> Aufforderung zur Bestätigung; Sie entscheiden weiterhin, was geschwärzt wird.</p>
+    
+
+    
+      <h2><span class="num">7</span>Manuelle Auswahlen</h2>
+
+      <h3 id="manual-box-7-1">7.1 Wann eigene Rahmen sinnvoll sind</h3>
+      <ul>
+        <li>Regeln haben etwas <strong>übersehen</strong>, das entfernt werden muss: handschriftliche Fotoanmerkungen, ungewöhnliche Layoutbereiche usw.</li>
+        <li>Treffer sind <strong>zerstückelt</strong> oder <strong>verschoben</strong>: Entfernen Sie die schlechten automatischen Zeilen und zeichnen Sie einen engeren Rahmen.</li>
+        <li><strong>Nur gescannte</strong> Inhalte werden als Bild behandelt: Das Verhalten unterscheidet sich von Text-PDFs; oft sind manuelle Rahmen nötig (siehe FAQ).</li>
+      </ul>
+
+      <h3 id="manual-box-7-2">7.2 Mit automatisch erkannten Markierungen arbeiten</h3>
+      <p>Eine praktische Reihenfolge: <strong>Erkennung ausführen → in der Prüfliste klare Fehlalarme entfernen und Muster erkennen → für echte Treffer, die fehlen, ein paar manuelle Rahmen ergänzen → die Vorschau seitenweise überfliegen</strong>. Manuelle und automatische Markierungen werden beim Export gleich behandelt; entscheidend ist, ob sie <strong>bestätigt</strong> sind.</p>
+
+      <h3 id="manual-box-7-3">7.3 Tastenkürzel (Vorschau und Markierungen)</h3>
+      <p>Solange die Einzeldokumentseite geladen ist, hängt sie sich an <code>PreviewKeyDown</code> des Hauptfensters. Die folgenden Kürzel gelten nur, wenn ein Dokument geöffnet ist und die App <strong>nicht beschäftigt</strong> ist. Sie sind <strong>nicht</strong> mit den Vorherige/Nächste-Seite-Schaltflächen der Symbolleiste verdrahtet.</p>
+      <table aria-label="Keyboard shortcuts">
+        <thead>
+          <tr><th scope="col">Taste</th><th scope="col">Aktion</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Tab</code></td><td>Nächste Schwärzungsmarkierung.</td></tr>
+          <tr><td><code>Shift</code> + <code>Tab</code></td><td>Vorherige Schwärzungsmarkierung.</td></tr>
+          <tr><td><code>←</code> <code>↑</code> <code>→</code> <code>↓</code></td><td>Ohne Modifikatortasten: <code>←</code><code>↑</code> zur vorherigen Markierung, <code>→</code><code>↓</code> zur nächsten. Mit <strong>beliebiger</strong> Modifikatortaste verschieben nur <code>↑</code><code>↓</code> die Vorschau um einen festen Schritt; <code>←</code><code>→</code> werden in diesem Zweig nicht behandelt.</td></tr>
+          <tr><td><code>Enter</code></td><td>Ohne Modifikatortasten: Bestätigung der ausgewählten Markierung umschalten.</td></tr>
+          <tr><td><code>Delete</code></td><td>Ohne Modifikatortasten: Ausgewählte Markierung entfernen.</td></tr>
+          <tr><td><code>Page Up</code> / <code>Page Down</code></td><td>Vorschaustapel um ungefähr eine Ansichtsfensterhöhe scrollen.</td></tr>
+          <tr><td><code>Home</code> / <code>End</code></td><td>Vorschau an den Anfang / ans Ende scrollen.</td></tr>
+        </tbody>
+      </table>
+    
+
+    
+      <h2><span class="num">8</span>Export</h2>
+
+      <h3 id="export-8-1">8.1 Checkliste vor dem Export</h3>
+      <ul class="checklist">
+        <li>Dies ist die <strong>Datei, die Sie freigeben möchten</strong> (Seitenzahl, Anhänge geprüft).</li>
+        <li>Alles, was geschwärzt werden soll, ist <strong>bestätigt</strong>; alles, was bleiben muss, ist aufgehoben oder aus der Liste entfernt.</li>
+        <li>Sie haben wichtige Seiten in der Vorschau angesehen, einschließlich Scans oder ungewöhnlicher Abschnitte, die Sie manuell eingerahmt haben.</li>
+        <li>Sie wissen, dass der Export eine <strong>neue Datei</strong> (oder den gewählten Pfad) schreibt und normalerweise das Original nicht überschreibt; das Verhalten folgt dem Speichern-Dialog.</li>
+      </ul>
+
+      <h3 id="export-8-2">8.2 Warum Metadaten entfernt werden sollten</h3>
+      <p>Neben Seiteninhalt enthalten PDFs Autor, Erzeuger, Zeitstempel, XMP und mehr. Wenn nur der Fließtext geschwärzt wird, Metadaten aber bleiben, können interne Konten oder Bearbeitungshistorien weiter preisgegeben werden. Die App kann das beim Export entfernen (optional auch im Stapel). Für alles, was das Haus verlässt, ist es meist sinnvoll, <strong>Metadatenbereinigung eingeschaltet zu lassen</strong>, wenn die Oberfläche dies anbietet.</p>
+
+      <h3 id="export-8-3">8.3 Die Zusammenfassung lesen</h3>
+      <ul>
+        <li>Wirkt die <strong>Anzahl physisch entfernter Elemente</strong> passend zu dem, was Sie gesehen haben?</li>
+        <li>Steht dort, dass <strong>Metadaten entfernt wurden</strong>?</li>
+        <li>Wenn <strong>Textvalidierungswarnungen</strong> erscheinen, hat die automatische Stichprobe etwas Auffälliges gefunden. Öffnen und prüfen Sie das exportierte PDF; betrachten Sie die Zusammenfassung allein nicht als Beweis für völlige Rückstandsfreiheit.</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">9</span>Stapelverarbeitung</h2>
+
+      <h3 id="batch-9-1">9.1 Was der Stapelmodus tatsächlich macht</h3>
+      <p>Wenn Sie mit einer Basis über <strong>Auf mehrere Dateien anwenden</strong> einsteigen, folgt jedes PDF in der Warteschlange einem <strong>Nur-Stempeln</strong>-Pfad: Normalisierte Rechtecke werden pro Seite auf absolute Koordinaten abgebildet, Markierungen werden erstellt, Inhalt wird physisch entfernt, und Metadaten können optional bereinigt werden. Es führt <strong>keine</strong> Regelerkennung pro Datei erneut aus.</p>
+      <div class="note">Die Regeln aus dem Einzeldokumentmodus helfen also, in der Vorlage zu <strong>finden</strong> und zu <strong>bestätigen</strong>. Die Stapelverarbeitung kopiert lediglich, <strong>wo Sie bestätigt haben</strong>, auf andere Dateien mit derselben Geometrie.</div>
+
+      <h3 id="batch-9-2">9.2 Geeignete Anwendungsfälle</h3>
+      <ul>
+        <li>Viele PDFs aus einem System mit <strong>demselben Layout</strong> und sensiblen Bereichen an <strong>denselben relativen Positionen</strong>.</li>
+        <li>Sie haben Erkennung und Bestätigung an <strong>einem Muster</strong> abgeschlossen und möchten diese Arbeit bei nahezu identischen Kopien nicht wiederholen.</li>
+      </ul>
+
+      <h3 id="batch-9-3">9.3 Worauf Sie achten sollten</h3>
+      <ul>
+        <li><strong>Keine gespeicherte Vorlagendatei</strong>: Beim Schließen des Stapelfensters geht die Basis im Speicher verloren; erstellen Sie sie beim nächsten Mal wieder über <strong>Auf mehrere Dateien anwenden</strong>.</li>
+        <li>Wenn Sie <strong>Stapel</strong> ohne diesen Pfad direkt aus der Symbolleiste öffnen, haben Sie möglicherweise keine Basis; <strong>Start</strong> kann dann deaktiviert bleiben.</li>
+        <li>Schon kleine Layoutverschiebungen können übersehene oder falsche Bereiche bedeuten; <strong>prüfen Sie die ersten Ausgaben stichprobenartig</strong>.</li>
+        <li>Aktivieren Sie <strong>Eigenschaften und ausgeblendete Daten löschen</strong>, wenn dies für externe Weitergabe angeboten wird.</li>
+        <li>Einige Dokumenttypen oder Lizenzstufen können Stapelverarbeitung einschränken. Wenn <strong>Auf mehrere Dateien anwenden</strong> ausgegraut ist, ist das der Hinweis.</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">10</span>Häufige Fragen</h2>
+
+      <h3 id="faq-false-positives">10.1 Warum gibt es so viele Fehlalarme?</h3>
+      <p>Der Regelabgleich nutzt Muster und Heuristiken: Zeichenfolgen, die sensibel <strong>aussehen</strong>, Ortsnamen, die mit Personennamen kollidieren, Tabellenfragmente usw. Szenario/Regeln feinabstimmen, eine laute Regel ausschalten oder Bestätigungen in der Liste aufheben bringt das meist unter Kontrolle. Die manuelle Bestätigung ist Absicht; sie senkt die Wahrscheinlichkeit, etwas Benötigtes per Klick zu löschen.</p>
+
+      <h3 id="faq-scanned-pdf">10.2 Was ist mit gescannten PDFs?</h3>
+      <p>Wenn das PDF im Grunde ein Seitenbild ohne echte Textebene ist, hat die Regelerkennung weniger Grundlage. Dann nutzen Sie eher <strong>manuelle Rahmen</strong> oder den rasterbezogenen Ablauf, den der Build anbietet (beachten Sie Hinweise auf dem Bildschirm). Es hilft, vorher zu wissen, ob es ein digital entstandenes PDF oder ein Scan ist.</p>
+
+      <h3 id="faq-image-no-ocr">10.3 Kann ich Bilder schwärzen? Warum wird Text in Fotos nicht erkannt?</h3>
+      <p>Ja. Gängige Bildformate lassen sich wie ein Dokument öffnen; Sie sehen eine Vorschau, markieren und exportieren. Um Installationsgröße und Laufzeitkosten vernünftig zu halten, bringt diese Version <strong>kein OCR mit</strong>: Text in Fotos wird nicht auswählbar, daher greift <strong>regelbasierte Erkennung kaum</strong>. Schwärzen Sie sensible Bereiche, indem Sie <strong>Rahmen zeichnen</strong> (und Tastenkürzel nutzen, um zwischen Markierungen zu wechseln). Wenn Sie „erkennen und dann abgleichen“ brauchen, führen Sie OCR vorher anderswo aus oder liefern Sie ein PDF mit Textebene.</p>
+
+      <h3 id="faq-verify-export">10.4 Wie prüfe ich einen Export grob?</h3>
+      <ul>
+        <li>Versuchen Sie in einem PDF-Reader <strong>Alles auswählen / Kopieren</strong> und <strong>Suchen</strong> nach Zeichenfolgen, die sensibel waren.</li>
+        <li>Prüfen Sie Kopfzeilen, Fußzeilen und Fußnoten <strong>visuell</strong>.</li>
+        <li>Lesen Sie die <strong>Exportvalidierungs-Zusammenfassung</strong> der App. Bei Warnungen prüfen Sie zuerst diese Seiten.</li>
+        <li>Bei sehr hohem Risiko ergänzen Sie die üblichen Kontrollen Ihrer Organisation: zweites Werkzeug, Druckprüfung usw.</li>
+      </ul>
+
+    <div class="footer-note">
+      © PlainBytes Studio · Wird mit dem Produkt aktualisiert; Ihre installierte Version ist maßgeblich.
+    </div>
+  </main>
+</div>
+
+<script>
+  // Highlight active TOC item on scroll
+  const sections = document.querySelectorAll('main h2[id], main h3[id], .step-card[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+<script>
+(function () {
+  var MANUAL = {
+    en: "en.html", zh: "zh-Hans.html", "zh-Hant": "zh-Hant.html",
+    ja: "ja.html", ko: "ko.html", de: "de.html", fr: "fr.html",
+    pt: "pt.html", it: "it.html", es: "es.html", nl: "nl.html", ru: "ru.html"
+  };
+  var STORE_WEB = "https://apps.microsoft.com/detail/9n2vlpn4wdk1";
+  var STORE_WIN = "ms-windows-store://pdp/?ProductId=9N2VLPN4WDK1";
+
+  var sel = document.getElementById("lang-select");
+  if (sel && sel.getAttribute("data-lang-nav") !== "1") {
+    sel.setAttribute("data-lang-nav", "1");
+    var current = document.documentElement.getAttribute("data-lang") || "en";
+    sel.value = current;
+    sel.addEventListener("change", function () {
+      var file = MANUAL[sel.value];
+      if (file && sel.value !== current) window.location.href = file;
+    });
+  }
+
+  document.querySelectorAll(".js-store-link").forEach(function (a) {
+    if (a.getAttribute("data-store-link") === "1") return;
+    a.setAttribute("data-store-link", "1");
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (/Windows/i.test(navigator.userAgent || "")) {
+        var link = document.createElement("a");
+        link.href = STORE_WIN;
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        window.open(STORE_WEB, "_blank", "noopener,noreferrer");
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+

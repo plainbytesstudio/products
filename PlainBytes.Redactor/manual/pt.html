@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="pt" data-lang="pt" data-base="../" data-page="manual">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guia do usuário do PlainBytes Redactor</title>
+<meta name="description" content="Guia do usuário do PlainBytes Redactor: fluxo de trabalho, regras, processamento em lote e FAQ." />
+<link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+
+  :root{
+    --bg-dark:#232323;
+    --red:#b3362b;
+    --red-dk:#8c2920;
+    --accent:#9a0413;
+    --accent-text:#fcebeb;
+    --ink:#1c1a17;
+    --gray:#5c5650;
+    --muted:#9a938b;
+    --rule:#e8e3dc;
+    --bg:#faf8f5;
+    --card:#ffffff;
+    --accent-lt:#fbeceb;
+    --serif:'DM Serif Display',Georgia,serif;
+    --sans:'DM Sans',system-ui,sans-serif;
+    --side-w:240px;
+    --layout-gap:2.5rem;
+    --maxw:1080px;
+  }
+
+  html{font-size:16px;scroll-behavior:smooth}
+  body.manual-page{
+    margin:0;
+    padding-top:64px;
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+
+  /* ── TOP BAR (self-contained; matches website/css/site.css) ── */
+  .manual-page .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    background:rgba(35,35,35,.92);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:.5px solid rgba(255,255,255,.08);
+  }
+  .manual-page .site-header .inner{
+    width:100%;max-width:var(--maxw);margin:0 auto;padding:0 24px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;min-height:64px;flex-wrap:wrap;
+  }
+  .manual-page .site-header .brand{
+    display:flex;align-items:center;gap:10px;
+    color:#fff;font-weight:500;font-size:.875rem;text-decoration:none;
+  }
+  .manual-page .site-header .brand:hover{color:#f5f4f0;text-decoration:none}
+  .manual-page .site-header .brand-logo{
+    width:28px;height:28px;flex-shrink:0;object-fit:contain;display:block;
+  }
+  .manual-page .site-header .header-actions{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .manual-page .site-header .site-nav-link{
+    font-size:.8125rem;color:#d0cec8;text-decoration:none;white-space:nowrap;
+  }
+  .manual-page .site-header .site-nav-link:hover{color:#fff;text-decoration:none}
+  .manual-page .site-header .site-nav-link--current{color:#fff;font-weight:500}
+  .manual-page .site-header .lang-select{
+    background:transparent;color:#d0cec8;border:none;border-radius:6px;
+    padding:8px 4px;font-size:.8125rem;cursor:pointer;
+  }
+  .manual-page .site-header .lang-select option{color:var(--ink);background:#fff}
+  .manual-page .site-header .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:11px 22px;font-size:.875rem;font-weight:500;line-height:1.6;
+    border-radius:6px;border:none;cursor:pointer;text-decoration:none;
+    transition:background .15s ease,color .15s ease;
+  }
+  .manual-page .site-header .btn-accent{
+    background:var(--accent);color:var(--accent-text);
+  }
+  .manual-page .site-header .btn-accent:hover{
+    background:#7f0310;color:var(--accent-text);text-decoration:none;
+  }
+  .manual-page .site-header .btn-accent--sm{padding:9px 18px;font-size:.8125rem}
+
+  /* ── TOP hero ── */
+  .manual-top{
+    background:linear-gradient(180deg,#232323 0%,#2d2d2d 58%,#352626 100%);
+    margin-top:-64px;
+    padding-top:64px;
+  }
+
+  .manual-hero{padding:32px 0 48px}
+  .manual-hero__inner{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .manual-hero__copy{max-width:640px;margin:0 auto;text-align:center}
+  .manual-hero__kicker{
+    margin:0 0 20px;font-size:.8125rem;font-weight:500;letter-spacing:.03em;
+    color:#e8a0a0;text-transform:lowercase;
+  }
+  .manual-hero h1{
+    margin:0 0 20px;font-family:var(--serif);
+    font-size:clamp(1.75rem,4vw,2.375rem);font-weight:500;line-height:1.3;color:#fff;
+  }
+  .manual-hero__lead{
+    margin:0;font-size:1rem;line-height:1.7;color:#c8c6c0;font-weight:300;
+  }
+
+  /* ── LAYOUT ──────────────────────────────────────────── */
+  .page-wrap{
+    max-width:var(--maxw);margin:0 auto;
+    padding:3rem 24px 6rem;
+    display:grid;grid-template-columns:var(--side-w) 1fr;gap:var(--layout-gap);
+    align-items:start;
+  }
+
+  /* ── SIDEBAR NAV ─────────────────────────────────────── */
+  .toc-sidebar{position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto}
+  .toc-sidebar::-webkit-scrollbar{width:4px}
+  .toc-sidebar::-webkit-scrollbar-thumb{background:var(--rule);border-radius:4px}
+
+  .toc-block{margin-bottom:1.5rem}
+  .toc-block-label{
+    font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:.6rem;padding-left:.2rem;
+  }
+  .toc-item{display:block}
+  .toc-link{
+    display:block;font-size:.85rem;color:var(--gray);text-decoration:none;
+    padding:.4rem .6rem;border-radius:6px;border-left:2px solid transparent;
+    transition:color .15s,background .15s,border-color .15s;
+  }
+  .toc-link:hover{background:var(--accent-lt);color:var(--red-dk)}
+  .toc-link.active{color:var(--red);border-left-color:var(--red);font-weight:600;background:var(--accent-lt)}
+  .toc-sub{padding-left:1rem}
+  .toc-sub .toc-link{font-size:.79rem}
+
+  /* ── MAIN CONTENT ────────────────────────────────────── */
+  .content{min-width:0}
+
+  .content h2{
+    font-family:var(--serif);font-size:1.55rem;color:var(--ink);
+    letter-spacing:-.02em;margin:3rem 0 1rem;padding-top:.5rem;
+    border-top:1px solid var(--rule);
+  }
+  .content h2:first-child{margin-top:0;border-top:none;padding-top:0}
+  .content > h2 .num{color:var(--red);margin-right:.5rem;font-style:normal}
+
+  .content h3{
+    font-size:1.08rem;font-weight:700;color:var(--ink);
+    margin:2rem 0 .75rem;letter-spacing:-.01em;
+  }
+
+  .content p{margin-bottom:1.1rem;font-weight:300;color:#2a2724}
+  .content strong{font-weight:600;color:var(--ink)}
+  .content em{font-style:italic}
+
+  .content ul,.content ol{padding-left:1.3rem;margin-bottom:1.1rem}
+  .content li{margin-bottom:.4rem;font-weight:300}
+  .content li strong{font-weight:600}
+
+  .content a{color:var(--red-dk);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px}
+  .content a:hover{text-decoration-color:var(--red-dk)}
+
+  /* Quick start video card */
+  .video-card{
+    background:var(--bg-dark);border-radius:14px;overflow:hidden;
+    margin:1.5rem 0 2.5rem;
+  }
+  .video-frame{
+    aspect-ratio:16/9;background:linear-gradient(135deg,#241a14 0%,#1a1410 100%);
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .play-btn{
+    width:64px;height:64px;border-radius:50%;background:var(--red);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(179,54,43,.4);
+    transition:transform .2s;cursor:pointer;
+  }
+  .play-btn:hover{transform:scale(1.06)}
+  .play-btn::after{
+    content:'';width:0;height:0;
+    border-style:solid;border-width:9px 0 9px 15px;
+    border-color:transparent transparent transparent #fff;
+    margin-left:3px;
+  }
+  .video-caption{padding:1rem 1.25rem;color:rgba(255,255,255,.55);font-size:.82rem}
+
+  /* Table */
+  .content table{
+    width:100%;border-collapse:collapse;font-size:.86rem;margin:1.5rem 0 2rem;
+    border-radius:8px;overflow:hidden;border:1px solid var(--rule);
+  }
+  .content th{
+    background:var(--bg-dark);color:#fff;font-weight:600;
+    padding:.7rem 1rem;text-align:left;font-size:.78rem;
+    letter-spacing:.02em;
+  }
+  .content td{
+    padding:.7rem 1rem;border-bottom:1px solid var(--rule);
+    vertical-align:top;font-weight:300;
+  }
+  .content tr:last-child td{border-bottom:none}
+  .content tr:nth-child(even) td{background:#f7f4f0}
+  .content td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+
+  /* Callout boxes */
+  .callout{
+    border-left:3px solid var(--red);background:var(--accent-lt);
+    padding:1rem 1.25rem;border-radius:0 10px 10px 0;margin:1.5rem 0;
+  }
+  .callout-label{
+    font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--red-dk);margin-bottom:.35rem;
+  }
+  .callout p{margin:0;font-weight:400;color:var(--ink)}
+  .callout p+p{margin-top:.5rem}
+
+  .callout.tip{border-color:#2e6b4f;background:#eaf5ef}
+  .callout.tip .callout-label{color:#1f4d38}
+  .callout.warn{border-color:#a35a0e;background:#fbf0e4}
+  .callout.warn .callout-label{color:#7a4209}
+
+  /* Step cards for workflow */
+  .step-card{
+    background:var(--card);border:1px solid var(--rule);border-radius:12px;
+    padding:1.4rem 1.5rem;margin-bottom:1rem;
+  }
+  .step-card .step-label{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--red);margin-bottom:.6rem;
+  }
+  .step-card .step-label .step-num{
+    width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:.72rem;
+  }
+  .step-card h4{font-size:1.02rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+  .step-card p{margin-bottom:0;font-size:.92rem}
+
+  /* Keyboard key */
+  kbd{
+    display:inline-block;font-family:'SF Mono','Fira Code',monospace;
+    font-size:.78em;background:var(--bg-dark);color:#fff;
+    padding:.15em .5em;border-radius:5px;font-weight:500;
+  }
+
+  .content code{
+    font-family:'SF Mono','Fira Code',monospace;
+    font-size:.85em;background:#f0ebe4;color:var(--ink);
+    padding:.12em .45em;border-radius:4px;
+  }
+
+  /* Image figure */
+  figure{margin:1.75rem 0;border-radius:12px;overflow:hidden;border:1px solid var(--rule)}
+  figure img{width:100%;display:block}
+  figcaption{
+    font-size:.78rem;color:var(--muted);padding:.65rem 1rem;
+    background:var(--card);border-top:1px solid var(--rule);text-align:center;
+  }
+
+  /* FAQ accordion-style */
+  .faq-item{border-bottom:1px solid var(--rule);padding:1.3rem 0}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{font-weight:700;color:var(--ink);margin-bottom:.5rem;display:flex;gap:.6rem}
+  .faq-q .q-mark{color:var(--red);flex-shrink:0}
+  .faq-a{font-size:.92rem;font-weight:300;color:#2a2724;padding-left:1.4rem}
+
+  /* Footer note */
+  .footer-note{
+    margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);
+    font-size:.8rem;color:var(--muted);
+  }
+
+  .checklist{list-style:none;padding-left:0}
+  .checklist li{padding-left:1.5rem;position:relative;margin-bottom:.4rem}
+  .checklist li::before{content:"☐";position:absolute;left:0;color:var(--red-dk)}
+
+  .content .example{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.4rem 1.5rem;margin:1rem 0}
+  .content .example h3{margin-top:0;color:var(--red-dk);font-size:1rem}
+  .content .note{border-left:3px solid var(--red);background:var(--accent-lt);padding:1rem 1.25rem;border-radius:0 10px 10px 0;margin:1.5rem 0;font-size:.95rem}
+
+  /* ── MOBILE ──────────────────────────────────────────── */
+  .mobile-toc-toggle{display:none}
+
+  @media (max-width:980px){
+    .page-wrap{grid-template-columns:1fr;gap:0}
+    .toc-sidebar{
+      position:static;max-height:none;overflow:visible;
+      margin-bottom:2rem;border:1px solid var(--rule);border-radius:12px;
+      padding:1rem 1.25rem;background:var(--card);
+    }
+    .toc-sidebar.collapsed .toc-content{display:none}
+    .mobile-toc-toggle{
+      display:flex;align-items:center;justify-content:space-between;
+      width:100%;background:none;border:none;cursor:pointer;
+      font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--ink);
+      padding:0;
+    }
+  }
+  @media (max-width:560px){
+    .manual-hero__inner{padding:0 1.25rem}
+    .page-wrap{padding:2rem 1.25rem 4rem}
+    .content h2{font-size:1.3rem}
+  }
+</style>
+</head>
+<body class="manual-page">
+
+<header class="site-header site-header--on-dark">
+  <div class="container inner">
+    <a class="brand" href="../pt/index.html">
+      <img
+        class="brand-logo"
+        src="../assets/Redactor_Logo.png"
+        alt=""
+        aria-hidden="true"
+        width="28"
+        height="28"
+      />
+      <span>PlainBytes Redactor</span>
+    </a>
+    <div class="header-actions">
+      <a class="site-nav-link" href="../pt/index.html">Início</a>
+      <a class="site-nav-link site-nav-link--current" href="pt.html" aria-current="page">Guia do usuário</a>
+      <label class="visually-hidden" for="lang-select">Language</label>
+      <select id="lang-select" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="zh-Hant">繁體中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="pt">Português</option>
+        <option value="it">Italiano</option>
+        <option value="es">Español</option>
+        <option value="nl">Nederlands</option>
+        <option value="ru">Русский</option>
+      </select>
+      <a
+        class="btn btn-accent btn-accent--sm js-store-link"
+        href="https://apps.microsoft.com/detail/9n2vlpn4wdk1"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Baixar na Microsoft Store</a
+      >
+    </div>
+  </div>
+</header>
+
+<div class="manual-top">
+  <section class="manual-hero">
+    <div class="manual-hero__inner">
+      <div class="manual-hero__copy">
+        <p class="manual-hero__kicker">documentação</p>
+        <h1>Guia do usuário do PlainBytes Redactor</h1>
+        <p class="manual-hero__lead">Escrito para o aplicativo desktop Windows atual. Se algo aqui não corresponder à versão instalada, confie na interface do aplicativo.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════ MAIN LAYOUT ═══════════════════ -->
+<div class="page-wrap">
+
+  <aside class="toc-sidebar" id="tocSidebar">
+    <button class="mobile-toc-toggle" onclick="document.getElementById('tocSidebar').classList.toggle('collapsed')">
+      <span>Conteúdo</span><span>▾</span>
+    </button>
+    <div class="toc-content">
+      <div class="toc-block">
+        <a href="#quick-start" class="toc-link">Início rápido</a>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">1. Para que serve este aplicativo</div>
+        <div class="toc-sub">
+          <a href="#positioning-1-1" class="toc-link">1.1 Redação real vs. cobertura visual</a>
+          <a href="#positioning-1-2" class="toc-link">1.2 O que significa “local e offline”</a>
+          <a href="#positioning-1-3" class="toc-link">1.3 Quando é uma boa opção</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">2. Conceitos principais</div>
+        <div class="toc-sub">
+          <a href="#concepts-2-1" class="toc-link">2.1 Marcas de redação</a>
+          <a href="#concepts-2-2" class="toc-link">2.2 O que significa “confirmar”</a>
+          <a href="#concepts-2-4" class="toc-link">2.3 A base para processamento em lote</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">3. Fluxo de trabalho completo</div>
+        <div class="toc-sub">
+          <a href="#workflow-example" class="toc-link">Exemplo de uso</a>
+          <a href="#workflow-step-a" class="toc-link">Etapa A: abrir o documento</a>
+          <a href="#workflow-step-b" class="toc-link">Etapa B: região e cenário</a>
+          <a href="#workflow-step-c" class="toc-link">Etapa C: executar a detecção</a>
+          <a href="#workflow-step-d" class="toc-link">Etapa D: revisar na lista de auditoria</a>
+          <a href="#workflow-step-e" class="toc-link">Etapa E: desenhar caixas para o que ficou de fora</a>
+          <a href="#workflow-step-f" class="toc-link">Etapa F: exportar</a>
+          <a href="#workflow-step-g" class="toc-link">Etapa G (opcional): aplicar a mais arquivos</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">4. Visão geral da janela principal</div>
+        <div class="toc-sub">
+          <a href="#main-ui-4-1" class="toc-link">4.1 Pré-visualização (à esquerda)</a>
+          <a href="#main-ui-4-4" class="toc-link">4.2 Painel de política de varredura</a>
+          <a href="#main-ui-4-3" class="toc-link">4.3 Aparência da seleção</a>
+          <a href="#main-ui-4-2" class="toc-link">4.4 Lista de trilha de auditoria</a>
+          <a href="#main-ui-4-5" class="toc-link">4.5 Botões da barra de ferramentas</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">5. Central de regras</div>
+        <div class="toc-sub">
+          <a href="#rules-5-1" class="toc-link">5.1 Região e cenário de negócio</a>
+          <a href="#rules-5-2" class="toc-link">5.2 Regras integradas vs. personalizadas</a>
+          <a href="#rules-5-3" class="toc-link">5.3 Quando ajustar as regras</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">6. Barra lateral de auditoria</div>
+        <div class="toc-sub">
+          <a href="#audit-6-1" class="toc-link">6.1 Por que a confirmação funciona assim</a>
+          <a href="#audit-6-2" class="toc-link">6.2 Filtros e confirmação em massa</a>
+          <a href="#audit-6-3" class="toc-link">6.3 Níveis de risco</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">7. Seleções manuais</div>
+        <div class="toc-sub">
+          <a href="#manual-box-7-1" class="toc-link">7.1 Quando desenhar suas próprias caixas</a>
+          <a href="#manual-box-7-2" class="toc-link">7.2 Trabalhar com marcas detectadas automaticamente</a>
+          <a href="#manual-box-7-3" class="toc-link">7.3 Atalhos de teclado</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">8. Exportação</div>
+        <div class="toc-sub">
+          <a href="#export-8-1" class="toc-link">8.1 Lista de verificação antes da exportação</a>
+          <a href="#export-8-2" class="toc-link">8.2 Por que remover metadados</a>
+          <a href="#export-8-3" class="toc-link">8.3 Como ler o resumo</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">9. Processamento em lote</div>
+        <div class="toc-sub">
+          <a href="#batch-9-1" class="toc-link">9.1 O que o modo em lote realmente faz</a>
+          <a href="#batch-9-2" class="toc-link">9.2 Bons casos de uso</a>
+          <a href="#batch-9-3" class="toc-link">9.3 Pontos de atenção</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">10. Perguntas frequentes</div>
+        <div class="toc-sub">
+          <a href="#faq-false-positives" class="toc-link">10.1 Por que há tantos falsos positivos?</a>
+          <a href="#faq-scanned-pdf" class="toc-link">10.2 PDFs digitalizados</a>
+          <a href="#faq-image-no-ocr" class="toc-link">10.3 Imagens e OCR</a>
+          <a href="#faq-verify-export" class="toc-link">10.4 Verificar a exportação</a>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <main class="content">
+<h2 id="quick-start">Início rápido</h2>
+      <p>O vídeo abaixo percorre o fluxo completo do início ao fim: detecção automática e complemento manual quando necessário.</p>
+      <!-- [Insert video] -->
+      <div class="video-card">
+      <div class="video-frame">
+        <div class="play-btn" onclick="document.getElementById('qsVideo').play(); this.style.display='none'"></div>
+        <video id="qsVideo" controls style="position:absolute;inset:0;width:100%;height:100%;display:none" onplay="this.style.display='block'; this.previousElementSibling.style.display='none'">
+          <source src="videos/pt/quickstart.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="video-caption">Demonstração do fluxo completo · 2 min</div>
+    </div>
+    
+
+    
+      <h2><span class="num">1</span>Para que serve este aplicativo</h2>
+
+      <h3 id="positioning-1-1">1.1 Redação real vs. cobertura visual</h3>
+      <p>Essas duas abordagens têm significados bem diferentes para conformidade e segurança:</p>
+      <table>
+        <thead>
+          <tr><th>Aspecto</th><th>Cobertura visual (a “tarja preta” comum)</th><th>Redação real (o objetivo deste aplicativo)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dentro do PDF</td>
+            <td>Texto, vetores ou imagens ainda podem permanecer no arquivo, muitas vezes apenas cobertos por outro elemento gráfico.</td>
+            <td>O conteúdo correspondente é <strong>removido</strong> do fluxo do documento, para que não possa ser recuperado por uma análise normal.</td>
+          </tr>
+          <tr>
+            <td>Copiar / pesquisar</td>
+            <td>Dependendo da ferramenta, o texto “oculto” ainda pode ser copiado.</td>
+            <td>O objetivo é que o texto selecionável não contenha mais as cadeias sensíveis (verifique no arquivo exportado).</td>
+          </tr>
+          <tr>
+            <td>Mais indicado para</td>
+            <td>Leitura na tela ou coberturas rápidas.</td>
+            <td>Compartilhamento externo, arquivamento, auditorias, diligência: qualquer situação em que o conteúdo precise <strong>sumir de vez</strong>.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">O PlainBytes Redactor foi criado em torno da <strong>redação real</strong>. Use <strong>Confirmar</strong> para deixar claro quais áreas serão realmente removidas na exportação.</div>
+
+      <h3 id="positioning-1-2">1.2 O que significa “local e offline”</h3>
+      <ul>
+        <li><strong>O trabalho fica neste PC</strong>: abrir o PDF, aplicar regras, gravar o arquivo redigido e validar tudo acontece localmente.</li>
+        <li><strong>Nenhum envio de documento para redação</strong>: o produto não foi projetado para mandar seus arquivos para a nuvem como parte do fluxo de redação.</li>
+        <li><strong>Separado de ajuda e atualizações</strong>: ao abrir Ajuda, Verificar atualizações e itens semelhantes, o Windows pode iniciar o navegador ou a Microsoft Store. Isso não tem relação com manter o caminho de redação offline.</li>
+      </ul>
+
+      <h3 id="positioning-1-3">1.3 Quando é uma boa opção</h3>
+      <ul>
+        <li>Fluxos jurídicos, financeiros, de saúde, setor público ou auditoria em que você precisa de <strong>revisão humana</strong> e uma <strong>superfície menor de exposição</strong> em caso de vazamentos.</li>
+        <li>Você precisa entregar um PDF, mas remover documentos de identidade, números de conta, dados de contato e outros elementos <strong>identificáveis</strong>.</li>
+        <li>Você tem muitos PDFs com o <strong>mesmo layout</strong>: depois de confirmar em um arquivo “modelo”, pode usar <strong>Aplicar a vários arquivos</strong> para reutilizar a mesma geometria nos demais (veja a etapa G no §3 e o §9).</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">2</span>Conceitos principais</h2>
+
+      <h3 id="concepts-2-1">2.1 Marcas de redação (<code>RedactionMark</code>)</h3>
+      <p>Internamente, cada área que pode ser redigida é uma <strong>marca de redação</strong>: pense em “um retângulo em uma página mais metadados”.</p>
+      <ul>
+        <li><strong>Página e retângulo</strong>: posição e tamanho nas coordenadas do PDF.</li>
+        <li><strong>Estado</strong>: <strong>pendente</strong> ou <strong>confirmada</strong>. Somente marcas <strong>confirmadas</strong> são removidas na exportação.</li>
+        <li><strong>Origem</strong>: <strong>regras (padrões/regex)</strong> ou <strong>seleção manual</strong>, para diferenciar acertos automáticos do que você desenhou.</li>
+        <li><strong>Categoria e risco</strong>: usados para filtrar, ordenar e agir em massa na lista de auditoria.</li>
+      </ul>
+
+      <h3 id="concepts-2-2">2.2 O que significa “confirmar” e por que é manual</h3>
+      <ul>
+        <li><strong>A automação não dá a palavra final</strong>: a correspondência por regras pode <strong>marcar texto normal em excesso</strong> ou <strong>deixar passar</strong> dados sensíveis reais; por isso o aplicativo nunca presume que “tudo que foi encontrado deve ser excluído”.</li>
+        <li><strong>Confirmar = aprovar após revisão</strong>: uma vez confirmada, a marca entra no conjunto de exportação; o que fica pendente não é tratado como final.</li>
+        <li><strong>Combina com revisão real</strong>: a etapa extra se alinha à revisão por duas pessoas, trilhas de auditoria e evita apagar uma página inteira por engano com um clique.</li>
+      </ul>
+
+      <h3 id="concepts-2-4">2.3 A base para processamento em lote</h3>
+      <ul>
+        <li><strong>Não</strong> existe um fluxo de “salvar isto como um modelo nomeado e escolher depois”. O lote usa uma <strong>base geométrica</strong> em memória: ao entrar no lote por <strong>Aplicar a vários arquivos</strong>, o aplicativo transforma cada marca <strong>confirmada</strong> do documento atual em um <strong>retângulo normalizado</strong> (página + coordenadas relativas ao tamanho da página), apenas para <strong>aquela sessão em lote</strong>.</li>
+        <li>Para <strong>cada</strong> PDF na fila, o mecanismo em lote <strong>aplica apenas esses retângulos</strong>: ele <strong>não</strong> executa uma nova análise completa por regras para cada arquivo.</li>
+        <li><strong>Quando isso funciona</strong>: várias exportações do mesmo sistema com o <strong>mesmo layout e as regiões sensíveis nos mesmos lugares</strong> (por exemplo, demonstrativos uniformes). Se o layout mudar, as caixas podem cair no lugar errado: revise os primeiros resultados.</li>
+        <li><strong>Regras na central</strong>: ajudam a <strong>encontrar</strong> correspondências no fluxo de arquivo único <strong>atual</strong>; elas <strong>não</strong> são executadas automaticamente para cada arquivo da fila. O lote é guiado pelas <strong>posições confirmadas</strong> que você já definiu.</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">3</span>Fluxo de trabalho completo</h2>
+
+      <div class="example">
+        <h3 id="workflow-example">Exemplo de uso</h3>
+        <p>Neste exemplo, uma pessoa da área jurídica precisa liberar externamente um <strong>PDF de desligamento de funcionário</strong> com 8 páginas. É necessário remover números de celular, trechos de cartão bancário e e-mails pessoais. O arquivo é um PDF eletrônico real, com texto selecionável, não uma digitalização plana.</p>
+      </div>
+
+      <figure class="doc-screenshot doc-flowchart">
+        <img src="images/pt/flowchart.jpg" alt="Fluxo de redação para um arquivo: abrir o documento, configurar regras e executar a detecção, revisar e adicionar caixas manuais, exportar e, opcionalmente, aplicar em lote." loading="lazy" decoding="async" />
+        <figcaption>Visão geral do fluxo</figcaption>
+      </figure>
+
+      <h3 id="workflow-step-a">Etapa A: abrir o documento</h3>
+      <p>Use <strong>Abrir</strong> ou arraste e solte para carregar o PDF (formatos comuns de imagem também são aceitos; o caminho dentro do aplicativo pode variar).<br>
+      Tudo — pré-visualização, detecção e marcas — fica ligado a esse arquivo de origem, então abra a versão que você realmente pretende redigir.</p>
+
+      <h3 id="workflow-step-b">Etapa B: escolher região e cenário na central de regras</h3>
+      <p>Abra <strong>Regras</strong>, escolha uma <strong>região</strong> (país/área) e depois um <strong>cenário de negócio</strong> (geral, financeiro etc.). Ative ou desative regras integradas, ou adicione regras personalizadas se necessário.<br>
+      O conjunto efetivo de regras muda com a região e o cenário; escolher o cenário errado pode deixar regras úteis desligadas ou gerar mais ruído. Você pode salvar preferências antes de fechar para agilizar documentos semelhantes no futuro.</p>
+
+      <h3 id="workflow-step-c">Etapa C: executar a detecção</h3>
+      <p>À direita, na política de varredura, clique em <strong>Iniciar detecção</strong> (ou no controle equivalente) e aguarde a conclusão do modelo do documento e da análise completa.<br>
+      Os resultados das regras viram uma lista de marcas <strong>pendentes</strong>. Se você mudar região, cenário ou regras, execute a detecção novamente para atualizar a lista.</p>
+
+      <h3 id="workflow-step-d">Etapa D: revisar na lista de auditoria</h3>
+      <p>Na <strong>trilha de auditoria</strong> à direita, revise os itens um a um ou use filtros. <strong>Confirme</strong> o que deve sair; remova a confirmação ou exclua linhas para falsos positivos (os controles exatos dependem da versão). As sobreposições amarelas na pré-visualização geralmente ficam sincronizadas: clicar pode alternar o estado de confirmação.<br>
+      Essa etapa evita apagar a coisa errada ou deixar algo para trás; a exportação considera apenas marcas <strong>confirmadas</strong>.</p>
+
+      <h3 id="workflow-step-e">Etapa E: desenhar caixas para o que ficou de fora</h3>
+      <p>Arraste retângulos na pré-visualização à esquerda sobre qualquer coisa que as regras não tenham encontrado, mas que você sabe que deve ser redigida. Ajuste as cores da seleção se isso ajudar em fundos carregados.<br>
+      A detecção automática não pega tudo; caixas manuais são sua <strong>rede de segurança</strong>.</p>
+
+      <h3 id="workflow-step-f">Etapa F: exportar</h3>
+      <p>Escolha <strong>Exportar redigido</strong>, selecione onde salvar e leia o resumo final (quantos itens foram removidos, limpeza de metadados, mensagens de validação).<br>
+      Você obtém uma cópia pronta para compartilhar; o resumo é uma verificação rápida. Se houver avisos, abra o PDF exportado e confira algumas páginas.</p>
+
+      <h3 id="workflow-step-g">Etapa G (opcional): aplicar a mais arquivos</h3>
+      <p>Depois que tudo que deve ser redigido estiver <strong>confirmado</strong> neste PDF, use <strong>Aplicar a vários arquivos</strong> (ou a entrada equivalente). O aplicativo cria a <strong>base normalizada</strong> descrita acima e abre a <strong>redação em lote</strong>. Adicione mais PDFs com o mesmo layout, defina uma pasta de saída, escolha se deseja remover metadados e execute.<br>
+      Quando os layouts realmente coincidem, você evita refazer as mesmas confirmações arquivo por arquivo; o lote ainda <strong>remove fisicamente</strong> as regiões encaixotadas.<br>
+      <strong>Importante</strong>: isto não é um modelo nomeado reutilizável em disco. <strong>Não há arquivo de modelo separado</strong>; a base vem <strong>deste</strong> documento confirmado. O lote também <strong>não</strong> executa a detecção por regras novamente para cada arquivo na fila. Se o layout de um arquivo mudou, volte ao fluxo de arquivo único.</p>
+    
+
+    
+      <h2><span class="num">4</span>Visão geral da janela principal</h2>
+
+      <figure class="doc-screenshot">
+        <img src="images/pt/PlainBytes.Redactor.jpg" alt="Janela principal do PlainBytes Redactor com a pré-visualização do documento à esquerda e os painéis de auditoria e política à direita; o layout pode variar conforme a versão." loading="lazy" decoding="async" />
+        <figcaption>Janela principal</figcaption>
+      </figure>
+
+      <h3 id="main-ui-4-1">4.1 Pré-visualização (à esquerda)</h3>
+      <ul>
+        <li><strong>Para que serve</strong>: renderiza cada página do PDF (ou imagem), para que numeração e layout correspondam ao arquivo.</li>
+        <li><strong>Marcas</strong>: áreas pendentes automáticas e manuais aparecem destacadas; <strong>clicar</strong> em uma região muitas vezes alterna o estado de confirmação junto com a lista (o destaque amarelo depende da versão).</li>
+        <li><strong>Caixas manuais</strong>: clique e arraste na pré-visualização para adicionar uma marca retangular.</li>
+      </ul>
+      <h3 id="main-ui-4-4">4.2 Painel de política de varredura</h3>
+      <ul>
+        <li><strong>Para que serve</strong>: ponto de entrada para executar detecção (por exemplo, <strong>Iniciar detecção</strong>), alinhado à região, ao cenário e aos conjuntos de regras da central.</li>
+        <li><strong>Por que é separado</strong>: separa “quando varrer o documento inteiro” de “como trabalhar com a lista de auditoria”, reduzindo confusão.</li>
+      </ul>
+
+      <h3 id="main-ui-4-3">4.3 Aparência da seleção</h3>
+      <ul>
+        <li><strong>Para que serve</strong>: ajustar a aparência das seleções manuais — <strong>borda, preenchimento, cores personalizadas</strong> — para que as caixas continuem visíveis em fundos complexos.</li>
+        <li><strong>Atenção</strong>: isto é apenas <strong>ajuda visual</strong>; a redação ainda depende da confirmação e da exportação.</li>
+      </ul>
+
+      <h3 id="main-ui-4-2">4.4 Lista de trilha de auditoria</h3>
+      <ul>
+        <li><strong>Para que serve</strong>: reúne resultados sensíveis do documento aberto, com filtros por categoria e risco, além de ações de confirmar ou limpar por linha ou em massa.</li>
+        <li><strong>Sincronização com a pré-visualização</strong>: selecionar ou agir em uma linha geralmente rola/destaca a página; clicar em uma marca na pré-visualização atualiza o estado na lista.</li>
+      </ul>
+
+      <h3 id="main-ui-4-5">4.5 Barra de ferramentas (de cima para baixo)</h3>
+      <ul>
+        <li><strong>Abrir</strong>: escolha um PDF local ou imagem compatível.</li>
+        <li><strong>Fechar documento</strong>: fecha o arquivo atual.</li>
+        <li><strong>Página anterior / seguinte</strong>: use a barra de ferramentas. Na página de arquivo único, <code>Page Up</code> / <code>Page Down</code> são tratados separadamente para rolar a pré-visualização (veja §7.3).</li>
+        <li><strong>Regras</strong>: abre a central de regras.</li>
+        <li><strong>Lote</strong>: abre a redação em lote.</li>
+        <li><strong>Exportar redigido</strong>: disponível quando há marcas confirmadas.</li>
+        <li><strong>Mais (⋯)</strong>: idioma, ajuda, feedback, atualizações, sobre etc.</li>
+      </ul>
+
+      <p>A barra de status mostra, entre outros indicadores, se o aplicativo está pronto e o nome do arquivo atual.</p>
+    
+
+    
+      <h2><span class="num">5</span>Central de regras</h2>
+
+      <h3 id="rules-5-1">5.1 Região e cenário de negócio</h3>
+      <ul>
+        <li><strong>Região</strong>: país/área; determina quais padrões integrados se aplicam (formatos de ID, regras de telefone etc.).</li>
+        <li><strong>Cenário de negócio</strong>: restringe ou enfatiza grupos de regras (geral, financeiro, saúde, jurídico/governo) para que os padrões combinem com o tipo de documento.</li>
+        <li><strong>Em conjunto</strong>: defina primeiro a região e depois o cenário; após mudanças, <strong>execute a detecção novamente</strong>, ou você pode continuar vendo uma análise antiga.</li>
+      </ul>
+
+      <h3 id="rules-5-2">5.2 Regras integradas vs. personalizadas</h3>
+      <ul>
+        <li><strong>Integradas</strong>: fornecidas com o aplicativo, agrupadas por tipo (identidade, finanças, endereço, contato, …), ativáveis por regra, baseadas em dados locais e totalmente offline.</li>
+        <li><strong>Personalizadas</strong>: um rótulo e um padrão — substring simples (sem diferenciar maiúsculas/minúsculas) ou <strong>expressão regular .NET</strong>. Úteis para códigos internos que as regras integradas não conhecem. Pode haver limite para a quantidade adicionada.</li>
+      </ul>
+
+      <h3 id="rules-5-3">5.3 Quando ajustar as regras</h3>
+      <ul>
+        <li><strong>Ruído demais</strong>: desative temporariamente regras muito amplas ou escolha um cenário mais adequado.</li>
+        <li><strong>O mesmo padrão aparece repetidamente</strong> e nenhuma regra integrada corresponde: adicione uma regra personalizada para reduzir caixas manuais.</li>
+        <li><strong>Configuração desajustada</strong>: <strong>Restaurar padrões</strong> limpa substituições locais (será solicitada confirmação).</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">6</span>Barra lateral de auditoria</h2>
+
+      <h3 id="audit-6-1">6.1 Por que a confirmação funciona assim</h3>
+      <ul>
+        <li>Uma linha costuma agrupar várias ocorrências do mesmo tipo sensível ou chave em várias páginas; confirmá-la significa dizer que <strong>todos esses pontos devem ser removidos</strong>.</li>
+        <li><strong>Pendente</strong> separa a “suposição do modelo” da “decisão humana”, para que nada seja gravado em massa sem revisão.</li>
+        <li>Por design, o mecanismo de exportação usa apenas marcas <strong>confirmadas</strong>.</li>
+      </ul>
+
+      <h3 id="audit-6-2">6.2 Filtros e confirmação em massa</h3>
+      <ul>
+        <li><strong>Filtro</strong>: restrinja por categoria ou risco para tratar primeiro itens de alto risco ou um tipo de campo (por exemplo, apenas contatos).</li>
+        <li><strong>Em massa</strong>: alterna o estado de confirmação de tudo que está visível no filtro atual (o texto depende da versão). Útil quando um grupo inteiro está claramente correto ou claramente errado.</li>
+        <li><strong>Dica</strong>: confira o filtro ativo antes de uma ação em massa para não incluir linhas que você não pretendia tratar.</li>
+      </ul>
+
+      <h3 id="audit-6-3">6.3 Níveis de risco</h3>
+      <p>Os níveis (crítico, alto, suspeito, médio, baixo, por exemplo) ajudam a <strong>ordenar e filtrar</strong> para que os resultados mais arriscados apareçam primeiro. Eles <strong>não</strong> obrigam a confirmar: você ainda decide o que redigir.</p>
+    
+
+    
+      <h2><span class="num">7</span>Seleções manuais</h2>
+
+      <h3 id="manual-box-7-1">7.1 Quando desenhar suas próprias caixas</h3>
+      <ul>
+        <li>As regras <strong>deixaram passar</strong> algo que você sabe que deve sair: anotações manuscritas em fotos, áreas de layout incomuns etc.</li>
+        <li>Os resultados estão <strong>fragmentados</strong> ou <strong>desalinhados</strong>: remova as linhas automáticas ruins e desenhe uma caixa mais precisa.</li>
+        <li>Conteúdo <strong>apenas digitalizado</strong> tratado como imagem: o comportamento difere de PDFs com texto; muitas vezes você dependerá de caixas manuais (veja as perguntas frequentes).</li>
+      </ul>
+
+      <h3 id="manual-box-7-2">7.2 Trabalhar com marcas detectadas automaticamente</h3>
+      <p>Ordem prática: <strong>executar a detecção → usar a lista de auditoria para limpar falsos positivos óbvios e perceber padrões → adicionar algumas caixas manuais para falhas reais → passar rapidamente pela pré-visualização página a página</strong>. Marcas manuais e automáticas são tratadas da mesma forma na exportação; o que importa é se estão <strong>confirmadas</strong>.</p>
+
+      <h3 id="manual-box-7-3">7.3 Atalhos de teclado (pré-visualização e marcas)</h3>
+      <p>Enquanto a página de arquivo único está carregada, ela registra <code>PreviewKeyDown</code> na janela principal. Os atalhos abaixo funcionam apenas com um documento aberto e o aplicativo <strong>não ocupado</strong>. Eles <strong>não</strong> estão ligados aos botões de página anterior/seguinte da barra de ferramentas.</p>
+      <table aria-label="Atalhos de teclado">
+        <thead>
+          <tr><th scope="col">Tecla</th><th scope="col">Ação</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Tab</code></td><td>Próxima marca de redação.</td></tr>
+          <tr><td><code>Shift</code> + <code>Tab</code></td><td>Marca de redação anterior.</td></tr>
+          <tr><td><code>←</code> <code>↑</code> <code>→</code> <code>↓</code></td><td>Sem modificadores: <code>←</code><code>↑</code> selecionam a marca anterior, <code>→</code><code>↓</code> a próxima. Com qualquer modificador pressionado: apenas <code>↑</code><code>↓</code> rolam a pré-visualização por um passo fixo; <code>←</code><code>→</code> não são tratados nesse ramo.</td></tr>
+          <tr><td><code>Enter</code></td><td>Sem modificadores: alterna a confirmação da marca selecionada.</td></tr>
+          <tr><td><code>Delete</code></td><td>Sem modificadores: remove a marca selecionada.</td></tr>
+          <tr><td><code>Page Up</code> / <code>Page Down</code></td><td>Rola a pilha de pré-visualização em cerca de uma altura de janela.</td></tr>
+          <tr><td><code>Home</code> / <code>End</code></td><td>Vai para o topo / fim da pré-visualização.</td></tr>
+        </tbody>
+      </table>
+    
+
+    
+      <h2><span class="num">8</span>Exportação</h2>
+
+      <h3 id="export-8-1">8.1 Lista de verificação antes da exportação</h3>
+      <ul class="checklist">
+        <li>Confirme que este é o <strong>arquivo que você pretende liberar</strong> (contagem de páginas, anexos).</li>
+        <li>Tudo que deve ser redigido está <strong>confirmado</strong>; o que deve permanecer visível foi limpo ou removido da lista.</li>
+        <li>Você revisou visualmente as páginas principais na pré-visualização, incluindo digitalizações ou seções incomuns marcadas manualmente.</li>
+        <li>Você sabe que a exportação grava um <strong>novo arquivo</strong> (ou no caminho escolhido) e normalmente não sobrescreve o original; o comportamento segue a caixa de diálogo de salvamento.</li>
+      </ul>
+
+      <h3 id="export-8-2">8.2 Por que remover metadados</h3>
+      <p>Além do conteúdo das páginas, PDFs podem trazer autor, produtor, carimbos de data/hora, XMP e outros dados. Redigir o texto mas deixar metadados ainda pode vazar contas internas ou histórico de edição. O aplicativo pode limpar isso na exportação (e opcionalmente em lote). Para qualquer documento que saia da organização, normalmente é melhor <strong>deixar a limpeza de metadados ativada</strong> quando a interface oferecer essa opção.</p>
+
+      <h3 id="export-8-3">8.3 Como ler o resumo</h3>
+      <ul>
+        <li>A <strong>quantidade de itens removidos fisicamente</strong> parece coerente com o que você viu?</li>
+        <li>O resumo informa que os <strong>metadados foram limpos</strong>?</li>
+        <li>Se houver <strong>avisos de validação de texto</strong>, a amostragem automática encontrou algo estranho: abra o PDF exportado e verifique. Não trate apenas o resumo como prova de ausência total de resíduos.</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">9</span>Processamento em lote</h2>
+
+      <h3 id="batch-9-1">9.1 O que o modo em lote realmente faz</h3>
+      <p>Depois de entrar por <strong>Aplicar a vários arquivos</strong> com uma base, cada PDF na fila segue um caminho de <strong>aplicação apenas de retângulos</strong>: os retângulos normalizados são mapeados para coordenadas absolutas por página, as marcas são criadas, o conteúdo é removido fisicamente e os metadados podem ser limpos opcionalmente. Ele <strong>não</strong> executa novamente detecção por regras para cada arquivo.</p>
+      <div class="note">Assim, as regras usadas no modo de arquivo único ajudaram você a <strong>encontrar</strong> e <strong>confirmar</strong> no modelo; o lote simplesmente copia <strong>onde você confirmou</strong> para outros arquivos com a mesma geometria.</div>
+
+      <h3 id="batch-9-2">9.2 Bons casos de uso</h3>
+      <ul>
+        <li>Muitos PDFs de um mesmo sistema com o <strong>mesmo layout</strong> e regiões sensíveis nas <strong>mesmas posições relativas</strong>.</li>
+        <li>Você já concluiu a detecção e confirmação em <strong>um exemplar</strong> e quer evitar repetir esse trabalho em cópias quase idênticas.</li>
+      </ul>
+
+      <h3 id="batch-9-3">9.3 Pontos de atenção</h3>
+      <ul>
+        <li><strong>Nenhum arquivo de modelo salvo</strong>: fechar a janela de lote descarta a base em memória; na próxima vez, crie-a novamente por <strong>Aplicar a vários arquivos</strong>.</li>
+        <li>Abrir <strong>Lote</strong> pela barra de ferramentas sem esse caminho pode deixar você sem uma base; <strong>Iniciar</strong> pode permanecer desativado.</li>
+        <li>Pequenas mudanças de layout podem causar omissões ou regiões erradas; <strong>verifique por amostragem</strong> os primeiros resultados.</li>
+        <li>Ative <strong>limpar propriedades e dados ocultos</strong> quando a opção aparecer para compartilhamento externo.</li>
+        <li>Alguns tipos de documento ou níveis de licença podem limitar o lote; se <strong>Aplicar a vários arquivos</strong> estiver desativado, esse é o sinal.</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">10</span>Perguntas frequentes</h2>
+
+      <h3 id="faq-false-positives">10.1 Por que há tantos falsos positivos?</h3>
+      <p>A correspondência por regras usa heurísticas: cadeias que <strong>parecem</strong> sensíveis, nomes de lugares confundidos com nomes de pessoas, fragmentos de tabelas e assim por diante. Ajustar cenário/regras, desligar uma regra ruidosa ou limpar a confirmação na lista geralmente resolve. A confirmação manual é intencional: reduz a chance de apagar com um clique algo que você ainda precisa.</p>
+
+      <h3 id="faq-scanned-pdf">10.2 E os PDFs digitalizados?</h3>
+      <p>Se o PDF for efetivamente uma imagem de página sem camada real de texto, a detecção por regras terá menos material para trabalhar; você dependerá mais de <strong>caixas manuais</strong> ou do fluxo específico para raster que a versão oferecer (siga as dicas na tela). Ajuda saber desde o início se você está lidando com um PDF nativamente digital ou com uma digitalização.</p>
+
+      <h3 id="faq-image-no-ocr">10.3 Posso redigir imagens? Por que o texto em fotos não é reconhecido?</h3>
+      <p>Sim. Formatos comuns de imagem podem ser abertos como documentos; você ainda usa pré-visualização, marcas e exportação. Para manter o tamanho do instalador e o custo de execução razoáveis, esta versão <strong>não inclui OCR</strong>: o texto em fotos não se torna selecionável, então a <strong>detecção de texto por regras quase não se aplica</strong>. Redija áreas sensíveis <strong>desenhando caixas</strong> (e usando atalhos de teclado para mover-se entre marcas). Se precisar “reconhecer e depois comparar”, faça OCR em outra ferramenta primeiro ou forneça um PDF com camada de texto.</p>
+
+      <h3 id="faq-verify-export">10.4 Como faço uma verificação rápida da exportação?</h3>
+      <ul>
+        <li>Em qualquer leitor de PDF, tente <strong>selecionar tudo / copiar</strong> e <strong>pesquisar</strong> cadeias que você sabe que eram sensíveis.</li>
+        <li><strong>Revise visualmente</strong> cabeçalhos, rodapés e notas de rodapé.</li>
+        <li>Leia o <strong>resumo de validação da exportação</strong> do aplicativo; se houver aviso, revise essas páginas primeiro.</li>
+        <li>Para situações de risco muito alto, adicione os controles habituais da sua organização: segunda ferramenta, revisão impressa etc.</li>
+      </ul>
+
+    <div class="footer-note">
+      © PlainBytes Studio · Documento atualizado conforme o produto evolui; a versão instalada continua sendo a fonte de referência.
+    </div>
+  </main>
+</div>
+
+<script>
+  // Highlight active TOC item on scroll
+  const sections = document.querySelectorAll('main h2[id], main h3[id], .step-card[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+<script>
+(function () {
+  var MANUAL = {
+    en: "en.html", zh: "zh-Hans.html", "zh-Hant": "zh-Hant.html",
+    ja: "ja.html", ko: "ko.html", de: "de.html", fr: "fr.html",
+    pt: "pt.html", it: "it.html", es: "es.html", nl: "nl.html", ru: "ru.html"
+  };
+  var STORE_WEB = "https://apps.microsoft.com/detail/9n2vlpn4wdk1";
+  var STORE_WIN = "ms-windows-store://pdp/?ProductId=9N2VLPN4WDK1";
+
+  var sel = document.getElementById("lang-select");
+  if (sel && sel.getAttribute("data-lang-nav") !== "1") {
+    sel.setAttribute("data-lang-nav", "1");
+    var current = document.documentElement.getAttribute("data-lang") || "en";
+    sel.value = current;
+    sel.addEventListener("change", function () {
+      var file = MANUAL[sel.value];
+      if (file && sel.value !== current) window.location.href = file;
+    });
+  }
+
+  document.querySelectorAll(".js-store-link").forEach(function (a) {
+    if (a.getAttribute("data-store-link") === "1") return;
+    a.setAttribute("data-store-link", "1");
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (/Windows/i.test(navigator.userAgent || "")) {
+        var link = document.createElement("a");
+        link.href = STORE_WIN;
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        window.open(STORE_WEB, "_blank", "noopener,noreferrer");
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+

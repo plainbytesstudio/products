@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="ko" data-lang="ko" data-base="../" data-page="manual">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PlainBytes Redactor 사용자 가이드</title>
+<meta name="description" content="PlainBytes Redactor 사용자 가이드: 워크플로, 규칙, 일괄 처리 및 FAQ." />
+<link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+
+  :root{
+    --bg-dark:#232323;
+    --red:#b3362b;
+    --red-dk:#8c2920;
+    --accent:#9a0413;
+    --accent-text:#fcebeb;
+    --ink:#1c1a17;
+    --gray:#5c5650;
+    --muted:#9a938b;
+    --rule:#e8e3dc;
+    --bg:#faf8f5;
+    --card:#ffffff;
+    --accent-lt:#fbeceb;
+    --serif:'DM Serif Display',Georgia,serif;
+    --sans:'DM Sans',system-ui,sans-serif;
+    --side-w:240px;
+    --layout-gap:2.5rem;
+    --maxw:1080px;
+  }
+
+  html{font-size:16px;scroll-behavior:smooth}
+  body.manual-page{
+    margin:0;
+    padding-top:64px;
+    font-family:var(--sans);
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+
+  /* ── TOP BAR (self-contained; matches website/css/site.css) ── */
+  .manual-page .site-header{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    background:rgba(35,35,35,.92);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    border-bottom:.5px solid rgba(255,255,255,.08);
+  }
+  .manual-page .site-header .inner{
+    width:100%;max-width:var(--maxw);margin:0 auto;padding:0 24px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;min-height:64px;flex-wrap:wrap;
+  }
+  .manual-page .site-header .brand{
+    display:flex;align-items:center;gap:10px;
+    color:#fff;font-weight:500;font-size:.875rem;text-decoration:none;
+  }
+  .manual-page .site-header .brand:hover{color:#f5f4f0;text-decoration:none}
+  .manual-page .site-header .brand-logo{
+    width:28px;height:28px;flex-shrink:0;object-fit:contain;display:block;
+  }
+  .manual-page .site-header .header-actions{
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .manual-page .site-header .site-nav-link{
+    font-size:.8125rem;color:#d0cec8;text-decoration:none;white-space:nowrap;
+  }
+  .manual-page .site-header .site-nav-link:hover{color:#fff;text-decoration:none}
+  .manual-page .site-header .site-nav-link--current{color:#fff;font-weight:500}
+  .manual-page .site-header .lang-select{
+    background:transparent;color:#d0cec8;border:none;border-radius:6px;
+    padding:8px 4px;font-size:.8125rem;cursor:pointer;
+  }
+  .manual-page .site-header .lang-select option{color:var(--ink);background:#fff}
+  .manual-page .site-header .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    padding:11px 22px;font-size:.875rem;font-weight:500;line-height:1.6;
+    border-radius:6px;border:none;cursor:pointer;text-decoration:none;
+    transition:background .15s ease,color .15s ease;
+  }
+  .manual-page .site-header .btn-accent{
+    background:var(--accent);color:var(--accent-text);
+  }
+  .manual-page .site-header .btn-accent:hover{
+    background:#7f0310;color:var(--accent-text);text-decoration:none;
+  }
+  .manual-page .site-header .btn-accent--sm{padding:9px 18px;font-size:.8125rem}
+
+  /* ── TOP hero ── */
+  .manual-top{
+    background:linear-gradient(180deg,#232323 0%,#2d2d2d 58%,#352626 100%);
+    margin-top:-64px;
+    padding-top:64px;
+  }
+
+  .manual-hero{padding:32px 0 48px}
+  .manual-hero__inner{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .manual-hero__copy{max-width:640px;margin:0 auto;text-align:center}
+  .manual-hero__kicker{
+    margin:0 0 20px;font-size:.8125rem;font-weight:500;letter-spacing:.03em;
+    color:#e8a0a0;text-transform:lowercase;
+  }
+  .manual-hero h1{
+    margin:0 0 20px;font-family:var(--serif);
+    font-size:clamp(1.75rem,4vw,2.375rem);font-weight:500;line-height:1.3;color:#fff;
+  }
+  .manual-hero__lead{
+    margin:0;font-size:1rem;line-height:1.7;color:#c8c6c0;font-weight:300;
+  }
+
+  /* ── LAYOUT ──────────────────────────────────────────── */
+  .page-wrap{
+    max-width:var(--maxw);margin:0 auto;
+    padding:3rem 24px 6rem;
+    display:grid;grid-template-columns:var(--side-w) 1fr;gap:var(--layout-gap);
+    align-items:start;
+  }
+
+  /* ── SIDEBAR NAV ─────────────────────────────────────── */
+  .toc-sidebar{position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto}
+  .toc-sidebar::-webkit-scrollbar{width:4px}
+  .toc-sidebar::-webkit-scrollbar-thumb{background:var(--rule);border-radius:4px}
+
+  .toc-block{margin-bottom:1.5rem}
+  .toc-block-label{
+    font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:.6rem;padding-left:.2rem;
+  }
+  .toc-item{display:block}
+  .toc-link{
+    display:block;font-size:.85rem;color:var(--gray);text-decoration:none;
+    padding:.4rem .6rem;border-radius:6px;border-left:2px solid transparent;
+    transition:color .15s,background .15s,border-color .15s;
+  }
+  .toc-link:hover{background:var(--accent-lt);color:var(--red-dk)}
+  .toc-link.active{color:var(--red);border-left-color:var(--red);font-weight:600;background:var(--accent-lt)}
+  .toc-sub{padding-left:1rem}
+  .toc-sub .toc-link{font-size:.79rem}
+
+  /* ── MAIN CONTENT ────────────────────────────────────── */
+  .content{min-width:0}
+
+  .content h2{
+    font-family:var(--serif);font-size:1.55rem;color:var(--ink);
+    letter-spacing:-.02em;margin:3rem 0 1rem;padding-top:.5rem;
+    border-top:1px solid var(--rule);
+  }
+  .content h2:first-child{margin-top:0;border-top:none;padding-top:0}
+  .content > h2 .num{color:var(--red);margin-right:.5rem;font-style:normal}
+
+  .content h3{
+    font-size:1.08rem;font-weight:700;color:var(--ink);
+    margin:2rem 0 .75rem;letter-spacing:-.01em;
+  }
+
+  .content p{margin-bottom:1.1rem;font-weight:300;color:#2a2724}
+  .content strong{font-weight:600;color:var(--ink)}
+  .content em{font-style:italic}
+
+  .content ul,.content ol{padding-left:1.3rem;margin-bottom:1.1rem}
+  .content li{margin-bottom:.4rem;font-weight:300}
+  .content li strong{font-weight:600}
+
+  .content a{color:var(--red-dk);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px}
+  .content a:hover{text-decoration-color:var(--red-dk)}
+
+  /* Quick start video card */
+  .video-card{
+    background:var(--bg-dark);border-radius:14px;overflow:hidden;
+    margin:1.5rem 0 2.5rem;
+  }
+  .video-frame{
+    aspect-ratio:16/9;background:linear-gradient(135deg,#241a14 0%,#1a1410 100%);
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .play-btn{
+    width:64px;height:64px;border-radius:50%;background:var(--red);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 24px rgba(179,54,43,.4);
+    transition:transform .2s;cursor:pointer;
+  }
+  .play-btn:hover{transform:scale(1.06)}
+  .play-btn::after{
+    content:'';width:0;height:0;
+    border-style:solid;border-width:9px 0 9px 15px;
+    border-color:transparent transparent transparent #fff;
+    margin-left:3px;
+  }
+  .video-caption{padding:1rem 1.25rem;color:rgba(255,255,255,.55);font-size:.82rem}
+
+  /* Table */
+  .content table{
+    width:100%;border-collapse:collapse;font-size:.86rem;margin:1.5rem 0 2rem;
+    border-radius:8px;overflow:hidden;border:1px solid var(--rule);
+  }
+  .content th{
+    background:var(--bg-dark);color:#fff;font-weight:600;
+    padding:.7rem 1rem;text-align:left;font-size:.78rem;
+    letter-spacing:.02em;
+  }
+  .content td{
+    padding:.7rem 1rem;border-bottom:1px solid var(--rule);
+    vertical-align:top;font-weight:300;
+  }
+  .content tr:last-child td{border-bottom:none}
+  .content tr:nth-child(even) td{background:#f7f4f0}
+  .content td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+
+  /* Callout boxes */
+  .callout{
+    border-left:3px solid var(--red);background:var(--accent-lt);
+    padding:1rem 1.25rem;border-radius:0 10px 10px 0;margin:1.5rem 0;
+  }
+  .callout-label{
+    font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--red-dk);margin-bottom:.35rem;
+  }
+  .callout p{margin:0;font-weight:400;color:var(--ink)}
+  .callout p+p{margin-top:.5rem}
+
+  .callout.tip{border-color:#2e6b4f;background:#eaf5ef}
+  .callout.tip .callout-label{color:#1f4d38}
+  .callout.warn{border-color:#a35a0e;background:#fbf0e4}
+  .callout.warn .callout-label{color:#7a4209}
+
+  /* Step cards for workflow */
+  .step-card{
+    background:var(--card);border:1px solid var(--rule);border-radius:12px;
+    padding:1.4rem 1.5rem;margin-bottom:1rem;
+  }
+  .step-card .step-label{
+    display:inline-flex;align-items:center;gap:.5rem;
+    font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--red);margin-bottom:.6rem;
+  }
+  .step-card .step-label .step-num{
+    width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:.72rem;
+  }
+  .step-card h4{font-size:1.02rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+  .step-card p{margin-bottom:0;font-size:.92rem}
+
+  /* Keyboard key */
+  kbd{
+    display:inline-block;font-family:'SF Mono','Fira Code',monospace;
+    font-size:.78em;background:var(--bg-dark);color:#fff;
+    padding:.15em .5em;border-radius:5px;font-weight:500;
+  }
+
+  .content code{
+    font-family:'SF Mono','Fira Code',monospace;
+    font-size:.85em;background:#f0ebe4;color:var(--ink);
+    padding:.12em .45em;border-radius:4px;
+  }
+
+  /* Image figure */
+  figure{margin:1.75rem 0;border-radius:12px;overflow:hidden;border:1px solid var(--rule)}
+  figure img{width:100%;display:block}
+  figcaption{
+    font-size:.78rem;color:var(--muted);padding:.65rem 1rem;
+    background:var(--card);border-top:1px solid var(--rule);text-align:center;
+  }
+
+  /* FAQ accordion-style */
+  .faq-item{border-bottom:1px solid var(--rule);padding:1.3rem 0}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{font-weight:700;color:var(--ink);margin-bottom:.5rem;display:flex;gap:.6rem}
+  .faq-q .q-mark{color:var(--red);flex-shrink:0}
+  .faq-a{font-size:.92rem;font-weight:300;color:#2a2724;padding-left:1.4rem}
+
+  /* Footer note */
+  .footer-note{
+    margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);
+    font-size:.8rem;color:var(--muted);
+  }
+
+  .checklist{list-style:none;padding-left:0}
+  .checklist li{padding-left:1.5rem;position:relative;margin-bottom:.4rem}
+  .checklist li::before{content:"☐";position:absolute;left:0;color:var(--red-dk)}
+
+  .content .example{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:1.4rem 1.5rem;margin:1rem 0}
+  .content .example h3{margin-top:0;color:var(--red-dk);font-size:1rem}
+  .content .note{border-left:3px solid var(--red);background:var(--accent-lt);padding:1rem 1.25rem;border-radius:0 10px 10px 0;margin:1.5rem 0;font-size:.95rem}
+
+  /* ── MOBILE ──────────────────────────────────────────── */
+  .mobile-toc-toggle{display:none}
+
+  @media (max-width:980px){
+    .page-wrap{grid-template-columns:1fr;gap:0}
+    .toc-sidebar{
+      position:static;max-height:none;overflow:visible;
+      margin-bottom:2rem;border:1px solid var(--rule);border-radius:12px;
+      padding:1rem 1.25rem;background:var(--card);
+    }
+    .toc-sidebar.collapsed .toc-content{display:none}
+    .mobile-toc-toggle{
+      display:flex;align-items:center;justify-content:space-between;
+      width:100%;background:none;border:none;cursor:pointer;
+      font-family:var(--sans);font-size:.9rem;font-weight:600;color:var(--ink);
+      padding:0;
+    }
+  }
+  @media (max-width:560px){
+    .manual-hero__inner{padding:0 1.25rem}
+    .page-wrap{padding:2rem 1.25rem 4rem}
+    .content h2{font-size:1.3rem}
+  }
+</style>
+</head>
+<body class="manual-page">
+
+<header class="site-header site-header--on-dark">
+  <div class="container inner">
+    <a class="brand" href="../ko/index.html">
+      <img
+        class="brand-logo"
+        src="../assets/Redactor_Logo.png"
+        alt=""
+        aria-hidden="true"
+        width="28"
+        height="28"
+      />
+      <span>PlainBytes Redactor</span>
+    </a>
+    <div class="header-actions">
+      <a class="site-nav-link" href="../ko/index.html">홈</a>
+      <a class="site-nav-link site-nav-link--current" href="ko.html" aria-current="page">사용자 가이드</a>
+      <label class="visually-hidden" for="lang-select">Language</label>
+      <select id="lang-select" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="zh-Hant">繁體中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="de">Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="pt">Português</option>
+        <option value="it">Italiano</option>
+        <option value="es">Español</option>
+        <option value="nl">Nederlands</option>
+        <option value="ru">Русский</option>
+      </select>
+      <a
+        class="btn btn-accent btn-accent--sm js-store-link"
+        href="https://apps.microsoft.com/detail/9n2vlpn4wdk1"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Microsoft Store에서 받기</a
+      >
+    </div>
+  </div>
+</header>
+
+<div class="manual-top">
+  <section class="manual-hero">
+    <div class="manual-hero__inner">
+      <div class="manual-hero__copy">
+        <p class="manual-hero__kicker">사용자 가이드</p>
+        <h1>PlainBytes Redactor 사용자 가이드</h1>
+        <p class="manual-hero__lead">현재 Windows 데스크톱 앱 기준으로 작성되었습니다. 설치된 버전과 내용이 다를 경우 앱 안의 화면을 기준으로 삼으세요.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════ MAIN LAYOUT ═══════════════════ -->
+<div class="page-wrap">
+
+  <aside class="toc-sidebar" id="tocSidebar">
+    <button class="mobile-toc-toggle" onclick="document.getElementById('tocSidebar').classList.toggle('collapsed')">
+      <span>목차</span><span>▾</span>
+    </button>
+    <div class="toc-content">
+      <div class="toc-block">
+        <a href="#quick-start" class="toc-link">빠른 시작</a>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">1. 이 앱의 용도</div>
+        <div class="toc-sub">
+          <a href="#positioning-1-1" class="toc-link">1.1 실제 삭제 방식 vs 화면상 가리기</a>
+          <a href="#positioning-1-2" class="toc-link">1.2 “로컬 및 오프라인”의 의미</a>
+          <a href="#positioning-1-3" class="toc-link">1.3 적합한 사용 상황</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">2. 핵심 개념</div>
+        <div class="toc-sub">
+          <a href="#concepts-2-1" class="toc-link">2.1 삭제 표시</a>
+          <a href="#concepts-2-2" class="toc-link">2.2 “확인”의 의미</a>
+          <a href="#concepts-2-4" class="toc-link">2.3 일괄 처리 기준</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">3. 전체 작업 흐름</div>
+        <div class="toc-sub">
+          <a href="#workflow-example" class="toc-link">예시 상황</a>
+          <a href="#workflow-step-a" class="toc-link">단계 A: 문서 열기</a>
+          <a href="#workflow-step-b" class="toc-link">단계 B: 지역 및 시나리오</a>
+          <a href="#workflow-step-c" class="toc-link">단계 C: 탐지 실행</a>
+          <a href="#workflow-step-d" class="toc-link">단계 D: 감사 목록에서 검토</a>
+          <a href="#workflow-step-e" class="toc-link">단계 E: 누락된 항목 직접 박스 지정</a>
+          <a href="#workflow-step-f" class="toc-link">단계 F: 내보내기</a>
+          <a href="#workflow-step-g" class="toc-link">단계 G(선택): 여러 파일에 적용</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">4. 기본 화면 둘러보기</div>
+        <div class="toc-sub">
+          <a href="#main-ui-4-1" class="toc-link">4.1 미리 보기(왼쪽)</a>
+          <a href="#main-ui-4-4" class="toc-link">4.2 스캔 정책 패널</a>
+          <a href="#main-ui-4-3" class="toc-link">4.3 선택 영역 표시 방식</a>
+          <a href="#main-ui-4-2" class="toc-link">4.4 감사 추적 목록</a>
+          <a href="#main-ui-4-5" class="toc-link">4.5 도구 모음 버튼</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">5. 규칙 센터</div>
+        <div class="toc-sub">
+          <a href="#rules-5-1" class="toc-link">5.1 지역 및 업무 시나리오</a>
+          <a href="#rules-5-2" class="toc-link">5.2 기본 제공 규칙 vs 사용자 지정 규칙</a>
+          <a href="#rules-5-3" class="toc-link">5.3 규칙을 조정해야 할 때</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">6. 감사 사이드바</div>
+        <div class="toc-sub">
+          <a href="#audit-6-1" class="toc-link">6.1 확인 방식이 이렇게 설계된 이유</a>
+          <a href="#audit-6-2" class="toc-link">6.2 필터와 일괄 확인</a>
+          <a href="#audit-6-3" class="toc-link">6.3 위험 수준</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">7. 수동 선택</div>
+        <div class="toc-sub">
+          <a href="#manual-box-7-1" class="toc-link">7.1 직접 박스를 그려야 할 때</a>
+          <a href="#manual-box-7-2" class="toc-link">7.2 자동 탐지 표시와 함께 작업하기</a>
+          <a href="#manual-box-7-3" class="toc-link">7.3 키보드 단축키</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">8. 내보내기</div>
+        <div class="toc-sub">
+          <a href="#export-8-1" class="toc-link">8.1 내보내기 전 점검 목록</a>
+          <a href="#export-8-2" class="toc-link">8.2 메타데이터 제거가 필요한 이유</a>
+          <a href="#export-8-3" class="toc-link">8.3 요약 확인 방법</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">9. 일괄 처리</div>
+        <div class="toc-sub">
+          <a href="#batch-9-1" class="toc-link">9.1 일괄 모드가 실제로 하는 일</a>
+          <a href="#batch-9-2" class="toc-link">9.2 적합한 사용 사례</a>
+          <a href="#batch-9-3" class="toc-link">9.3 주의할 점</a>
+        </div>
+      </div>
+
+      <div class="toc-block">
+        <div class="toc-block-label">10. 자주 묻는 질문</div>
+        <div class="toc-sub">
+          <a href="#faq-false-positives" class="toc-link">10.1 오탐이 많은 이유는?</a>
+          <a href="#faq-scanned-pdf" class="toc-link">10.2 스캔 PDF</a>
+          <a href="#faq-image-no-ocr" class="toc-link">10.3 이미지와 OCR</a>
+          <a href="#faq-verify-export" class="toc-link">10.4 내보낸 파일 확인</a>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <main class="content">
+<h2 id="quick-start">빠른 시작</h2>
+      <p>아래 동영상은 처음부터 끝까지의 전체 작업 흐름을 보여 줍니다. 자동 인식과 필요 시 수동 보완을 포함합니다.</p>
+      <!-- [Insert video] -->
+      <div class="video-card">
+      <div class="video-frame">
+        <div class="play-btn" onclick="document.getElementById('qsVideo').play(); this.style.display='none'"></div>
+        <video id="qsVideo" controls style="position:absolute;inset:0;width:100%;height:100%;display:none" onplay="this.style.display='block'; this.previousElementSibling.style.display='none'">
+          <source src="videos/ko/quickstart.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="video-caption">전체 워크플로 데모 · 2분</div>
+    </div>
+    
+
+    
+      <h2><span class="num">1</span>이 앱의 용도</h2>
+
+      <h3 id="positioning-1-1">1.1 실제 삭제 방식 vs 화면상 가리기</h3>
+      <p>이 두 방식은 규정 준수와 보안 측면에서 의미가 크게 다릅니다.</p>
+      <table>
+        <thead>
+          <tr><th>항목</th><th>화면상 가리기(일반적인 “검은 막대”)</th><th>실제 삭제 방식(이 앱의 목표)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>PDF 내부</td>
+            <td>텍스트, 벡터 또는 이미지 객체가 파일 안에 그대로 남아 있고, 다른 그래픽으로 덮여 있을 뿐일 수 있습니다.</td>
+            <td>일치하는 콘텐츠를 콘텐츠 스트림에서 <strong>제거</strong>하여 일반적인 분석 경로로 복구할 수 없도록 합니다.</td>
+          </tr>
+          <tr>
+            <td>복사 / 검색</td>
+            <td>도구에 따라 “숨겨진” 텍스트가 여전히 복사될 수 있습니다.</td>
+            <td>선택 가능한 텍스트에 민감한 문자열이 더 이상 남지 않도록 하는 것이 목표입니다. 내보낸 파일에서 직접 확인하세요.</td>
+          </tr>
+          <tr>
+            <td>적합한 용도</td>
+            <td>화면에서 읽거나 임시로 가리는 용도.</td>
+            <td>외부 공유, 보관, 감사, 실사 등 콘텐츠를 <strong>완전히 제거</strong>해야 하는 경우.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note">PlainBytes Redactor는 <strong>실제 삭제 방식</strong>을 중심으로 설계되었습니다. 내보내기 때 실제로 제거할 영역을 명확히 하려면 <strong>확인</strong>을 사용하세요.</div>
+
+      <h3 id="positioning-1-2">1.2 “로컬 및 오프라인”의 의미</h3>
+      <ul>
+        <li><strong>작업은 이 PC 안에서 처리됩니다</strong>: PDF 열기, 규칙 매칭, 삭제된 파일 쓰기, 검증이 모두 로컬에서 실행됩니다.</li>
+        <li><strong>삭제 처리를 위해 문서를 업로드하지 않습니다</strong>: 이 제품은 삭제 처리 과정에서 파일을 클라우드로 보내도록 설계되어 있지 않습니다.</li>
+        <li><strong>도움말/업데이트와는 별개입니다</strong>: 도움말, 업데이트 확인 같은 메뉴를 열면 Windows가 브라우저나 Microsoft Store를 실행할 수 있습니다. 이는 삭제 처리 경로를 오프라인으로 유지하는 것과는 별개의 동작입니다.</li>
+      </ul>
+
+      <h3 id="positioning-1-3">1.3 적합한 사용 상황</h3>
+      <ul>
+        <li>법무, 금융, 의료, 공공, 감사 등에서 <strong>사람의 검토</strong>와 유출 범위 최소화가 필요한 작업 흐름.</li>
+        <li>PDF를 제공해야 하지만 신분증 번호, 계좌번호, 연락처 등 <strong>식별 가능한 정보</strong>를 제거해야 하는 경우.</li>
+        <li><strong>같은 레이아웃</strong>의 PDF가 여러 개 있는 경우: 하나의 “샘플” 파일에서 확인한 뒤 <strong>여러 파일에 적용</strong>으로 같은 위치 기준을 나머지 파일에 재사용할 수 있습니다(§3의 단계 G 및 §9 참고).</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">2</span>핵심 개념</h2>
+
+      <h3 id="concepts-2-1">2.1 삭제 표시 (<code>RedactionMark</code>)</h3>
+      <p>내부적으로 삭제 후보 영역은 각각 <strong>삭제 표시</strong>입니다. “페이지 위의 사각형 + 메타데이터”라고 생각하면 됩니다.</p>
+      <ul>
+        <li><strong>페이지와 사각형</strong>: PDF 좌표계에서의 위치와 크기입니다.</li>
+        <li><strong>상태</strong>: <strong>대기 중</strong> 또는 <strong>확인됨</strong>. 내보낼 때는 <strong>확인된</strong> 표시만 제거됩니다.</li>
+        <li><strong>출처</strong>: <strong>규칙(패턴/정규식)</strong> 또는 <strong>수동 선택</strong>입니다. 자동으로 찾은 항목과 직접 그린 항목을 구분할 수 있습니다.</li>
+        <li><strong>범주와 위험도</strong>: 감사 목록에서 필터링, 정렬, 일괄 작업에 사용됩니다.</li>
+      </ul>
+
+      <h3 id="concepts-2-2">2.2 “확인”의 의미와 수동 확인이 필요한 이유</h3>
+      <ul>
+        <li><strong>자동화가 최종 판단은 아닙니다</strong>: 규칙 매칭은 정상 텍스트를 <strong>과하게 표시</strong>하거나 실제 민감 정보를 <strong>놓칠</strong> 수 있습니다. 따라서 앱은 “찾은 것은 모두 삭제해야 한다”고 가정하지 않습니다.</li>
+        <li><strong>확인 = 검토 후 승인</strong>: 확인된 표시는 내보내기 대상에 포함됩니다. 대기 중으로 남은 항목은 최종 삭제 범위로 처리되지 않습니다.</li>
+        <li><strong>실제 검토 절차에 맞습니다</strong>: 이 추가 단계는 2인 검토, 감사 추적, 실수로 한 페이지 전체를 한 번에 지우는 일을 방지하는 흐름과 맞닿아 있습니다.</li>
+      </ul>
+
+      <h3 id="concepts-2-4">2.3 일괄 처리 기준</h3>
+      <ul>
+        <li>“이것을 이름 있는 템플릿 파일로 저장했다가 나중에 선택”하는 흐름은 <strong>없습니다</strong>. 일괄 처리가 사용하는 것은 메모리상의 <strong>기하학적 기준</strong>입니다. <strong>여러 파일에 적용</strong>을 통해 일괄 처리로 들어가면, 앱은 현재 문서의 모든 <strong>확인된</strong> 표시를 <strong>정규화된 사각형</strong>(페이지 + 페이지 크기 기준 상대 좌표)으로 변환하며, 이는 <strong>해당 일괄 세션에서만</strong> 사용됩니다.</li>
+        <li>대기열의 <strong>각</strong> PDF에 대해 일괄 엔진은 <strong>해당 사각형만 적용</strong>합니다. 파일마다 문서 전체 규칙 탐지를 새로 실행하지 <strong>않습니다</strong>.</li>
+        <li><strong>적합한 경우</strong>: 같은 시스템에서 나온 여러 PDF가 <strong>같은 레이아웃과 같은 위치의 민감 영역</strong>을 가질 때입니다(예: 동일한 형식의 명세서). 레이아웃이 조금이라도 달라지면 박스가 잘못된 위치에 놓일 수 있으므로 초기 결과를 표본 확인하세요.</li>
+        <li><strong>규칙 센터의 규칙</strong>: <strong>현재</strong> 단일 파일 작업 흐름에서 항목을 <strong>찾는</strong> 데 도움을 줍니다. 대기열의 모든 파일에 자동으로 다시 실행되지는 <strong>않습니다</strong>. 일괄 처리는 이미 확정한 <strong>확인된 위치</strong>를 기준으로 동작합니다.</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">3</span>전체 작업 흐름</h2>
+
+      <div class="example">
+        <h3 id="workflow-example">예시 상황</h3>
+        <p>이 예시에서는 법무 담당자가 외부에 제공할 8페이지짜리 <strong>직원 퇴사 관련 PDF</strong>를 처리합니다. 휴대폰 번호, 은행카드 일부 번호, 개인 이메일 주소를 제거해야 합니다. 이 파일은 텍스트 선택이 가능한 실제 전자 PDF이며, 단순 스캔 이미지가 아닙니다.</p>
+      </div>
+
+      <figure class="doc-screenshot doc-flowchart">
+        <img src="images/ko/flowchart.jpg" alt="단일 파일 삭제 처리 흐름: 문서 열기, 규칙 설정 및 탐지 실행, 검토와 수동 박스 추가, 내보내기, 선택적 일괄 적용." loading="lazy" decoding="async" />
+        <figcaption>작업 흐름 개요</figcaption>
+      </figure>
+
+      <h3 id="workflow-step-a">단계 A: 문서 열기</h3>
+      <p><strong>열기</strong> 또는 끌어다 놓기로 PDF를 불러옵니다. 일반적인 이미지 형식도 지원하지만, 앱 내 처리 경로는 다를 수 있습니다.<br>
+      미리 보기, 탐지, 표시 등 모든 작업은 이 원본 파일 하나에 연결되므로 실제로 처리하려는 버전을 열어야 합니다.</p>
+
+      <h3 id="workflow-step-b">단계 B: 규칙 센터에서 지역과 시나리오 선택</h3>
+      <p><strong>규칙</strong>을 열고 <strong>지역</strong>(국가/영역)을 선택한 뒤 <strong>업무 시나리오</strong>(일반, 금융 등)를 선택합니다. 필요하면 기본 제공 규칙을 켜거나 끄고, 사용자 지정 규칙을 추가합니다.<br>
+      실제 적용되는 규칙 집합은 지역과 시나리오에 따라 달라집니다. 잘못된 시나리오를 고르면 필요한 규칙이 꺼져 있거나 오탐이 늘 수 있습니다. 닫기 전에 기본 설정을 저장하면 다음 유사 문서를 더 빠르게 처리할 수 있습니다.</p>
+
+      <h3 id="workflow-step-c">단계 C: 탐지 실행</h3>
+      <p>오른쪽의 스캔 정책 영역에서 <strong>탐지 시작</strong>(또는 같은 기능의 컨트롤)을 클릭하고 문서 모델 구성과 전체 탐지가 끝날 때까지 기다립니다.<br>
+      그러면 규칙 탐지 결과가 <strong>대기 중</strong> 표시 목록으로 바뀝니다. 지역, 시나리오 또는 규칙을 바꿨다면 목록이 맞도록 탐지를 다시 실행하세요.</p>
+
+      <h3 id="workflow-step-d">단계 D: 감사 목록에서 검토</h3>
+      <p>오른쪽 <strong>감사 추적</strong>에서 항목을 하나씩 확인하거나 필터를 사용합니다. 제거해야 하는 항목은 <strong>확인</strong>하고, 오탐은 확인을 해제하거나 행을 제거합니다(정확한 컨트롤은 버전에 따라 다릅니다). 미리 보기의 노란색 오버레이는 보통 목록과 동기화되며, 클릭하면 확인 상태를 전환할 수 있습니다.<br>
+      이 단계는 잘못된 내용을 삭제하거나 필요한 항목을 놓치는 일을 막아 줍니다. 내보내기는 <strong>확인된</strong> 표시만 반영합니다.</p>
+
+      <h3 id="workflow-step-e">단계 E: 누락된 항목 직접 박스 지정</h3>
+      <p>왼쪽 미리 보기에서 규칙이 찾지 못했지만 삭제해야 한다고 알고 있는 내용 위에 사각형을 드래그합니다. 배경이 복잡하면 선택 색상을 조정해도 됩니다.<br>
+      자동 탐지는 모든 것을 잡아내지 못합니다. 수동 박스가 <strong>마지막 안전망</strong>입니다.</p>
+
+      <h3 id="workflow-step-f">단계 F: 내보내기</h3>
+      <p><strong>삭제 처리된 파일 내보내기</strong>를 선택하고 저장 위치를 지정한 뒤 완료 요약(제거된 항목 수, 메타데이터 정리, 검증 메시지)을 확인합니다.<br>
+      공유 가능한 복사본이 만들어집니다. 요약은 빠른 점검용이며, 경고가 있으면 내보낸 PDF를 열어 표본 확인하세요.</p>
+
+      <h3 id="workflow-step-g">단계 G(선택): 여러 파일에 적용</h3>
+      <p>이 PDF에서 삭제해야 할 항목이 모두 <strong>확인</strong>되면 <strong>여러 파일에 적용</strong>(또는 같은 기능의 항목)을 사용합니다. 앱은 위에서 설명한 <strong>정규화된 기준</strong>을 만들고 <strong>일괄 삭제 처리</strong>를 엽니다. 같은 레이아웃의 PDF를 더 추가하고, 출력 폴더를 지정하고, 메타데이터 제거 여부를 선택한 뒤 실행합니다.<br>
+      레이아웃이 실제로 일치한다면 파일마다 같은 확인 작업을 반복하지 않아도 됩니다. 일괄 처리도 박스 영역을 <strong>물리적으로 제거</strong>합니다.<br>
+      <strong>중요</strong>: 이는 디스크에 저장되는 재사용 가능한 이름 있는 템플릿이 아닙니다. <strong>별도 템플릿 파일은 없습니다</strong>. 기준은 <strong>이</strong> 확인된 문서에서 나옵니다. 또한 일괄 처리는 대기열의 각 파일에 대해 규칙 탐지를 다시 실행하지 <strong>않습니다</strong>. 어떤 파일의 레이아웃이 달라졌다면 단일 파일 흐름으로 돌아가세요.</p>
+    
+
+    
+      <h2><span class="num">4</span>기본 화면 둘러보기</h2>
+
+      <figure class="doc-screenshot">
+        <img src="images/ko/PlainBytes.Redactor.jpg" alt="PlainBytes Redactor 기본 화면: 왼쪽에는 문서 미리 보기, 오른쪽에는 감사 및 정책 패널이 있으며, 레이아웃은 버전에 따라 다를 수 있습니다." loading="lazy" decoding="async" />
+        <figcaption>기본 화면</figcaption>
+      </figure>
+
+      <h3 id="main-ui-4-1">4.1 미리 보기(왼쪽)</h3>
+      <ul>
+        <li><strong>용도</strong>: PDF(또는 이미지)의 각 페이지를 표시하여 페이지 번호와 레이아웃이 파일과 일치하도록 합니다.</li>
+        <li><strong>표시</strong>: 자동 및 수동 대기 영역이 강조 표시됩니다. 영역을 <strong>클릭</strong>하면 목록과 함께 확인 상태가 전환되는 경우가 많습니다(노란색 표시는 버전에 따라 다릅니다).</li>
+        <li><strong>수동 박스</strong>: 미리 보기에서 클릭 후 드래그하여 사각형 표시를 추가합니다.</li>
+      </ul>
+      <h3 id="main-ui-4-4">4.2 스캔 정책 패널</h3>
+      <ul>
+        <li><strong>용도</strong>: 탐지를 실행하는入口입니다(예: <strong>탐지 시작</strong>). 규칙 센터의 지역, 시나리오, 규칙 집합과 연결됩니다.</li>
+        <li><strong>분리된 이유</strong>: “언제 전체 문서를 스캔할지”와 “감사 목록을 어떻게 처리할지”를 구분하여 혼동을 줄입니다.</li>
+      </ul>
+
+      <h3 id="main-ui-4-3">4.3 선택 영역 표시 방식</h3>
+      <ul>
+        <li><strong>용도</strong>: 수동 선택 영역의 <strong>테두리, 채우기, 사용자 지정 색상</strong> 등을 조정하여 복잡한 배경에서도 박스가 잘 보이게 합니다.</li>
+        <li><strong>참고</strong>: 이는 <strong>시각적 보조</strong>일 뿐입니다. 실제 삭제 여부는 확인 상태와 내보내기에 따라 결정됩니다.</li>
+      </ul>
+
+      <h3 id="main-ui-4-2">4.4 감사 추적 목록</h3>
+      <ul>
+        <li><strong>용도</strong>: 열린 문서의 민감 항목을 모아 보여 주며, 범주와 위험도 필터, 행별 또는 일괄 확인/해제 작업을 제공합니다.</li>
+        <li><strong>미리 보기와 동기화</strong>: 행을 선택하거나 조작하면 보통 해당 페이지로 이동하거나 강조 표시됩니다. 미리 보기의 표시를 클릭하면 목록 상태도 갱신됩니다.</li>
+      </ul>
+
+      <h3 id="main-ui-4-5">4.5 도구 모음(위에서 아래 순서)</h3>
+      <ul>
+        <li><strong>열기</strong>: 로컬 PDF 또는 지원되는 이미지를 선택합니다.</li>
+        <li><strong>문서 닫기</strong>: 현재 파일을 닫습니다.</li>
+        <li><strong>이전 / 다음 페이지</strong>: 도구 모음을 사용하세요. 단일 파일 페이지의 <code>Page Up</code> / <code>Page Down</code>은 미리 보기 스크롤용으로 별도 처리됩니다(§7.3 참고).</li>
+        <li><strong>규칙</strong>: 규칙 센터를 엽니다.</li>
+        <li><strong>일괄</strong>: 일괄 삭제 처리를 엽니다.</li>
+        <li><strong>삭제 처리된 파일 내보내기</strong>: 확인된 표시가 있을 때 사용할 수 있습니다.</li>
+        <li><strong>더 보기(⋯)</strong>: 언어, 도움말, 피드백, 업데이트, 정보 등.</li>
+      </ul>
+
+      <p>상태 표시줄에는 준비 상태와 현재 파일 이름이 표시됩니다.</p>
+    
+
+    
+      <h2><span class="num">5</span>규칙 센터</h2>
+
+      <h3 id="rules-5-1">5.1 지역 및 업무 시나리오</h3>
+      <ul>
+        <li><strong>지역</strong>: 국가/영역 기준이며, 적용되는 기본 제공 패턴(신분증 형식, 전화번호 규칙 등)을 결정합니다.</li>
+        <li><strong>업무 시나리오</strong>: 일반, 금융, 의료, 법률/정부 등 규칙 묶음을 좁히거나 강조하여 기본값이 문서 유형에 맞게 합니다.</li>
+        <li><strong>함께 사용</strong>: 먼저 지역을 정하고 시나리오를 선택하세요. 변경 후에는 <strong>탐지를 다시 실행</strong>해야 하며, 그렇지 않으면 이전 결과를 보고 있을 수 있습니다.</li>
+      </ul>
+
+      <h3 id="rules-5-2">5.2 기본 제공 규칙 vs 사용자 지정 규칙</h3>
+      <ul>
+        <li><strong>기본 제공</strong>: 앱에 포함되어 있으며 신원, 금융, 주소, 연락처 등으로 묶여 있습니다. 규칙별로 켜고 끌 수 있고, 로컬 데이터 기반이라 완전히 오프라인으로 사용할 수 있습니다.</li>
+        <li><strong>사용자 지정</strong>: 표시 이름과 패턴을 직접 지정합니다. 일반 부분 문자열(대소문자 구분 없음) 또는 <strong>.NET 정규식</strong>을 사용할 수 있습니다. 기본 제공 규칙이 모르는 내부 코드에 유용하며, 추가 가능한 개수에는 제한이 있을 수 있습니다.</li>
+      </ul>
+
+      <h3 id="rules-5-3">5.3 규칙을 조정해야 할 때</h3>
+      <ul>
+        <li><strong>노이즈가 너무 많을 때</strong>: 지나치게 넓은 규칙을 잠시 끄거나 더 적합한 시나리오를 선택합니다.</li>
+        <li><strong>같은 패턴이 반복되지만 기본 규칙이 잡지 못할 때</strong>: 사용자 지정 규칙을 추가하여 수동 박스 작업을 줄입니다.</li>
+        <li><strong>설정이 어긋났을 때</strong>: <strong>기본값 복원</strong>으로 로컬 변경 사항을 지울 수 있습니다(확인 절차가 있습니다).</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">6</span>감사 사이드바</h2>
+
+      <h3 id="audit-6-1">6.1 확인 방식이 이렇게 설계된 이유</h3>
+      <ul>
+        <li>한 행은 여러 페이지에 나타나는 같은 민감 유형 또는 같은 키의 여러 발생을 묶는 경우가 많습니다. 이를 확인한다는 것은 <strong>해당 위치들이 모두 제거되어야 한다</strong>고 승인하는 뜻입니다.</li>
+        <li><strong>대기 중</strong> 상태는 “모델의 추정”과 “사람의 결정”을 분리하여, 검토 없이 일괄로 기록되는 일을 막습니다.</li>
+        <li>내보내기 엔진은 설계상 <strong>확인된</strong> 표시만 사용합니다.</li>
+      </ul>
+
+      <h3 id="audit-6-2">6.2 필터와 일괄 확인</h3>
+      <ul>
+        <li><strong>필터</strong>: 범주나 위험도로 좁혀 고위험 항목 또는 특정 필드 유형(예: 연락처만)을 먼저 처리합니다.</li>
+        <li><strong>일괄</strong>: 현재 필터에 보이는 모든 항목의 확인 상태를 한 번에 전환합니다(문구는 버전에 따라 다름). 한 그룹이 전부 맞거나 전부 오탐일 때 유용합니다.</li>
+        <li><strong>팁</strong>: 일괄 작업 전 활성 필터를 확인하여 의도하지 않은 행까지 포함하지 않도록 하세요.</li>
+      </ul>
+
+      <h3 id="audit-6-3">6.3 위험 수준</h3>
+      <p>위험 수준(예: 심각, 높음, 의심, 중간, 낮음)은 <strong>정렬과 필터링</strong>에 사용되어 가장 위험한 항목을 먼저 볼 수 있게 합니다. 이것이 곧 확인해야 한다는 뜻은 <strong>아니며</strong>, 무엇을 삭제할지는 사용자가 결정합니다.</p>
+    
+
+    
+      <h2><span class="num">7</span>수동 선택</h2>
+
+      <h3 id="manual-box-7-1">7.1 직접 박스를 그려야 할 때</h3>
+      <ul>
+        <li>규칙이 <strong>놓친</strong> 내용이지만 업무상 반드시 제거해야 하는 경우입니다. 예: 사진 속 손글씨 주석, 특이한 레이아웃 영역 등.</li>
+        <li>탐지 결과가 <strong>조각나 있거나</strong> <strong>위치가 맞지 않을</strong> 때는 잘못된 자동 항목을 제거하고 더 정확한 박스를 그립니다.</li>
+        <li>이미지로 처리되는 <strong>스캔 전용</strong> 콘텐츠는 텍스트 PDF와 동작이 다릅니다. 이 경우 수동 박스에 더 의존하게 됩니다(FAQ 참고).</li>
+      </ul>
+
+      <h3 id="manual-box-7-2">7.2 자동 탐지 표시와 함께 작업하기</h3>
+      <p>권장 순서: <strong>탐지 실행 → 감사 목록에서 명백한 오탐을 정리하고 패턴 확인 → 실제 누락 항목에 수동 박스 추가 → 미리 보기를 페이지별로 빠르게 확인</strong>. 수동 표시와 자동 표시는 내보내기 때 동일하게 처리되며, 중요한 것은 <strong>확인 여부</strong>입니다.</p>
+
+      <h3 id="manual-box-7-3">7.3 키보드 단축키(미리 보기 및 표시)</h3>
+      <p>단일 파일 페이지가 로드되어 있을 때 주 창에 <code>PreviewKeyDown</code>이 등록됩니다. 아래 단축키는 문서가 열려 있고 앱이 <strong>작업 중이 아닐</strong> 때만 동작합니다. 도구 모음의 이전/다음 페이지 버튼과는 <strong>직접 연결되어 있지 않습니다</strong>.</p>
+      <table aria-label="키보드 단축키">
+        <thead>
+          <tr><th scope="col">키</th><th scope="col">동작</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Tab</code></td><td>다음 삭제 표시로 이동합니다.</td></tr>
+          <tr><td><code>Shift</code> + <code>Tab</code></td><td>이전 삭제 표시로 이동합니다.</td></tr>
+          <tr><td><code>←</code> <code>↑</code> <code>→</code> <code>↓</code></td><td>수정 키가 <strong>없을</strong> 때: <code>←</code><code>↑</code>는 이전 표시, <code>→</code><code>↓</code>는 다음 표시로 이동합니다. 수정 키가 <strong>눌린</strong> 상태에서는 <code>↑</code><code>↓</code>만 고정 간격으로 미리 보기를 스크롤하며, <code>←</code><code>→</code>는 이 분기에서 처리되지 않습니다.</td></tr>
+          <tr><td><code>Enter</code></td><td>수정 키가 없을 때: 선택한 표시의 확인 상태를 전환합니다.</td></tr>
+          <tr><td><code>Delete</code></td><td>수정 키가 없을 때: 선택한 표시를 제거합니다.</td></tr>
+          <tr><td><code>Page Up</code> / <code>Page Down</code></td><td>미리 보기 영역을 대략 한 화면 높이만큼 스크롤합니다.</td></tr>
+          <tr><td><code>Home</code> / <code>End</code></td><td>미리 보기의 맨 위 / 맨 아래로 이동합니다.</td></tr>
+        </tbody>
+      </table>
+    
+
+    
+      <h2><span class="num">8</span>내보내기</h2>
+
+      <h3 id="export-8-1">8.1 내보내기 전 점검 목록</h3>
+      <ul class="checklist">
+        <li>이 파일이 <strong>실제로 제공하려는 파일</strong>인지 확인합니다(페이지 수, 첨부 페이지 등).</li>
+        <li>삭제해야 하는 모든 항목이 <strong>확인</strong>되었고, 남겨야 하는 항목은 확인 해제 또는 목록에서 제거되었습니다.</li>
+        <li>스캔 페이지나 특수 영역을 포함해 주요 페이지를 미리 보기에서 눈으로 확인했습니다.</li>
+        <li>내보내기는 일반적으로 원본을 덮어쓰지 않고 <strong>새 파일</strong>(또는 선택한 경로)을 만든다는 점을 이해했습니다. 실제 동작은 저장 대화상자를 따릅니다.</li>
+      </ul>
+
+      <h3 id="export-8-2">8.2 메타데이터 제거가 필요한 이유</h3>
+      <p>PDF에는 본문 외에도 작성자, 생성 프로그램, 타임스탬프, XMP 등 다양한 메타데이터가 포함될 수 있습니다. 본문만 삭제하고 메타데이터를 남기면 내부 계정이나 편집 이력이 노출될 수 있습니다. 이 앱은 내보내기 때(일괄 처리에서도 선택적으로) 이러한 정보를 정리할 수 있습니다. 외부로 나가는 문서라면 UI에서 제공될 때 <strong>메타데이터 정리 옵션을 켜 두는</strong> 것이 보통 좋습니다.</p>
+
+      <h3 id="export-8-3">8.3 요약 확인 방법</h3>
+      <ul>
+        <li><strong>물리적으로 제거된 항목 수</strong>가 예상과 맞아 보이나요?</li>
+        <li><strong>메타데이터가 정리되었다</strong>는 안내가 있나요?</li>
+        <li><strong>텍스트 검증 경고</strong>가 보이면 자동 샘플링에서 의심 지점을 찾은 것입니다. 내보낸 PDF를 열어 확인하세요. 요약만으로 잔여 내용이 전혀 없다고 단정하지 마세요.</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">9</span>일괄 처리</h2>
+
+      <h3 id="batch-9-1">9.1 일괄 모드가 실제로 하는 일</h3>
+      <p>기준을 가지고 <strong>여러 파일에 적용</strong>으로 들어가면, 대기열의 각 PDF는 <strong>위치 적용 전용</strong> 경로를 따릅니다. 정규화된 사각형이 각 페이지의 절대 좌표로 변환되고, 표시가 생성되며, 콘텐츠가 물리적으로 제거되고, 선택적으로 메타데이터가 정리됩니다. 파일마다 규칙 탐지를 다시 실행하지는 <strong>않습니다</strong>.</p>
+      <div class="note">즉, 단일 파일 모드에서 사용한 규칙은 샘플에서 항목을 <strong>찾고</strong> <strong>확인</strong>하는 데 도움을 준 것입니다. 일괄 처리는 같은 기하 구조를 가진 다른 파일에 <strong>확인한 위치</strong>를 복사할 뿐입니다.</div>
+
+      <h3 id="batch-9-2">9.2 적합한 사용 사례</h3>
+      <ul>
+        <li>같은 시스템에서 나온 많은 PDF가 <strong>같은 레이아웃</strong>이고 민감 영역이 <strong>같은 상대 위치</strong>에 있는 경우.</li>
+        <li><strong>하나의 예시 파일</strong>에서 탐지와 확인을 마쳤고, 거의 동일한 복사본들에서 같은 작업을 반복하고 싶지 않은 경우.</li>
+      </ul>
+
+      <h3 id="batch-9-3">9.3 주의할 점</h3>
+      <ul>
+        <li><strong>저장되는 템플릿 파일 없음</strong>: 일괄 창을 닫으면 메모리상의 기준도 사라집니다. 다음번에는 <strong>여러 파일에 적용</strong>에서 다시 기준을 만들어야 합니다.</li>
+        <li>그 경로 없이 도구 모음에서 <strong>일괄</strong>을 바로 열면 기준이 없을 수 있으며, <strong>시작</strong> 버튼이 비활성 상태로 남을 수 있습니다.</li>
+        <li>작은 레이아웃 차이도 누락이나 잘못된 영역 삭제로 이어질 수 있습니다. 첫 결과는 <strong>표본 확인</strong>하세요.</li>
+        <li>외부 공유용이라면 제공되는 경우 <strong>속성 및 숨겨진 데이터 지우기</strong>를 켜는 것이 좋습니다.</li>
+        <li>일부 문서 유형이나 라이선스 등급에서는 일괄 처리가 제한될 수 있습니다. <strong>여러 파일에 적용</strong>이 비활성화되어 있다면 그 신호입니다.</li>
+      </ul>
+    
+
+    
+      <h2><span class="num">10</span>자주 묻는 질문</h2>
+
+      <h3 id="faq-false-positives">10.1 오탐이 많은 이유는 무엇인가요?</h3>
+      <p>규칙 매칭은 휴리스틱에 의존합니다. <strong>민감해 보이는</strong> 문자열, 사람 이름과 겹치는 지명, 표의 숫자 조각 등이 표시될 수 있습니다. 시나리오/규칙 조정, 잡음이 많은 규칙 끄기, 목록에서 확인 해제를 통해 보통 제어할 수 있습니다. 수동 확인은 의도된 설계로, 필요한 내용을 한 번의 클릭으로 삭제할 가능성을 낮춥니다.</p>
+
+      <h3 id="faq-scanned-pdf">10.2 스캔 PDF는 어떻게 하나요?</h3>
+      <p>PDF가 실제로는 텍스트 레이어가 없는 페이지 이미지라면 규칙 탐지가 활용할 정보가 줄어듭니다. 이 경우 <strong>수동 박스</strong>나 해당 버전에서 제공하는 래스터 전용 흐름에 더 의존하게 됩니다(화면 안내를 따르세요). 처음부터 전자 PDF인지 스캔인지 확인해 두면 좋습니다.</p>
+
+      <h3 id="faq-image-no-ocr">10.3 이미지를 삭제 처리할 수 있나요? 사진 속 텍스트가 인식되지 않는 이유는?</h3>
+      <p>가능합니다. 일반적인 이미지 형식도 문서처럼 열 수 있으며, 미리 보기, 표시, 내보내기 흐름은 그대로 사용합니다. 설치 파일 크기와 실행 비용을 합리적으로 유지하기 위해 현재 버전에는 <strong>OCR이 포함되어 있지 않습니다</strong>. 사진 속 텍스트는 선택 가능한 텍스트가 되지 않으므로 <strong>규칙 기반 탐지는 거의 적용되지 않습니다</strong>. 민감 영역은 <strong>박스를 그려</strong> 처리하세요(키보드 단축키로 표시 간 이동 가능). “인식 후 매칭”이 필요하다면 먼저 다른 곳에서 OCR을 수행하거나 텍스트 레이어가 있는 PDF를 제공하세요.</p>
+
+      <h3 id="faq-verify-export">10.4 내보낸 파일을 빠르게 확인하려면?</h3>
+      <ul>
+        <li>PDF 리더에서 <strong>전체 선택 / 복사</strong>와 <strong>검색</strong>을 사용해 알려진 민감 문자열을 찾아보세요.</li>
+        <li>머리글, 바닥글, 각주를 <strong>눈으로 확인</strong>하세요.</li>
+        <li>앱의 <strong>내보내기 검증 요약</strong>을 확인하세요. 경고가 있으면 해당 페이지부터 다시 보세요.</li>
+        <li>매우 중요한 경우에는 조직의 기존 절차(두 번째 도구, 출력물 검토 등)를 추가로 적용하세요.</li>
+      </ul>
+
+    <div class="footer-note">
+      © PlainBytes Studio · 문서는 제품 변화에 따라 업데이트됩니다. 설치된 버전이 최종 기준입니다.
+    </div>
+  </main>
+</div>
+
+<script>
+  // Highlight active TOC item on scroll
+  const sections = document.querySelectorAll('main h2[id], main h3[id], .step-card[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -75% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+<script>
+(function () {
+  var MANUAL = {
+    en: "en.html", zh: "zh-Hans.html", "zh-Hant": "zh-Hant.html",
+    ja: "ja.html", ko: "ko.html", de: "de.html", fr: "fr.html",
+    pt: "pt.html", it: "it.html", es: "es.html", nl: "nl.html", ru: "ru.html"
+  };
+  var STORE_WEB = "https://apps.microsoft.com/detail/9n2vlpn4wdk1";
+  var STORE_WIN = "ms-windows-store://pdp/?ProductId=9N2VLPN4WDK1";
+
+  var sel = document.getElementById("lang-select");
+  if (sel && sel.getAttribute("data-lang-nav") !== "1") {
+    sel.setAttribute("data-lang-nav", "1");
+    var current = document.documentElement.getAttribute("data-lang") || "en";
+    sel.value = current;
+    sel.addEventListener("change", function () {
+      var file = MANUAL[sel.value];
+      if (file && sel.value !== current) window.location.href = file;
+    });
+  }
+
+  document.querySelectorAll(".js-store-link").forEach(function (a) {
+    if (a.getAttribute("data-store-link") === "1") return;
+    a.setAttribute("data-store-link", "1");
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (/Windows/i.test(navigator.userAgent || "")) {
+        var link = document.createElement("a");
+        link.href = STORE_WIN;
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        window.open(STORE_WEB, "_blank", "noopener,noreferrer");
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+
