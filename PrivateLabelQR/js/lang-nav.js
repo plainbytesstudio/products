@@ -1,20 +1,25 @@
 /**
- * Private Label QR site language switcher (same pattern as PlainBytes Redactor).
+ * Private Label QR site language switcher.
  */
 (function () {
   var HOME_ROUTES = {
     en: "index.html",
-    zh: "zh/index.html",
-    de: "de/index.html",
-    fr: "fr/index.html",
-    ja: "ja/index.html",
+    zh: "zh-hans.html",
+    "zh-Hant": "zh-hant.html",
+    de: "de.html",
+    fr: "fr.html",
+    ja: "ja.html",
+    kr: "kr.html",
+    it: "it.html",
+    es: "es.html",
+    pt: "pt.html",
+    nl: "nl.html",
+    ru: "ru.html",
   };
 
   function assetBase() {
     var fromAttr = document.documentElement.getAttribute("data-base");
     if (fromAttr !== null) return fromAttr;
-    var path = window.location.pathname.replace(/\\/g, "/");
-    if (/\/(zh|de|fr|ja)\//i.test(path)) return "../";
     return "";
   }
 
@@ -40,7 +45,7 @@
     sel.setAttribute("data-lang-nav", "1");
 
     var current = currentLang();
-    sel.value = current;
+    if (HOME_ROUTES[current]) sel.value = current;
 
     sel.addEventListener("change", function () {
       var lang = sel.value;
