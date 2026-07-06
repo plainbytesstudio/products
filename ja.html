@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" data-lang="en" data-base="">
+<html lang="ja" data-lang="ja" data-base="">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Private Label QR – Excel to QR & Barcode Label Generator (Offline)</title>
-  <meta name="description" content="Turn Excel spreadsheets into print-ready QR code and barcode labels. 100% offline, no account, no subscription." />
+  <title>Private Label QR – Excel から QR・バーコードラベルを生成（オフライン）</title>
+  <meta name="description" content="Excel 表を印刷可能な QR コード・バーコードラベルに変換。100% オフライン、アカウント不要、サブスクなし。" />
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     :root {
@@ -30,7 +30,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
       font-size: 13px;
       color: var(--text);
       background: #fff;
@@ -335,8 +335,7 @@
       font-size: 11px;
       font-weight: 500;
       color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.04em;
       margin-bottom: 10px;
     }
 
@@ -823,11 +822,11 @@
           Private Label QR
         </a>
         <div class="nav-links">
-          <a href="#features" class="nav-text">Features</a>
-          <a href="#how-it-works" class="nav-text">How it works</a>
+          <a href="#features" class="nav-text">機能</a>
+          <a href="#how-it-works" class="nav-text">使い方</a>
           <a href="https://github.com/plainbytesstudio/PrivateLabelQR" class="nav-text">GitHub</a>
-          <label class="visually-hidden" for="lang-select">Language</label>
-          <select id="lang-select" class="lang-select" aria-label="Language">
+          <label class="visually-hidden" for="lang-select">言語</label>
+          <select id="lang-select" class="lang-select" aria-label="言語">
             <option value="en">English</option>
             <option value="zh">简体中文</option>
             <option value="zh-Hant">繁體中文</option>
@@ -841,88 +840,88 @@
             <option value="nl">Nederlands</option>
             <option value="ru">Русский</option>
           </select>
-          <a href="https://apps.microsoft.com/detail/9P5H2N9LGQMJ" class="nav-cta">Get on Microsoft Store</a>
+          <a href="https://apps.microsoft.com/detail/9P5H2N9LGQMJ" class="nav-cta">Microsoft Store</a>
         </div>
       </div>
     </nav>
 
     <section class="hero">
       <div class="inner">
-        <div class="hero-badge">100% offline · No subscription · Windows native</div>
-        <h1>Generate <span>1000+ QR &amp; Barcode</span> labels from Excel in seconds.</h1>
-        <p>Stop generating codes one by one. Drag in your spreadsheet, pick a template, print. Your data never leaves your computer.</p>
+        <div class="hero-badge">100% オフライン · サブスクなし · Windows ネイティブ</div>
+        <h1>Excel から <span>1000+ QR・バーコード</span> ラベルを数秒で生成</h1>
+        <p>1 件ずつ作る必要はありません。表をドラッグ、テンプレート選択、印刷。データは PC から出ません。</p>
         <div class="hero-btns">
-          <a href="https://apps.microsoft.com/detail/9P5H2N9LGQMJ" class="btn-primary">Get on Microsoft Store</a>
+          <a href="https://apps.microsoft.com/detail/9P5H2N9LGQMJ" class="btn-primary">Microsoft Store</a>
           <a href="#" class="btn-secondary js-video-modal" data-youtube-id="nNemAF6-I3o">
             <span class="btn__play" aria-hidden="true">▷</span>
-            <span>Watch Demo</span>
+            <span>デモを見る</span>
           </a>
         </div>
-        <div class="hero-note">Free forever · No watermarks · No account required · 5 languages</div>
+        <div class="hero-note">永久無料 · 透かしなし · アカウント不要 · 5 言語</div>
       </div>
     </section>
 
     <div class="trust">
       <div class="inner">
-        <div class="trust-item"><div class="trust-dot"></div>Runs fully offline — GDPR safe</div>
-        <div class="trust-item"><div class="trust-dot"></div>VirusTotal 0 / 65 detections</div>
-        <div class="trust-item"><div class="trust-dot"></div>No cloud, no account, no tracking</div>
-        <div class="trust-item"><div class="trust-dot"></div>QR codes never expire</div>
+        <div class="trust-item"><div class="trust-dot"></div>完全オフライン — GDPR 対応</div>
+        <div class="trust-item"><div class="trust-dot"></div>VirusTotal 0 / 65 検出</div>
+        <div class="trust-item"><div class="trust-dot"></div>クラウドなし・アカウントなし・追跡なし</div>
+        <div class="trust-item"><div class="trust-dot"></div>QR コードは期限切れなし</div>
       </div>
     </div>
 
     <section class="section">
       <div class="inner">
-        <div class="section-label">See it in action</div>
-        <h2>From spreadsheet to printed labels</h2>
-        <p class="section-sub">A clean, focused interface. Import your Excel file, choose an Avery template, preview in real time, export or print.</p>
+        <div class="section-label">デモ</div>
+        <h2>表から印刷ラベルへ</h2>
+        <p class="section-sub">シンプルで集中した UI。Excel インポート、Avery テンプレート、リアルタイムプレビュー、出力または印刷。</p>
         <div class="screens">
           <div class="screen-card">
-            <img src="assets/en/screenshot-1.jpg" alt="Single Mode — live QR and barcode preview" />
-            <div class="screen-caption">Single Mode — live preview with color customization</div>
+            <img src="assets/ja/screenshot-1.jpg" alt="単体モード — QR・バーコードのライブプレビュー" />
+            <div class="screen-caption">単体モード — 色カスタマイズ付きライブプレビュー</div>
           </div>
           <div class="screen-card">
-            <img src="assets/en/screenshot-2.jpg" alt="Bulk Mode — import Excel, export label PDF" />
-            <div class="screen-caption">Bulk Mode — Excel import and label PDF export</div>
+            <img src="assets/ja/screenshot-2.jpg" alt="一括モード — Excel インポートとラベル PDF" />
+            <div class="screen-caption">一括モード — Excel インポートとラベル PDF 出力</div>
           </div>
         </div>
       </div>
     </section>
     <section class="section" id="features">
       <div class="inner">
-        <div class="section-label">Everything you need</div>
-        <h2>No bloat. No learning curve.</h2>
-        <p class="section-sub">Just the features labelling professionals actually use.</p>
+        <div class="section-label">必要な機能</div>
+        <h2>余計なものなし。学習不要。</h2>
+        <p class="section-sub">ラベル作業のプロが実際に使う機能だけ。</p>
         <div class="features-grid">
           <div class="feat">
             <div class="feat-icon"><svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="11" width="2" height="2" rx="0.5"/></svg></div>
-            <h4>QR codes, barcodes &amp; sequences</h4>
-            <p>QR Code, Code 128, EAN-13 supported. Built-in sequence generator for asset tags — no spreadsheet needed.</p>
+            <h4>QR・バーコード・連番</h4>
+            <p>QR Code、Code 128、EAN-13。資産タグ用の連番生成内蔵 — 表不要。</p>
           </div>
           <div class="feat">
             <div class="feat-icon"><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="9" x2="9" y2="9"/></svg></div>
-            <h4>Avery template library</h4>
-            <p>5160, 5163, L7160, thermal 2"×1" and more — or define your own physical dimensions down to the millimetre.</p>
+            <h4>Avery テンプレート</h4>
+            <p>5160、5163、L7160、感熱 2"×1" など — ミリ単位のカスタムサイズも可。</p>
           </div>
           <div class="feat">
             <div class="feat-icon"><svg viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="8" rx="1"/><line x1="5" y1="7" x2="11" y2="7"/><line x1="5" y1="10" x2="8" y2="10"/></svg></div>
-            <h4>Bulk Excel &amp; CSV import</h4>
-            <p>Drop a spreadsheet and convert thousands of rows to codes instantly. Columns auto-detected with mapping.</p>
+            <h4>Excel・CSV 一括インポート</h4>
+            <p>表をドロップして数千行を即コード化。列の自動検出とマッピング。</p>
           </div>
           <div class="feat">
             <div class="feat-icon"><svg viewBox="0 0 16 16"><circle cx="8" cy="7" r="3"/><path d="M5 13 Q8 10 11 13"/></svg></div>
-            <h4>Logo embedding with auto-ECC</h4>
-            <p>Insert your brand logo at the centre — smart error correction keeps codes scannable.</p>
+            <h4>ロゴ埋め込みと自動 ECC</h4>
+            <p>中央にブランドロゴ — スマート誤り訂正でスキャン可能。</p>
           </div>
           <div class="feat">
             <div class="feat-icon"><svg viewBox="0 0 16 16"><polyline points="3,5 8,2 13,5 13,11 8,14 3,11"/><line x1="8" y1="2" x2="8" y2="14"/></svg></div>
-            <h4>Print PDF &amp; batch image export</h4>
-            <p>Vector PDF for print, or PNG/JPG/SVG/EPS at custom resolution per item.</p>
+            <h4>印刷 PDF と一括画像出力</h4>
+            <p>ベクター PDF 印刷、または PNG/JPG/SVG/EPS を項目ごとに解像度指定。</p>
           </div>
           <div class="feat">
             <div class="feat-icon"><svg viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" rx="1"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg></div>
-            <h4>WYSIWYG live preview</h4>
-            <p>1:1 paper simulation with die-cut lines — what you see is exactly what prints. Custom foreground &amp; background colors.</p>
+            <h4>WYSIWYG ライブプレビュー</h4>
+            <p>1:1 用紙シミュレーション — 見たまま印刷。前景色・背景色のカスタム。</p>
           </div>
         </div>
       </div>
@@ -930,56 +929,40 @@
 
     <section class="section" id="how-it-works">
       <div class="inner">
-        <div class="section-label">How it works</div>
-        <h2>Four steps, no learning curve</h2>
-        <p class="section-sub" style="margin-bottom:28px">From spreadsheet to printed labels in under a minute.</p>
+        <div class="section-label">使い方</div>
+        <h2>4 ステップ、すぐ使える</h2>
+        <p class="section-sub" style="margin-bottom:28px">1 分以内に表から印刷ラベルへ。</p>
         <div class="steps">
-          <div class="step">
-            <div class="step-num">1</div>
-            <h4>Import</h4>
-            <p>Drag in your .xlsx or .csv — columns are auto-detected.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <h4>Generate</h4>
-            <p>Pick QR, Code 128, EAN-13, or use the built-in sequence generator.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <h4>Design</h4>
-            <p>Choose an Avery template, add your logo, adjust text position.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">4</div>
-            <h4>Export or print</h4>
-            <p>Pixel-perfect PDF for print, or PNG/SVG/EPS batch export.</p>
-          </div>
+          <div class="step"><div class="step-num">1</div><h4>インポート</h4><p>.xlsx または .csv をドラッグ — 列を自動検出。</p></div>
+          <div class="step"><div class="step-num">2</div><h4>生成</h4><p>QR、Code 128、EAN-13、または連番生成。</p></div>
+          <div class="step"><div class="step-num">3</div><h4>デザイン</h4><p>Avery テンプレート、ロゴ、文字位置。</p></div>
+          <div class="step"><div class="step-num">4</div><h4>出力または印刷</h4><p>高精細 PDF または PNG/SVG/EPS 一括出力。</p></div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="inner">
-        <div class="section-label">Why Private Label QR</div>
-        <h2>Compared to what you're probably using now</h2>
-        <p class="section-sub" style="margin-bottom:20px">No subscriptions. No data leaving your machine. No per-scan limits.</p>
+        <div class="section-label">Private Label QR を選ぶ理由</div>
+        <h2>今お使いのツールとの比較</h2>
+        <p class="section-sub" style="margin-bottom:20px">サブスクなし。データは PC 外に出ません。スキャン回数制限なし。</p>
         <table class="cmp">
           <thead>
             <tr>
-              <th>Feature</th>
-              <th>Online QR tools</th>
-              <th>Label software</th>
+              <th>機能</th>
+              <th>オンライン QR ツール</th>
+              <th>ラベルソフト</th>
               <th class="hl">Private Label QR</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Offline / private</td><td><span class="crs">✗</span></td><td><span class="crs">✗</span></td><td class="hl"><span class="chk">✓</span></td></tr>
-            <tr><td>Free, no subscription</td><td><span class="crs">✗</span></td><td><span class="crs">✗</span></td><td class="hl"><span class="chk">✓</span></td></tr>
-            <tr><td>Excel bulk import</td><td><span class="crs">✗</span></td><td>Partial</td><td class="hl"><span class="chk">✓</span></td></tr>
-            <tr><td>Avery templates</td><td><span class="crs">✗</span></td><td><span class="chk">✓</span></td><td class="hl"><span class="chk">✓</span></td></tr>
-            <tr><td>QR + barcode + sequence</td><td>QR only</td><td><span class="crs">✗</span></td><td class="hl"><span class="chk">✓</span></td></tr>
-            <tr><td>Multi-language UI</td><td>English only</td><td>Varies</td><td class="hl">5 languages</td></tr>
-            <tr><td>Distribution</td><td>Browser only</td><td>Installer</td><td class="hl">Store &amp; portable ZIP</td></tr>
+            <tr><td>オフライン / プライバシー</td><td><span class="crs">✗</span></td><td><span class="crs">✗</span></td><td class="hl"><span class="chk">✓</span></td></tr>
+            <tr><td>無料・サブスクなし</td><td><span class="crs">✗</span></td><td><span class="crs">✗</span></td><td class="hl"><span class="chk">✓</span></td></tr>
+            <tr><td>Excel 一括インポート</td><td><span class="crs">✗</span></td><td>一部</td><td class="hl"><span class="chk">✓</span></td></tr>
+            <tr><td>Avery テンプレート</td><td><span class="crs">✗</span></td><td><span class="chk">✓</span></td><td class="hl"><span class="chk">✓</span></td></tr>
+            <tr><td>QR + バーコード + 連番</td><td>QR のみ</td><td><span class="crs">✗</span></td><td class="hl"><span class="chk">✓</span></td></tr>
+            <tr><td>多言語 UI</td><td>英語のみ</td><td>製品による</td><td class="hl">5 言語</td></tr>
+            <tr><td>配布</td><td>ブラウザのみ</td><td>インストーラ</td><td class="hl">Store とポータブル ZIP</td></tr>
           </tbody>
         </table>
       </div>
@@ -987,30 +970,15 @@
 
     <section class="section">
       <div class="inner">
-        <div class="section-label">Use cases</div>
-        <h2>Built for people who label things every day</h2>
-        <p class="section-sub">One tool covers warehouse, IT, retail, and small business labelling.</p>
+        <div class="section-label">利用シーン</div>
+        <h2>毎日ラベルを作る人のために</h2>
+        <p class="section-sub">倉庫、IT、小売、中小企業 — 1 つのツールで。</p>
         <div class="use-grid">
-          <div class="use-card">
-            <h4>Warehouse</h4>
-            <p>Shelf labels &amp; bin codes</p>
-          </div>
-          <div class="use-card">
-            <h4>IT &amp; assets</h4>
-            <p>Equipment tags &amp; serial numbers</p>
-          </div>
-          <div class="use-card">
-            <h4>Retail</h4>
-            <p>Product barcodes from spreadsheets</p>
-          </div>
-          <div class="use-card">
-            <h4>Small business</h4>
-            <p>Menus, packaging, event tickets</p>
-          </div>
-          <div class="use-card">
-            <h4>Operations</h4>
-            <p>Bulk asset tags from CMDB exports</p>
-          </div>
+          <div class="use-card"><h4>倉庫</h4><p>棚ラベル・ビンコード</p></div>
+          <div class="use-card"><h4>IT・資産</h4><p>機器タグ・シリアル番号</p></div>
+          <div class="use-card"><h4>小売</h4><p>表から商品バーコード</p></div>
+          <div class="use-card"><h4>中小企業</h4><p>メニュー、包装、イベント券</p></div>
+          <div class="use-card"><h4>運用</h4><p>CMDB から資産タグ一括</p></div>
         </div>
       </div>
     </section>
@@ -1018,10 +986,10 @@
     <footer class="footer">
       <div class="inner">
         <div class="footer-logo">
-          Support & feedback — <a href="https://github.com/plainbytesstudio/PrivateLabelQR" target="_blank">GitHub</a> · <a href="mailto:plainbytes.studio@gmail.com">plainbytes.studio@gmail.com</a>
+          サポート — <a href="https://github.com/plainbytesstudio/PrivateLabelQR" target="_blank">GitHub</a> · <a href="mailto:plainbytes.studio@gmail.com">plainbytes.studio@gmail.com</a>
         </div>
         <div class="footer-links">
-          <a href="PRIVACY.md">Privacy Policy</a> · © 2026 PlainBytes Studio
+          <a href="PRIVACY.md">プライバシーポリシー</a> · © 2026 PlainBytes Studio
         </div>
       </div>
     </footer>
