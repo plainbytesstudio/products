@@ -4,6 +4,14 @@
  */
 const fs = require("fs");
 const path = require("path");
+const { youtubeIdForManual } = require(path.join(
+  __dirname,
+  "..",
+  "..",
+  "website",
+  "scripts",
+  "youtube-videos.js"
+));
 
 const MANUAL_DIR = path.join(__dirname, "..");
 const SHELL_PATH = path.join(MANUAL_DIR, "en.html");
@@ -273,19 +281,18 @@ function buildToc(oldHtml) {
   return out;
 }
 
-function videoCard(locale, caption) {
+function videoCard(manualFile, caption) {
+  const youtubeId = youtubeIdForManual(manualFile);
+  const label = caption.replace(/"/g, "&quot;");
   return `<div class="video-card">
-      <div class="video-frame">
-        <div class="play-btn" onclick="document.getElementById('qsVideo').play(); this.style.display='none'"></div>
-        <video id="qsVideo" controls style="position:absolute;inset:0;width:100%;height:100%;display:none" onplay="this.style.display='block'; this.previousElementSibling.style.display='none'">
-          <source src="videos/${locale}/quickstart.mp4" type="video/mp4" />
-        </video>
-      </div>
+      <button type="button" class="video-frame js-video-modal" data-youtube-id="${youtubeId}" aria-label="${label}">
+        <span class="play-btn" aria-hidden="true"></span>
+      </button>
       <div class="video-caption">${caption}</div>
     </div>`;
 }
 
-function transformContent(raw, meta) {
+function transformContent(raw, meta, manualFile) {
   let content = raw;
   content = content.replace(/<h1>[\s\S]*?<\/h1>\s*/i, "");
   content = content.replace(/<p class="sub">[\s\S]*?<\/p>\s*/i, "");
@@ -295,7 +302,7 @@ function transformContent(raw, meta) {
   content = content.replace(/table class="compare"/g, "table");
   content = content.replace(
     /<figure class="doc-screenshot doc-video"[\s\S]*?<\/figure>/,
-    videoCard(meta.videoLocale, meta.videoCaption)
+    videoCard(manualFile, meta.videoCaption)
   );
   content = content.replace(/<footer>[\s\S]*?<\/footer>\s*/i, "");
   content = content.trim();
@@ -303,10 +310,10 @@ function transformContent(raw, meta) {
   return content;
 }
 
-function extractMain(oldHtml, meta) {
+function extractMain(oldHtml, meta, manualFile) {
   const m = oldHtml.match(/<div class="doc-main">([\s\S]*?)<\/div>\s*<\/div>\s*<script>/);
   if (!m) throw new Error("Could not find doc-main");
-  return transformContent(m[1], meta);
+  return transformContent(m[1], meta, manualFile);
 }
 
 function buildPage(fileName, meta, oldHtml, shell) {
@@ -399,7 +406,7 @@ ${css}
   </aside>
 
   <main class="content">
-${extractMain(oldHtml, meta)}
+${extractMain(oldHtml, meta, fileName)}
   </main>
 </div>
 

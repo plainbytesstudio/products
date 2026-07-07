@@ -176,7 +176,7 @@
   .content a{color:var(--red-dk);text-decoration:underline;text-decoration-color:var(--rule);text-underline-offset:2px}
   .content a:hover{text-decoration-color:var(--red-dk)}
 
-  /* Quick start video card */
+  /* Quick start video (YouTube — same as website home) */
   .video-card{
     background:var(--bg-dark);border-radius:14px;overflow:hidden;
     margin:1.5rem 0 2.5rem;
@@ -184,14 +184,15 @@
   .video-frame{
     aspect-ratio:16/9;background:linear-gradient(135deg,#241a14 0%,#1a1410 100%);
     display:flex;align-items:center;justify-content:center;position:relative;
+    width:100%;border:0;padding:0;cursor:pointer;font:inherit;
   }
+  .video-frame:hover .play-btn{transform:scale(1.06)}
   .play-btn{
     width:64px;height:64px;border-radius:50%;background:var(--red);
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 8px 24px rgba(179,54,43,.4);
-    transition:transform .2s;cursor:pointer;
+    transition:transform .2s;pointer-events:none;
   }
-  .play-btn:hover{transform:scale(1.06)}
   .play-btn::after{
     content:'';width:0;height:0;
     border-style:solid;border-width:9px 0 9px 15px;
@@ -199,6 +200,42 @@
     margin-left:3px;
   }
   .video-caption{padding:1rem 1.25rem;color:rgba(255,255,255,.55);font-size:.82rem}
+
+  body.video-modal-open{overflow:hidden}
+  .video-modal{
+    position:fixed;inset:0;z-index:2100;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .video-modal[hidden]{display:none}
+  .video-modal__backdrop{
+    position:absolute;inset:0;
+    background:rgba(15,15,15,.9);cursor:pointer;
+  }
+  .video-modal__dialog{
+    position:relative;z-index:1;
+    width:70vw;max-width:70vw;padding:16px;box-sizing:border-box;
+  }
+  .video-modal__caption{
+    margin:14px 0 0;text-align:center;
+    font-size:.9375rem;font-weight:500;color:#e8e6e0;
+  }
+  .video-modal__frame-wrap{
+    position:relative;width:100%;aspect-ratio:16/9;
+    background:#000;border-radius:10px;overflow:hidden;
+    box-shadow:0 24px 64px rgba(0,0,0,.5);
+  }
+  .video-modal__iframe{
+    position:absolute;inset:0;width:100%;height:100%;border:0;
+  }
+  .modal-close{
+    position:absolute;top:16px;right:16px;z-index:3;
+    width:40px;height:40px;padding:0;
+    border:.5px solid rgba(255,255,255,.28);border-radius:50%;
+    background:rgba(255,255,255,.1);color:#f5f4f0;
+    font-size:1.625rem;line-height:1;cursor:pointer;
+    transition:background .15s ease;
+  }
+  .modal-close:hover{background:rgba(255,255,255,.18)}
 
   /* Table */
   .content table{
@@ -493,12 +530,9 @@
       <p>以下の動画で、最初から最後までの一連の流れ（自動検出と必要に応じた手動での補足）を示します。</p>
       <!-- [Insert video] -->
       <div class="video-card">
-      <div class="video-frame">
-        <div class="play-btn" onclick="document.getElementById('qsVideo').play(); this.style.display='none'"></div>
-        <video id="qsVideo" controls style="position:absolute;inset:0;width:100%;height:100%;display:none" onplay="this.style.display='block'; this.previousElementSibling.style.display='none'">
-          <source src="videos/ja/quickstart.mp4" type="video/mp4" />
-        </video>
-      </div>
+      <button type="button" class="video-frame js-video-modal" data-youtube-id="GwghZxxnJX4" aria-label="ワークフロー全体のデモ · 2 分">
+        <span class="play-btn" aria-hidden="true"></span>
+      </button>
       <div class="video-caption">ワークフロー全体のデモ · 2 分</div>
     </div>
     
@@ -866,6 +900,98 @@
   });
 })();
 </script>
+<script>
+(function () {
+  var triggers = document.querySelectorAll(".js-video-modal");
+  if (!triggers.length) return;
 
+  var open = false;
+  var root = document.createElement("div");
+  root.className = "video-modal";
+  root.hidden = true;
+  root.setAttribute("role", "dialog");
+  root.setAttribute("aria-modal", "true");
+  root.setAttribute("aria-label", "Product demo video");
+  root.innerHTML =
+    '<div class="video-modal__backdrop" data-video-modal-close></div>' +
+    '<button type="button" class="modal-close video-modal__close" aria-label="Close">&times;</button>' +
+    '<div class="video-modal__dialog">' +
+    '  <div class="video-modal__frame-wrap">' +
+    '    <iframe class="video-modal__iframe" title="PlainBytes Redactor demo" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>' +
+    "  </div>" +
+    '  <p class="video-modal__caption"></p>' +
+    "</div>";
+  document.body.appendChild(root);
+
+  var iframe = root.querySelector(".video-modal__iframe");
+  var caption = root.querySelector(".video-modal__caption");
+  var btnClose = root.querySelector(".video-modal__close");
+  var dialog = root.querySelector(".video-modal__dialog");
+  var frameWrap = root.querySelector(".video-modal__frame-wrap");
+
+  function embedUrl(videoId) {
+    var origin = window.location.origin;
+    if (!origin || origin === "null") {
+      origin = window.location.protocol + "//" + window.location.host;
+    }
+    return (
+      "https://www.youtube-nocookie.com/embed/" +
+      encodeURIComponent(videoId) +
+      "?rel=0&autoplay=1&origin=" +
+      encodeURIComponent(origin)
+    );
+  }
+
+  function openModal(videoId, title) {
+    if (!videoId) return;
+    iframe.src = embedUrl(videoId);
+    caption.textContent = title || "";
+    root.hidden = false;
+    open = true;
+    document.body.classList.add("video-modal-open");
+    btnClose.focus();
+  }
+
+  function closeModal() {
+    root.hidden = true;
+    open = false;
+    document.body.classList.remove("video-modal-open");
+    iframe.src = "";
+    caption.textContent = "";
+  }
+
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener("click", function () {
+      var videoId = trigger.getAttribute("data-youtube-id");
+      var title =
+        trigger.getAttribute("aria-label") ||
+        (trigger.nextElementSibling &&
+          trigger.nextElementSibling.classList.contains("video-caption")
+          ? trigger.nextElementSibling.textContent.trim()
+          : "");
+      openModal(videoId, title);
+    });
+  });
+
+  btnClose.addEventListener("click", function (e) {
+    e.stopPropagation();
+    closeModal();
+  });
+  root.querySelector(".video-modal__backdrop").addEventListener("click", closeModal);
+  dialog.addEventListener("click", function (e) {
+    if (e.target === dialog || e.target === caption) closeModal();
+  });
+  frameWrap.addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (!open) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
+      closeModal();
+    }
+  });
+})();
+</script>
 </body>
 
