@@ -65,6 +65,9 @@ const VIDEO_CSS = `  /* Quick start video (YouTube — same as website home) */
   .video-modal__iframe{
     position:absolute;inset:0;width:100%;height:100%;border:0;
   }
+  .video-modal__iframe iframe{
+    width:100%;height:100%;border:0;
+  }
   .modal-close{
     position:absolute;top:16px;right:16px;z-index:3;
     width:40px;height:40px;padding:0;
