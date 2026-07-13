@@ -1,43 +1,64 @@
-﻿<!DOCTYPE html>
-<html lang="zh-Hant">
+<!DOCTYPE html>
+<!-- Template: copy to {locale}.html and translate title + body -->
+<html lang="zh-Hant" data-lang="zh-Hant" data-base="../" data-page="release-notes">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>版本更新 — PlainBytes Redactor</title>
 <meta name="description" content="PlainBytes Redactor 目前版本更新說明。" />
 <link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
-<style>
-  :root{--bg:#faf8f5;--ink:#1c1a17;--muted:#5c5650;--rule:#e8e3dc;--accent:#9a0413;--card:#fff;--sans:'DM Sans',system-ui,sans-serif;--maxw:720px}
-  *{box-sizing:border-box}
-  body{margin:0;padding:64px 24px 48px;font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7}
-  .wrap{max-width:var(--maxw);margin:0 auto}
-  .top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
-  .brand{font-weight:600;color:var(--accent);text-decoration:none}
-  .nav a{color:var(--muted);text-decoration:none;font-size:.875rem;margin-left:16px}
-  .nav a:hover{color:var(--accent)}
-  h1{font-size:1.75rem;margin:0 0 8px;line-height:1.25}
-  .ver{color:var(--muted);font-size:.9375rem;margin-bottom:28px}
-  .card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:24px 28px;margin-bottom:20px}
-  h2{font-size:1.125rem;margin:0 0 12px}
-  ul{margin:0;padding-left:1.25rem}
-  li{margin:.35rem 0}
-  .foot{margin-top:32px;font-size:.8125rem;color:var(--muted)}
-</style>
+<link rel="stylesheet" href="../css/site.css" />
 </head>
-<body>
-<div class="wrap">
-  <div class="top">
-    <a class="brand" href="../PlainBytes.Redactor.html">PlainBytes Redactor</a>
-    <nav class="nav">
-      <a href="../manual/zh-Hant.html">使用說明</a>
-    </nav>
+<body class="site-light site-home">
+<header class="site-header site-header--on-dark">
+  <div class="container inner">
+    <a class="brand" href="../zh-hant/index.html">
+      <img
+        class="brand-logo"
+        src="../assets/Redactor_Logo.png"
+        alt=""
+        aria-hidden="true"
+        width="28"
+        height="28"
+      />
+      <span>PlainBytes Redactor</span>
+    </a>
+    <div class="header-actions">
+      <a class="site-nav-link" href="../zh-hant/index.html">首頁</a>
+      <a class="site-nav-link" href="../manual/zh-Hant.html">使用手冊</a>
+      <a class="site-nav-link site-nav-link--current" href="zh-Hant.html" aria-current="page">版本更新</a>
+          <label class="visually-hidden" for="lang-select">Language</label>
+          <select id="lang-select" class="lang-select" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="zh-Hant">繁體中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="pt">Português</option>
+            <option value="it">Italiano</option>
+            <option value="es">Español</option>
+            <option value="nl">Nederlands</option>
+            <option value="ru">Русский</option>
+          </select>
+      <a
+        class="btn btn-accent btn-accent--sm js-store-link"
+        href="https://apps.microsoft.com/detail/9n2vlpn4wdk1"
+        target="_blank"
+        rel="noopener noreferrer"
+        >在 Microsoft Store 取得</a
+      >
+    </div>
   </div>
-  <h1>版本更新</h1>
-  <p class="ver">版本 1.0.0</p>
-  <div class="card">
+</header>
+
+<main class="site-main release-notes-main">
+  <div class="container">
+    <div class="release-notes-inner">
+      <h1>版本更新</h1>
+  <p class="release-notes-ver">版本 1.0.0</p>
+  <div class="release-notes-card">
     <h2>主要能力</h2>
     <ul>
       <li><strong>物理脫敏</strong> — 從 PDF 內容流中刪除敏感資訊，而非僅視覺遮蓋。</li>
@@ -47,7 +68,7 @@
       <li><strong>多區域規則</strong> — 內建中、日、美、歐、俄等多國/地區識別規則。</li>
     </ul>
   </div>
-  <div class="card">
+  <div class="release-notes-card">
     <h2>改進與修復</h2>
     <ul>
       <li>優化日文「標籤：值」欄位（電話、My Number、URL 等）自動識別框精度。</li>
@@ -56,7 +77,12 @@
       <li>識別重掃與 UI 執行緒更新相關穩定性修復。</li>
     </ul>
   </div>
-  <p class="foot">© PlainBytes Studio · 本頁由應用狀態列開啟；脫敏處理仍在您的裝置上離線完成。</p>
-</div>
+  <p class="release-notes-foot">© PlainBytes Studio · 本頁由應用狀態列開啟；脫敏處理仍在您的裝置上離線完成。</p>
+
+    </div>
+  </div>
+</main>
+<script src="../js/lang-nav.js"></script>
+<script src="../js/store-link.js"></script>
 </body>
 </html>

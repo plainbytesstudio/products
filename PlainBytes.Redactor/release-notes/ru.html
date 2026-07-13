@@ -1,44 +1,64 @@
 <!DOCTYPE html>
 <!-- Template: copy to {locale}.html and translate title + body -->
-<html lang="en">
+<html lang="ru" data-lang="ru" data-base="../" data-page="release-notes">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Release notes — PlainBytes Redactor</title>
 <meta name="description" content="What's new in PlainBytes Redactor." />
 <link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
-<style>
-  :root{--bg:#faf8f5;--ink:#1c1a17;--muted:#5c5650;--rule:#e8e3dc;--accent:#9a0413;--card:#fff;--sans:'DM Sans',system-ui,sans-serif;--maxw:720px}
-  *{box-sizing:border-box}
-  body{margin:0;padding:64px 24px 48px;font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7}
-  .wrap{max-width:var(--maxw);margin:0 auto}
-  .top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
-  .brand{font-weight:600;color:var(--accent);text-decoration:none}
-  .nav a{color:var(--muted);text-decoration:none;font-size:.875rem;margin-left:16px}
-  .nav a:hover{color:var(--accent)}
-  h1{font-size:1.75rem;margin:0 0 8px;line-height:1.25}
-  .ver{color:var(--muted);font-size:.9375rem;margin-bottom:28px}
-  .card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:24px 28px;margin-bottom:20px}
-  h2{font-size:1.125rem;margin:0 0 12px}
-  ul{margin:0;padding-left:1.25rem}
-  li{margin:.35rem 0}
-  .foot{margin-top:32px;font-size:.8125rem;color:var(--muted)}
-</style>
+<link rel="stylesheet" href="../css/site.css" />
 </head>
-<body>
-<div class="wrap">
-  <div class="top">
-    <a class="brand" href="../PlainBytes.Redactor.html">PlainBytes Redactor</a>
-    <nav class="nav">
-      <a href="../manual/en.html">User guide</a>
-    </nav>
+<body class="site-light site-home">
+<header class="site-header site-header--on-dark">
+  <div class="container inner">
+    <a class="brand" href="../ru/index.html">
+      <img
+        class="brand-logo"
+        src="../assets/Redactor_Logo.png"
+        alt=""
+        aria-hidden="true"
+        width="28"
+        height="28"
+      />
+      <span>PlainBytes Redactor</span>
+    </a>
+    <div class="header-actions">
+      <a class="site-nav-link" href="../ru/index.html">Главная</a>
+      <a class="site-nav-link" href="../manual/ru.html">Руководство пользователя</a>
+      <a class="site-nav-link site-nav-link--current" href="ru.html" aria-current="page">Примечания к выпуску</a>
+          <label class="visually-hidden" for="lang-select">Language</label>
+          <select id="lang-select" class="lang-select" aria-label="Language">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="zh-Hant">繁體中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="pt">Português</option>
+            <option value="it">Italiano</option>
+            <option value="es">Español</option>
+            <option value="nl">Nederlands</option>
+            <option value="ru">Русский</option>
+          </select>
+      <a
+        class="btn btn-accent btn-accent--sm js-store-link"
+        href="https://apps.microsoft.com/detail/9n2vlpn4wdk1"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Получить в Microsoft Store</a
+      >
+    </div>
   </div>
-  <h1>Release notes</h1>
-  <p class="ver">Version 1.0.0</p>
-  <div class="card">
+</header>
+
+<main class="site-main release-notes-main">
+  <div class="container">
+    <div class="release-notes-inner">
+      <h1>Release notes</h1>
+  <p class="release-notes-ver">Version 1.0.0</p>
+  <div class="release-notes-card">
     <h2>Highlights</h2>
     <ul>
       <li><strong>Physical redaction</strong> — sensitive text is removed from PDF content streams, not just covered.</li>
@@ -48,7 +68,7 @@
       <li><strong>Multi-region rules</strong> — built-in patterns for CN, JP, US, EU, RU, and more.</li>
     </ul>
   </div>
-  <div class="card">
+  <div class="release-notes-card">
     <h2>Improvements &amp; fixes</h2>
     <ul>
       <li>More accurate auto-detection boxes for Japanese label-and-value fields (phone, My Number, URLs).</li>
@@ -57,7 +77,12 @@
       <li>Stability fixes for rescan and UI thread updates during recognition.</li>
     </ul>
   </div>
-  <p class="foot">© PlainBytes Studio · This page is opened from the app status bar; processing stays offline on your device.</p>
-</div>
+  <p class="release-notes-foot">© PlainBytes Studio · This page is opened from the app status bar; processing stays offline on your device.</p>
+
+    </div>
+  </div>
+</main>
+<script src="../js/lang-nav.js"></script>
+<script src="../js/store-link.js"></script>
 </body>
 </html>
