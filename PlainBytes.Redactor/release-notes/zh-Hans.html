@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>版本更新 — PlainBytes Redactor</title>
+<meta name="description" content="PlainBytes Redactor 当前版本更新说明。" />
+<link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+  :root{--bg:#faf8f5;--ink:#1c1a17;--muted:#5c5650;--rule:#e8e3dc;--accent:#9a0413;--card:#fff;--sans:'DM Sans',system-ui,sans-serif;--maxw:720px}
+  *{box-sizing:border-box}
+  body{margin:0;padding:64px 24px 48px;font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.7}
+  .wrap{max-width:var(--maxw);margin:0 auto}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+  .brand{font-weight:600;color:var(--accent);text-decoration:none}
+  .nav a{color:var(--muted);text-decoration:none;font-size:.875rem;margin-left:16px}
+  .nav a:hover{color:var(--accent)}
+  h1{font-size:1.75rem;margin:0 0 8px;line-height:1.25}
+  .ver{color:var(--muted);font-size:.9375rem;margin-bottom:28px}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+  h2{font-size:1.125rem;margin:0 0 12px}
+  ul{margin:0;padding-left:1.25rem}
+  li{margin:.35rem 0}
+  .foot{margin-top:32px;font-size:.8125rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="../PlainBytes.Redactor.html">PlainBytes Redactor</a>
+    <nav class="nav">
+      <a href="../manual/zh-Hans.html">使用帮助</a>
+    </nav>
+  </div>
+  <h1>版本更新</h1>
+  <p class="ver">版本 1.0.0</p>
+  <div class="card">
+    <h2>主要能力</h2>
+    <ul>
+      <li><strong>物理脱敏</strong> — 从 PDF 内容流中删除敏感信息，而非仅视觉遮盖。</li>
+      <li><strong>100% 离线</strong> — 规则扫描、可选本地 AI 与导出均在本机完成。</li>
+      <li><strong>审计复核</strong> — 逐条确认、手动补框后再导出。</li>
+      <li><strong>批量套打</strong> — 将已确认区域几何基准应用到多份版式一致的文档。</li>
+      <li><strong>多区域规则</strong> — 内置中、日、美、欧、俄等多国/地区识别规则。</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>改进与修复</h2>
+    <ul>
+      <li>优化日文「标签：值」字段（电话、My Number、URL 等）自动识别框精度。</li>
+      <li>预览区横竖滚动条同时出现时的右下角样式。</li>
+      <li>脱敏方案坐标改为绝对页面几何，套打位置更稳定。</li>
+      <li>识别重扫与 UI 线程更新相关稳定性修复。</li>
+    </ul>
+  </div>
+  <p class="foot">© PlainBytes Studio · 本页由应用状态栏打开；脱敏处理仍在您的设备上离线完成。</p>
+</div>
+</body>
+</html>
