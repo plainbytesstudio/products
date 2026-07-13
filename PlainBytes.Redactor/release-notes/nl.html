@@ -5,11 +5,16 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Release notes — PlainBytes Redactor</title>
-<meta name="description" content="What's new in PlainBytes Redactor." />
+<meta name="description" content="Wat is nieuw in PlainBytes Redactor." />
 <link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../css/site.css" />
+<link rel="stylesheet" href="../css/release-notes.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.34.0/dist/tabler-icons.min.css" />
 </head>
-<body class="site-light site-home">
+<body class="site-light site-home release-notes-page">
 <header class="site-header site-header--on-dark">
   <div class="container inner">
     <a class="brand" href="../nl/index.html">
@@ -26,7 +31,7 @@
     <div class="header-actions">
       <a class="site-nav-link" href="../nl/index.html">Start</a>
       <a class="site-nav-link" href="../manual/nl.html">Gebruikershandleiding</a>
-      <a class="site-nav-link site-nav-link--current" href="nl.html" aria-current="page">Release-opmerkingen</a>
+      <a class="site-nav-link site-nav-link--current" href="nl.html" aria-current="page">Release notes</a>
       <label class="visually-hidden" for="lang-select">Language</label>
       <select id="lang-select" class="lang-select" aria-label="Language">
         <option value="en">English</option>
@@ -55,11 +60,11 @@
 
 <div class="hero-screen">
   <div class="container">
-    <section class="hero hero--centered hero--dark">
-      <div class="hero-copy">
-        <p class="hero-kicker">release-opmerkingen</p>
-        <h1>Release notes</h1>
-        <p class="lead">Version 1.0.0</p>
+    <section class="hero hero--dark release-notes-hero release-notes-hero--left">
+      <div class="release-notes-hero__copy">
+        <p class="hero-kicker">release notes</p>
+        <h1>Versie 1.3.0</h1>
+        <p class="lead">Tekstzoeken, meerdere-regelsherkenning, automatische regiodetectie bij eerste start en betere synchronisatie tussen voorbeeld en auditlijst.</p>
       </div>
     </section>
   </div>
@@ -67,30 +72,117 @@
 
 <main class="site-main release-notes-main">
   <div class="container">
-    <div class="release-notes-inner">
-      <div class="release-notes-card">
-    <h2>Highlights</h2>
-    <ul>
-      <li><strong>Physical redaction</strong> — sensitive text is removed from PDF content streams, not just covered.</li>
-      <li><strong>100% offline</strong> — rule scanning, optional local AI, and export run on your PC.</li>
-      <li><strong>Audit workflow</strong> — review, confirm, manually add regions, then export.</li>
-      <li><strong>Batch apply</strong> — reuse confirmed geometry across similar documents.</li>
-      <li><strong>Multi-region rules</strong> — built-in patterns for CN, JP, US, EU, RU, and more.</li>
-    </ul>
-  </div>
-  <div class="release-notes-card">
-    <h2>Improvements &amp; fixes</h2>
-    <ul>
-      <li>More accurate auto-detection boxes for Japanese label-and-value fields (phone, My Number, URLs).</li>
-      <li>Preview scrollbar corner styling when both axes scroll.</li>
-      <li>Scheme coordinates use absolute page geometry for consistent template placement.</li>
-      <li>Stability fixes for rescan and UI thread updates during recognition.</li>
-    </ul>
-  </div>
-  <p class="release-notes-foot">© PlainBytes Studio · This page is opened from the app status bar; processing stays offline on your device.</p>
-
+    <div class="release-notes-inner release-notes-inner--plain">
+      <section class="release-notes-section">
+        <header class="release-notes-section__head">
+          <h2>Nieuwe functies</h2>
+          <p>Belangrijkste toevoegingen in deze release.</p>
+        </header>
+        <ul class="release-notes-item-list">
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Tekstzoeken</p>
+              <p class="release-notes-item__desc">Vind snel te maskeren inhoud in PDF's voor controle en handmatige vakken.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Meerdere-regelsherkenning</p>
+              <p class="release-notes-item__desc">Verbeterde automatische detectie en kaders voor velden over meerdere regels.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Automatische regio bij eerste start</p>
+              <p class="release-notes-item__desc">Selecteert herkenningsregels vooraf op basis van systeemlocale.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="release-notes-section release-notes-section--divider">
+        <header class="release-notes-section__head">
+          <h2>Verbeteringen en fixes</h2>
+          <p>UX-verfijning en stabiliteitsfixes.</p>
+        </header>
+        <ul class="release-notes-item-list">
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">Synchronisatie van voorbeeld en auditlijst: selectie van een item positioneert het voorbeeld consistenter.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">Nauwkeurigere detectievakken voor Japanse label-waarde-velden (telefoon, My Number, URL's).</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">Hoekstijl van het voorbeeld wanneer beide schuifbalken zichtbaar zijn.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">Schema-coördinaten gebruiken absolute paginageometrie voor stabiele sjabloonplaatsing.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="release-notes-section release-notes-section--divider">
+        <header class="release-notes-section__head">
+          <h2>Versiegeschiedenis</h2>
+          <p>Eerder uitgebrachte stabiele versies.</p>
+        </header>
+        <div class="release-notes-history">
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Versie 1.2.0</span>
+              <span class="release-notes-history__tag">Functie-update</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-06-01">1 juni 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Versie 1.1.0</span>
+              <span class="release-notes-history__tag">Functie-update</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-05-01">1 mei 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Versie 1.0.0</span>
+              <span class="release-notes-history__tag release-notes-history__tag--launch">Eerste stabiele versie</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-04-18">18 april 2026</time>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
+
+  <footer class="screen-band screen-band--dark screen-band--footer">
+    <div class="container">
+      <div class="screen-band__footer">
+        <p class="panel-footer__support">
+          <span>Ondersteuning en feedback</span> —
+          <a href="https://github.com/PlainBytes/PlainBytes.Redactor">GitHub</a>
+          ·
+          <a href="mailto:plainbytes.studio@gmail.com">plainbytes.studio@gmail.com</a>
+        </p>
+        <p class="panel-footer__legal">
+          <a href="../privacy.html">Privacybeleid</a>
+          <span aria-hidden="true"> · </span>
+          <span>© 2026 PlainBytes Studio</span>
+        </p>
+      </div>
+    </div>
+  </footer>
 </main>
 <script src="../js/lang-nav.js"></script>
 <script src="../js/store-link.js"></script>

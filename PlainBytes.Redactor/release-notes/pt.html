@@ -4,12 +4,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Release notes — PlainBytes Redactor</title>
-<meta name="description" content="What's new in PlainBytes Redactor." />
+<title>Notas de versão — PlainBytes Redactor</title>
+<meta name="description" content="Novidades do PlainBytes Redactor." />
 <link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../css/site.css" />
+<link rel="stylesheet" href="../css/release-notes.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.34.0/dist/tabler-icons.min.css" />
 </head>
-<body class="site-light site-home">
+<body class="site-light site-home release-notes-page">
 <header class="site-header site-header--on-dark">
   <div class="container inner">
     <a class="brand" href="../pt/index.html">
@@ -55,11 +60,11 @@
 
 <div class="hero-screen">
   <div class="container">
-    <section class="hero hero--centered hero--dark">
-      <div class="hero-copy">
+    <section class="hero hero--dark release-notes-hero release-notes-hero--left">
+      <div class="release-notes-hero__copy">
         <p class="hero-kicker">notas de versão</p>
-        <h1>Release notes</h1>
-        <p class="lead">Version 1.0.0</p>
+        <h1>Versão 1.3.0</h1>
+        <p class="lead">Pesquisa de texto, reconhecimento multilinha, detecção automática de região na primeira execução e melhor sincronização entre pré-visualização e lista de auditoria.</p>
       </div>
     </section>
   </div>
@@ -67,30 +72,117 @@
 
 <main class="site-main release-notes-main">
   <div class="container">
-    <div class="release-notes-inner">
-      <div class="release-notes-card">
-    <h2>Highlights</h2>
-    <ul>
-      <li><strong>Physical redaction</strong> — sensitive text is removed from PDF content streams, not just covered.</li>
-      <li><strong>100% offline</strong> — rule scanning, optional local AI, and export run on your PC.</li>
-      <li><strong>Audit workflow</strong> — review, confirm, manually add regions, then export.</li>
-      <li><strong>Batch apply</strong> — reuse confirmed geometry across similar documents.</li>
-      <li><strong>Multi-region rules</strong> — built-in patterns for CN, JP, US, EU, RU, and more.</li>
-    </ul>
-  </div>
-  <div class="release-notes-card">
-    <h2>Improvements &amp; fixes</h2>
-    <ul>
-      <li>More accurate auto-detection boxes for Japanese label-and-value fields (phone, My Number, URLs).</li>
-      <li>Preview scrollbar corner styling when both axes scroll.</li>
-      <li>Scheme coordinates use absolute page geometry for consistent template placement.</li>
-      <li>Stability fixes for rescan and UI thread updates during recognition.</li>
-    </ul>
-  </div>
-  <p class="release-notes-foot">© PlainBytes Studio · This page is opened from the app status bar; processing stays offline on your device.</p>
-
+    <div class="release-notes-inner release-notes-inner--plain">
+      <section class="release-notes-section">
+        <header class="release-notes-section__head">
+          <h2>Novos recursos</h2>
+          <p>Principais adições nesta versão.</p>
+        </header>
+        <ul class="release-notes-item-list">
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Pesquisa de texto</p>
+              <p class="release-notes-item__desc">Localize rapidamente conteúdo a mascarar em PDFs para revisão e caixas manuais.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Reconhecimento multilinha</p>
+              <p class="release-notes-item__desc">Detecção automática e enquadramento aprimorados para campos em várias linhas.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Região automática na primeira execução</p>
+              <p class="release-notes-item__desc">Pré-seleciona regras de reconhecimento com base na localidade do sistema.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="release-notes-section release-notes-section--divider">
+        <header class="release-notes-section__head">
+          <h2>Melhorias e correções</h2>
+          <p>Refinamentos de UX e correções de estabilidade.</p>
+        </header>
+        <ul class="release-notes-item-list">
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">Sincronização de pré-visualização e lista de auditoria: selecionar um item posiciona a pré-visualização de forma mais consistente.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">Caixas de detecção mais precisas para campos japoneses rótulo-valor (telefone, My Number, URL).</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">Estilo do canto da pré-visualização quando ambas as barras de rolagem aparecem.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">Coordenadas do esquema usam geometria absoluta da página para posicionamento estável.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="release-notes-section release-notes-section--divider">
+        <header class="release-notes-section__head">
+          <h2>Histórico de versões</h2>
+          <p>Versões estáveis publicadas anteriormente.</p>
+        </header>
+        <div class="release-notes-history">
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Versão 1.2.0</span>
+              <span class="release-notes-history__tag">Atualização</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-06-01">1 de junho de 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Versão 1.1.0</span>
+              <span class="release-notes-history__tag">Atualização</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-05-01">1 de maio de 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Versão 1.0.0</span>
+              <span class="release-notes-history__tag release-notes-history__tag--launch">Primeira versão estável</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-04-18">18 de abril de 2026</time>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
+
+  <footer class="screen-band screen-band--dark screen-band--footer">
+    <div class="container">
+      <div class="screen-band__footer">
+        <p class="panel-footer__support">
+          <span>Suporte e feedback</span> —
+          <a href="https://github.com/PlainBytes/PlainBytes.Redactor">GitHub</a>
+          ·
+          <a href="mailto:plainbytes.studio@gmail.com">plainbytes.studio@gmail.com</a>
+        </p>
+        <p class="panel-footer__legal">
+          <a href="../privacy.html">Política de privacidade</a>
+          <span aria-hidden="true"> · </span>
+          <span>© 2026 PlainBytes Studio</span>
+        </p>
+      </div>
+    </div>
+  </footer>
 </main>
 <script src="../js/lang-nav.js"></script>
 <script src="../js/store-link.js"></script>

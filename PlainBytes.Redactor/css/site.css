@@ -1327,3 +1327,42 @@ body.video-modal-open {
   height: 100%;
   border: 0;
 }
+
+/* Release notes subpages */
+.release-notes-main {
+  padding: 48px 0 64px;
+}
+
+.release-notes-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.release-notes-card {
+  background: var(--bg-white);
+  border: 0.5px solid var(--stroke);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+}
+
+.release-notes-card h2 {
+  font-size: 1.125rem;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+
+.release-notes-inner ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.release-notes-inner li {
+  margin: 0.35rem 0;
+}
+
+.release-notes-foot {
+  margin-top: 32px;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}

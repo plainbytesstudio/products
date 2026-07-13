@@ -7,9 +7,14 @@
 <title>版本更新 — PlainBytes Redactor</title>
 <meta name="description" content="PlainBytes Redactor 当前版本更新说明。" />
 <link rel="icon" type="image/x-icon" href="../assets/Redactor_Logo.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="../css/site.css" />
+<link rel="stylesheet" href="../css/release-notes.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.34.0/dist/tabler-icons.min.css" />
 </head>
-<body class="site-light site-home">
+<body class="site-light site-home release-notes-page">
 <header class="site-header site-header--on-dark">
   <div class="container inner">
     <a class="brand" href="../zh/index.html">
@@ -55,11 +60,11 @@
 
 <div class="hero-screen">
   <div class="container">
-    <section class="hero hero--centered hero--dark">
-      <div class="hero-copy">
+    <section class="hero hero--dark release-notes-hero release-notes-hero--left">
+      <div class="release-notes-hero__copy">
         <p class="hero-kicker">版本更新</p>
-        <h1>版本更新</h1>
-        <p class="lead">版本 1.0.0</p>
+        <h1>版本 1.3.0</h1>
+        <p class="lead">新增文本搜索、跨行识别及首次启动自动区域检测，并优化预览窗口与追踪列表联动行为。</p>
       </div>
     </section>
   </div>
@@ -67,30 +72,117 @@
 
 <main class="site-main release-notes-main">
   <div class="container">
-    <div class="release-notes-inner">
-      <div class="release-notes-card">
-    <h2>主要能力</h2>
-    <ul>
-      <li><strong>物理脱敏</strong> — 从 PDF 内容流中删除敏感信息，而非仅视觉遮盖。</li>
-      <li><strong>100% 离线</strong> — 规则扫描、可选本地 AI 与导出均在本机完成。</li>
-      <li><strong>审计复核</strong> — 逐条确认、手动补框后再导出。</li>
-      <li><strong>批量套打</strong> — 将已确认区域几何基准应用到多份版式一致的文档。</li>
-      <li><strong>多区域规则</strong> — 内置中、日、美、欧、俄等多国/地区识别规则。</li>
-    </ul>
-  </div>
-  <div class="release-notes-card">
-    <h2>改进与修复</h2>
-    <ul>
-      <li>优化日文「标签：值」字段（电话、My Number、URL 等）自动识别框精度。</li>
-      <li>预览区横竖滚动条同时出现时的右下角样式。</li>
-      <li>脱敏方案坐标改为绝对页面几何，套打位置更稳定。</li>
-      <li>识别重扫与 UI 线程更新相关稳定性修复。</li>
-    </ul>
-  </div>
-  <p class="release-notes-foot">© PlainBytes Studio · 本页由应用状态栏打开；脱敏处理仍在您的设备上离线完成。</p>
-
+    <div class="release-notes-inner release-notes-inner--plain">
+      <section class="release-notes-section">
+        <header class="release-notes-section__head">
+          <h2>新功能</h2>
+          <p>本版本新增的可直接感知能力。</p>
+        </header>
+        <ul class="release-notes-item-list">
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">文本搜索</p>
+              <p class="release-notes-item__desc">在 PDF 中快速定位待脱敏内容，便于复核与补框。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">跨行识别</p>
+              <p class="release-notes-item__desc">改进跨行字段的自动检测与框选精度。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">首次启动自动区域检测</p>
+              <p class="release-notes-item__desc">根据系统区域设置预选识别规则范围。</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="release-notes-section release-notes-section--divider">
+        <header class="release-notes-section__head">
+          <h2>改进与修复</h2>
+          <p>体验优化与稳定性修复。</p>
+        </header>
+        <ul class="release-notes-item-list">
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">优化预览窗口与追踪列表的联动行为，选中条目时预览定位更一致。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">优化日文「标签：值」字段（电话、My Number、URL 等）自动识别框精度。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">预览区横竖滚动条同时出现时的右下角样式。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">脱敏方案坐标改为绝对页面几何，套打位置更稳定。</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="release-notes-section release-notes-section--divider">
+        <header class="release-notes-section__head">
+          <h2>历史版本</h2>
+          <p>此前已发布的正式版本记录。</p>
+        </header>
+        <div class="release-notes-history">
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">版本 1.2.0</span>
+              <span class="release-notes-history__tag">功能更新</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-06-01">2026年6月1日</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">版本 1.1.0</span>
+              <span class="release-notes-history__tag">功能更新</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-05-01">2026年5月1日</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">版本 1.0.0</span>
+              <span class="release-notes-history__tag release-notes-history__tag--launch">首个正式版本</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-04-18">2026年4月18日</time>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
+
+  <footer class="screen-band screen-band--dark screen-band--footer">
+    <div class="container">
+      <div class="screen-band__footer">
+        <p class="panel-footer__support">
+          <span>支持与反馈</span> —
+          <a href="https://github.com/PlainBytes/PlainBytes.Redactor">GitHub</a>
+          ·
+          <a href="mailto:plainbytes.studio@gmail.com">plainbytes.studio@gmail.com</a>
+        </p>
+        <p class="panel-footer__legal">
+          <a href="../privacy.html">隐私政策</a>
+          <span aria-hidden="true"> · </span>
+          <span>© 2026 PlainBytes Studio. 保留所有权利。</span>
+        </p>
+      </div>
+    </div>
+  </footer>
 </main>
 <script src="../js/lang-nav.js"></script>
 <script src="../js/store-link.js"></script>
