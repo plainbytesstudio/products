@@ -63,7 +63,8 @@ body.release-notes-page main.release-notes-main > .screen-band--footer {
 }
 
 .release-notes-inner.release-notes-inner--plain {
-  max-width: 640px;
+  max-width: none;
+  width: 100%;
   margin: 0;
   padding-bottom: 56px;
   font-family: "DM Sans", system-ui, sans-serif;
@@ -209,8 +210,19 @@ body.release-notes-page main.release-notes-main > .screen-band--footer {
   font-weight: 600;
   line-height: 1.35;
   white-space: nowrap;
+  /* Feature update */
   background: #e6f4ea;
   color: #1e6b3a;
+}
+
+.release-notes-history__tag--security {
+  background: #fef3e2;
+  color: #8a4b0f;
+}
+
+.release-notes-history__tag--enhancement {
+  background: #f2f0ec;
+  color: #5a564e;
 }
 
 .release-notes-history__tag--launch {
