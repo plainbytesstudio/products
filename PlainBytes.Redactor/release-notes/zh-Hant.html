@@ -63,8 +63,8 @@
     <section class="hero hero--dark release-notes-hero release-notes-hero--left">
       <div class="release-notes-hero__copy">
         <p class="hero-kicker">版本更新</p>
-        <h1>版本 1.3.0</h1>
-        <p class="lead">新增文字搜尋、跨行識別及首次啟動自動區域偵測，並優化預覽視窗與追蹤清單聯動行為。</p>
+        <h1>版本 1.2.0</h1>
+        <p class="lead">新增遮蔽方案管理、影像遮蔽及批次處理功能，並全面優化預覽視窗的使用體驗。</p>
       </div>
     </section>
   </div>
@@ -82,22 +82,57 @@
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">文字搜尋</p>
-              <p class="release-notes-item__desc">在 PDF 中快速定位待脫敏內容，便於複核與補框。</p>
+              <p class="release-notes-item__label">遮蔽方案管理</p>
+              <p class="release-notes-item__desc">可建立、匯入、匯出及刪除遮蔽方案。匯入名稱重複的方案時，將覆蓋現有方案。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">跨行識別</p>
-              <p class="release-notes-item__desc">改進跨行欄位的自動偵測與框選精度。</p>
+              <p class="release-notes-item__label">套用方案至單一檔案</p>
+              <p class="release-notes-item__desc">可將已儲存的遮蔽方案直接套用至目前開啟的檔案。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">首次啟動自動區域偵測</p>
-              <p class="release-notes-item__desc">根據系統區域設定預選識別規則範圍。</p>
+              <p class="release-notes-item__label">批次套用方案</p>
+              <p class="release-notes-item__desc">可將遮蔽方案套用至多個結構相同的檔案。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">從剪貼簿貼上</p>
+              <p class="release-notes-item__desc">可從剪貼簿貼上影像以進行遮蔽（Ctrl+V）。僅當剪貼簿中含有影像內容時才可使用，否則「從剪貼簿貼上」按鈕將維持停用狀態。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">將遮蔽結果複製到剪貼簿</p>
+              <p class="release-notes-item__desc">可將完成遮蔽的影像結果直接複製到剪貼簿（Ctrl+C）。僅限影像遮蔽模式下使用，否則「複製到剪貼簿」按鈕將維持停用狀態。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">影像匯出格式</p>
+              <p class="release-notes-item__desc">完成遮蔽的影像現可匯出為 PNG 或 JPG 格式。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">預覽視窗縮放與頁面導覽</p>
+              <p class="release-notes-item__desc">預覽視窗現已支援縮放控制及直接輸入頁碼跳轉。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">馬賽克遮蔽樣式</p>
+              <p class="release-notes-item__desc">遮蔽樣式新增馬賽克選項，僅限影像遮蔽模式下使用。</p>
             </div>
           </li>
         </ul>
@@ -111,25 +146,31 @@
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">優化預覽視窗與追蹤清單的聯動行為，選中項目時預覽定位更一致。</p>
+              <p class="release-notes-item__desc">打開或粘貼內容時最大縮放比例為 100%；若原始尺寸超出預覽窗口可用寬度（80%），自動調整縮放比例適配顯示。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">優化日文「標籤：值」欄位（電話、My Number、URL 等）自動識別框精度。</p>
+              <p class="release-notes-item__desc">窗口尺寸變化時保持當前縮放比例不變。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">預覽區橫豎捲軸同時出現時的右下角樣式。</p>
+              <p class="release-notes-item__desc">識別策略面板與框選外觀合併為 Tab 頁籤形式，簡化側邊欄結構。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">脫敏方案座標改為絕對頁面幾何，套打位置更穩定。</p>
+              <p class="release-notes-item__desc">預覽窗口的關閉按鈕從工具條移到了預覽窗口右上角。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">優化圖片顯示清晰度。</p>
             </div>
           </li>
         </ul>
@@ -142,24 +183,45 @@
         <div class="release-notes-history">
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
-              <span class="release-notes-history__ver">版本 1.2.0</span>
+              <span class="release-notes-history__ver">版本 1.1.9</span>
+              <span class="release-notes-history__tag release-notes-history__tag--security">安全更新</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-07-06">2026年7月6日</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">版本 1.1.8</span>
               <span class="release-notes-history__tag">功能更新</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-06-01">2026年6月1日</time>
+            <time class="release-notes-history__date" datetime="2026-06-25">2026年6月25日</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">版本 1.1.6</span>
+              <span class="release-notes-history__tag">功能更新</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-06-04">2026年6月4日</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">版本 1.1.4</span>
+              <span class="release-notes-history__tag release-notes-history__tag--enhancement">优化改进</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-05-27">2026年5月27日</time>
           </div>
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
               <span class="release-notes-history__ver">版本 1.1.0</span>
               <span class="release-notes-history__tag">功能更新</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-05-01">2026年5月1日</time>
+            <time class="release-notes-history__date" datetime="2026-05-17">2026年5月17日</time>
           </div>
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
               <span class="release-notes-history__ver">版本 1.0.0</span>
               <span class="release-notes-history__tag release-notes-history__tag--launch">首個正式版本</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-04-18">2026年4月18日</time>
+            <time class="release-notes-history__date" datetime="2026-04-15">2026年4月15日</time>
           </div>
         </div>
       </section>

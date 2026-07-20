@@ -63,8 +63,8 @@
     <section class="hero hero--dark release-notes-hero release-notes-hero--left">
       <div class="release-notes-hero__copy">
         <p class="hero-kicker">notas de la versión</p>
-        <h1>Versión 1.3.0</h1>
-        <p class="lead">Búsqueda de texto, reconocimiento multilínea, detección automática de región en el primer inicio y mejor sincronización entre vista previa y lista de auditoría.</p>
+        <h1>Versión 1.2.0</h1>
+        <p class="lead">Se ha añadido la gestión de esquemas de redacción, la redacción de imágenes y el procesamiento por lotes, junto con numerosas mejoras en la experiencia de la ventana de vista previa.</p>
       </div>
     </section>
   </div>
@@ -82,22 +82,57 @@
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">Búsqueda de texto</p>
-              <p class="release-notes-item__desc">Localice rápidamente el contenido a enmascarar en PDF para revisión y cajas manuales.</p>
+              <p class="release-notes-item__label">Gestión de esquemas de redacción</p>
+              <p class="release-notes-item__desc">cree, importe, exporte y elimine esquemas de redacción. Al importar un esquema con un nombre duplicado, se sobrescribirá el esquema existente.</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">Reconocimiento multilínea</p>
-              <p class="release-notes-item__desc">Detección automática y encuadre mejorados para campos en varias líneas.</p>
+              <p class="release-notes-item__label">Aplicar esquema a un solo archivo</p>
+              <p class="release-notes-item__desc">aplique un esquema de redacción guardado directamente al archivo que tiene abierto en ese momento.</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">Región automática en el primer inicio</p>
-              <p class="release-notes-item__desc">Preselecciona reglas de reconocimiento según la configuración regional del sistema.</p>
+              <p class="release-notes-item__label">Aplicación de esquemas por lotes</p>
+              <p class="release-notes-item__desc">aplique un esquema de redacción a varios archivos con estructura idéntica.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Pegar desde el portapapeles</p>
+              <p class="release-notes-item__desc">pegue una imagen desde el portapapeles para su redacción (Ctrl+V). Esta función solo está disponible cuando el portapapeles contiene contenido de imagen; de lo contrario, el botón "Pegar desde el portapapeles" permanecerá desactivado.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Copiar el resultado de la redacción al portapapeles</p>
+              <p class="release-notes-item__desc">copie directamente al portapapeles la imagen resultante con la redacción aplicada (Ctrl+C). Disponible únicamente en el modo de redacción de imágenes; de lo contrario, el botón "Copiar al portapapeles" permanecerá desactivado.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Formatos de exportación de imágenes</p>
+              <p class="release-notes-item__desc">las imágenes con redacción aplicada ahora se pueden exportar en formato PNG o JPG.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Zoom y navegación por número de página en la ventana de vista previa</p>
+              <p class="release-notes-item__desc">la ventana de vista previa ahora admite controles de zoom y navegación directa mediante el número de página.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Estilo de redacción en mosaico</p>
+              <p class="release-notes-item__desc">se ha añadido una opción de estilo en mosaico a los estilos de redacción, disponible únicamente en el modo de redacción de imágenes.</p>
             </div>
           </li>
         </ul>
@@ -142,24 +177,45 @@
         <div class="release-notes-history">
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
-              <span class="release-notes-history__ver">Versión 1.2.0</span>
+              <span class="release-notes-history__ver">Versión 1.1.9</span>
+              <span class="release-notes-history__tag release-notes-history__tag--security">Actualización de seguridad</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-07-06">6 de julio de 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Versión 1.1.8</span>
               <span class="release-notes-history__tag">Actualización</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-06-01">1 de junio de 2026</time>
+            <time class="release-notes-history__date" datetime="2026-06-25">25 de junio de 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Versión 1.1.6</span>
+              <span class="release-notes-history__tag">Actualización</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-06-04">4 de junio de 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Versión 1.1.4</span>
+              <span class="release-notes-history__tag release-notes-history__tag--enhancement">Mejora</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-05-27">27 de mayo de 2026</time>
           </div>
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
               <span class="release-notes-history__ver">Versión 1.1.0</span>
               <span class="release-notes-history__tag">Actualización</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-05-01">1 de mayo de 2026</time>
+            <time class="release-notes-history__date" datetime="2026-05-17">17 de mayo de 2026</time>
           </div>
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
               <span class="release-notes-history__ver">Versión 1.0.0</span>
               <span class="release-notes-history__tag release-notes-history__tag--launch">Primera versión estable</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-04-18">18 de abril de 2026</time>
+            <time class="release-notes-history__date" datetime="2026-04-15">15 de abril de 2026</time>
           </div>
         </div>
       </section>

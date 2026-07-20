@@ -63,8 +63,8 @@
     <section class="hero hero--dark release-notes-hero release-notes-hero--left">
       <div class="release-notes-hero__copy">
         <p class="hero-kicker">リリースノート</p>
-        <h1>バージョン 1.3.0</h1>
-        <p class="lead">テキスト検索、複数行認識、初回起動時の自動リージョン検出、プレビューと監査リストの連動改善。</p>
+        <h1>バージョン 1.2.0</h1>
+        <p class="lead">墨消し方案管理、画像墨消し、一括処理を追加し、プレビューウィンドウの操作性を全面的に改善しました。</p>
       </div>
     </section>
   </div>
@@ -82,22 +82,57 @@
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">テキスト検索</p>
-              <p class="release-notes-item__desc">PDF 内のマスキング対象を素早く見つけ、確認と手動枠追加を支援。</p>
+              <p class="release-notes-item__label">墨消しスキームの管理</p>
+              <p class="release-notes-item__desc">墨消しスキームの作成、インポート、エクスポート、削除が可能になりました。同名のスキームをインポートすると、既存のスキームは上書きされます。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">複数行認識</p>
-              <p class="release-notes-item__desc">複数行にまたがるフィールドの自動検出と枠精度を改善。</p>
+              <p class="release-notes-item__label">単一ファイルへのスキーム適用</p>
+              <p class="release-notes-item__desc">保存済みの墨消しスキームを、現在開いているファイルに直接適用できます。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">初回起動時の自動リージョン検出</p>
-              <p class="release-notes-item__desc">システムのロケールに基づき認識ルール範囲を事前選択。</p>
+              <p class="release-notes-item__label">スキームの一括適用</p>
+              <p class="release-notes-item__desc">同一構造を持つ複数のファイルに対して、墨消しスキームを一括適用できます。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">クリップボードから貼り付け</p>
+              <p class="release-notes-item__desc">クリップボード内の画像を貼り付けて墨消しできます（Ctrl+V）。この機能はクリップボードに画像データが含まれている場合にのみ利用可能で、それ以外の場合は「クリップボードから貼り付け」ボタンが無効のままになります。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">墨消し結果をクリップボードにコピー</p>
+              <p class="release-notes-item__desc">墨消し処理後の画像を直接クリップボードにコピーできます（Ctrl+C）。画像墨消しモードでのみ利用可能で、それ以外の場合は「クリップボードにコピー」ボタンが無効のままになります。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">画像のエクスポート形式</p>
+              <p class="release-notes-item__desc">墨消し済みの画像は、PNGまたはJPG形式でエクスポートできるようになりました。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">プレビューウィンドウのズームとページ移動</p>
+              <p class="release-notes-item__desc">プレビューウィンドウでズーム操作と、ページ番号を指定した直接移動がサポートされました。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">モザイク墨消しスタイル</p>
+              <p class="release-notes-item__desc">墨消しスタイルにモザイクオプションが追加されました。画像墨消しモードでのみ利用可能です。</p>
             </div>
           </li>
         </ul>
@@ -111,25 +146,31 @@
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">プレビューと監査リストの連動：項目選択時のプレビュー位置合わせを改善。</p>
+              <p class="release-notes-item__desc">コンテンツを開くまたは貼り付けた際の最大ズーム倍率は 100% に制限されます。元のサイズがプレビューウィンドウの利用可能な幅（80%）を超える場合、自動的に倍率を調整して表示します。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">日本語の「ラベル：値」フィールド（電話、マイナンバー、URL など）の自動検出枠精度を改善。</p>
+              <p class="release-notes-item__desc">ウィンドウサイズが変更されても現在のズーム倍率を維持します。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">縦横スクロールバーが同時に表示される際のプレビュー右下角のスタイル。</p>
+              <p class="release-notes-item__desc">検出ポリシーパネルと選択範囲の外観パネルがタブ形式に統合され、サイドバーの構造がシンプルになりました。</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">マスキングスキーム座標を絶対ページ幾何に変更し、テンプレート配置を安定化。</p>
+              <p class="release-notes-item__desc">プレビューウィンドウの閉じるボタンがツールバーからプレビューウィンドウの右上に移動しました。</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">画像表示の鮮明度を改善しました。</p>
             </div>
           </li>
         </ul>
@@ -142,24 +183,45 @@
         <div class="release-notes-history">
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
-              <span class="release-notes-history__ver">バージョン 1.2.0</span>
+              <span class="release-notes-history__ver">バージョン 1.1.9</span>
+              <span class="release-notes-history__tag release-notes-history__tag--security">セキュリティアップデート</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-07-06">2026年7月6日</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">バージョン 1.1.8</span>
               <span class="release-notes-history__tag">機能更新</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-06-01">2026年6月1日</time>
+            <time class="release-notes-history__date" datetime="2026-06-25">2026年6月25日</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">バージョン 1.1.6</span>
+              <span class="release-notes-history__tag">機能更新</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-06-04">2026年6月4日</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">バージョン 1.1.4</span>
+              <span class="release-notes-history__tag release-notes-history__tag--enhancement">改善・最適化</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-05-27">2026年5月27日</time>
           </div>
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
               <span class="release-notes-history__ver">バージョン 1.1.0</span>
               <span class="release-notes-history__tag">機能更新</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-05-01">2026年5月1日</time>
+            <time class="release-notes-history__date" datetime="2026-05-17">2026年5月17日</time>
           </div>
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
               <span class="release-notes-history__ver">バージョン 1.0.0</span>
-              <span class="release-notes-history__tag release-notes-history__tag--launch">初の安定版</span>
+              <span class="release-notes-history__tag release-notes-history__tag--launch">初回正式リリース</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-04-18">2026年4月18日</time>
+            <time class="release-notes-history__date" datetime="2026-04-15">2026年4月15日</time>
           </div>
         </div>
       </section>

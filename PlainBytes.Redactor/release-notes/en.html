@@ -63,8 +63,8 @@
     <section class="hero hero--dark release-notes-hero release-notes-hero--left">
       <div class="release-notes-hero__copy">
         <p class="hero-kicker">release notes</p>
-        <h1>Version 1.3.0</h1>
-        <p class="lead">Text search, cross-line recognition, automatic region detection on first launch, and improved preview–audit list sync.</p>
+        <h1>Version 1.2.0</h1>
+        <p class="lead">Added redaction scheme management, image redaction, and batch processing, with comprehensive improvements to the preview window experience.</p>
       </div>
     </section>
   </div>
@@ -82,22 +82,57 @@
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">Text search</p>
-              <p class="release-notes-item__desc">Quickly locate content to redact in PDFs for review and manual boxes.</p>
+              <p class="release-notes-item__label">Redaction Scheme Management</p>
+              <p class="release-notes-item__desc">Create, import, export, and delete redaction schemes. Importing a scheme with a duplicate name overwrites the existing one.</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">Cross-line recognition</p>
-              <p class="release-notes-item__desc">Improved auto-detection and boxing for fields that span multiple lines.</p>
+              <p class="release-notes-item__label">Apply Scheme to Single File</p>
+              <p class="release-notes-item__desc">Apply a saved redaction scheme directly to the currently open file.</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--feature">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__label">Automatic region on first launch</p>
-              <p class="release-notes-item__desc">Pre-selects recognition rules based on your system locale.</p>
+              <p class="release-notes-item__label">Batch Apply Scheme</p>
+              <p class="release-notes-item__desc">Apply a redaction scheme across multiple files with identical structure.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Paste from Clipboard</p>
+              <p class="release-notes-item__desc">Paste an image from the clipboard for redaction (Ctrl+V). Available only when the clipboard contains image content — otherwise the "Paste from Clipboard" button remains disabled.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Copy Redaction Result to Clipboard</p>
+              <p class="release-notes-item__desc">Copy the redacted image result directly to the clipboard (Ctrl+C). Available in image redaction mode only — otherwise the "Copy to Clipboard" button remains disabled.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Image Export Formats</p>
+              <p class="release-notes-item__desc">Redacted images can be exported as PNG or JPG.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Preview Window Zoom and Page Navigation</p>
+              <p class="release-notes-item__desc">The preview window now supports zoom controls and direct page number navigation.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--feature">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-circle-plus"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__label">Mosaic Redaction Style</p>
+              <p class="release-notes-item__desc">A mosaic style option has been added to redaction styles, available in image redaction mode only.</p>
             </div>
           </li>
         </ul>
@@ -111,25 +146,31 @@
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">Preview and audit list sync: selecting an entry locates the preview more consistently.</p>
+              <p class="release-notes-item__desc">When opening or pasting content, the maximum zoom level is capped at 100%. If the original size exceeds 80% of the available preview width, the zoom level adjusts automatically to fit.</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">More accurate auto-detection boxes for Japanese label-and-value fields (phone, My Number, URLs).</p>
+              <p class="release-notes-item__desc">Zoom level is preserved when the window is resized.</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">Preview scrollbar corner styling when both axes scroll.</p>
+              <p class="release-notes-item__desc">The detection policy panel and redaction appearance panel have been merged into a single tabbed panel, simplifying the sidebar layout.</p>
             </div>
           </li>
           <li class="release-notes-item release-notes-item--fix">
             <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
             <div class="release-notes-item__body">
-              <p class="release-notes-item__desc">Scheme coordinates use absolute page geometry for consistent template placement.</p>
+              <p class="release-notes-item__desc">The preview window close button has been moved from the toolbar to the top-right corner of the preview window.</p>
+            </div>
+          </li>
+          <li class="release-notes-item release-notes-item--fix">
+            <span class="release-notes-item__icon" aria-hidden="true"><i class="ti ti-adjustments"></i></span>
+            <div class="release-notes-item__body">
+              <p class="release-notes-item__desc">Improved image rendering clarity.</p>
             </div>
           </li>
         </ul>
@@ -142,24 +183,45 @@
         <div class="release-notes-history">
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
-              <span class="release-notes-history__ver">Version 1.2.0</span>
+              <span class="release-notes-history__ver">Version 1.1.9</span>
+              <span class="release-notes-history__tag release-notes-history__tag--security">Security Update</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-07-06">July 6, 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Version 1.1.8</span>
               <span class="release-notes-history__tag">Feature update</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-06-01">June 1, 2026</time>
+            <time class="release-notes-history__date" datetime="2026-06-25">June 25, 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Version 1.1.6</span>
+              <span class="release-notes-history__tag">Feature update</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-06-04">June 4, 2026</time>
+          </div>
+          <div class="release-notes-history__row">
+            <div class="release-notes-history__left">
+              <span class="release-notes-history__ver">Version 1.1.4</span>
+              <span class="release-notes-history__tag release-notes-history__tag--enhancement">Enhancement</span>
+            </div>
+            <time class="release-notes-history__date" datetime="2026-05-27">May 27, 2026</time>
           </div>
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
               <span class="release-notes-history__ver">Version 1.1.0</span>
               <span class="release-notes-history__tag">Feature update</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-05-01">May 1, 2026</time>
+            <time class="release-notes-history__date" datetime="2026-05-17">May 17, 2026</time>
           </div>
           <div class="release-notes-history__row">
             <div class="release-notes-history__left">
               <span class="release-notes-history__ver">Version 1.0.0</span>
               <span class="release-notes-history__tag release-notes-history__tag--launch">First stable release</span>
             </div>
-            <time class="release-notes-history__date" datetime="2026-04-18">April 18, 2026</time>
+            <time class="release-notes-history__date" datetime="2026-04-15">April 15, 2026</time>
           </div>
         </div>
       </section>
