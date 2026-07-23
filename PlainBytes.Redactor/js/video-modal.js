@@ -91,6 +91,21 @@
     } catch (e2) {}
   }
 
+  /** Turn off captions / auto-translated subtitles when the embed starts. */
+  function disableCaptions(ytPlayer) {
+    if (!ytPlayer) return;
+    try {
+      if (typeof ytPlayer.unloadModule === "function") {
+        ytPlayer.unloadModule("captions");
+      }
+    } catch (e) {}
+    try {
+      if (typeof ytPlayer.setOption === "function") {
+        ytPlayer.setOption("captions", "track", {});
+      }
+    } catch (e2) {}
+  }
+
   function destroyPlayer() {
     if (player && typeof player.destroy === "function") {
       try {
@@ -111,13 +126,22 @@
         autoplay: 1,
         rel: 0,
         modestbranding: 1,
+        // 0 = do not force captions on (avoids auto-translated subs where possible)
+        cc_load_policy: 0,
         origin: pageOrigin(),
         enablejsapi: 1,
       },
       events: {
         onReady: function (event) {
           prefer1080p(event.target);
+          disableCaptions(event.target);
           event.target.playVideo();
+        },
+        onStateChange: function (event) {
+          // Captions may re-enable after buffering; clear again when playback starts.
+          if (event.data === YT.PlayerState.PLAYING) {
+            disableCaptions(event.target);
+          }
         },
         onPlaybackQualityChange: function (event) {
           if (event.data !== "hd1080") prefer1080p(event.target);
