@@ -240,6 +240,25 @@
     </div>
   </footer>
 </main>
+<script>
+(function () {
+  var FILES = {
+    en: "en.html", zh: "zh-Hans.html", "zh-Hant": "zh-Hant.html",
+    ja: "ja.html", ko: "ko.html", de: "de.html", fr: "fr.html",
+    pt: "pt.html", it: "it.html", es: "es.html", nl: "nl.html", ru: "ru.html"
+  };
+  var sel = document.getElementById("lang-select");
+  if (sel && sel.getAttribute("data-lang-nav") !== "1") {
+    sel.setAttribute("data-lang-nav", "1");
+    var current = document.documentElement.getAttribute("data-lang") || "en";
+    sel.value = current;
+    sel.addEventListener("change", function () {
+      var file = FILES[sel.value];
+      if (file && sel.value !== current) window.location.href = file;
+    });
+  }
+})();
+</script>
 <script src="../js/lang-nav.js"></script>
 <script src="../js/store-link.js"></script>
 </body>
