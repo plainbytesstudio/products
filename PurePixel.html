@@ -19,7 +19,8 @@
       --primary-glow-2: rgba(127, 232, 196, 0.18);
       --primary-hover: #3BC25D;
 
-      --bg-deep: #08080C;
+      --bg-deep: #0a0e0b;
+      --bg-deep-mid: #080b09;
       --hero-text: #F5F5F7;
       --text-secondary: #A1A1A6;
       --text-muted: #6E6E73;
@@ -44,7 +45,6 @@
       background: var(--light-bg);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      padding-top: 64px;
     }
 
     .container {
@@ -60,13 +60,35 @@
 
     .center { text-align: center; }
 
-    /* ── Dark hero zone ── */
+    /* ── Dark hero zone：导航与 Hero 共用同一背景层 ── */
     .zone-dark {
-      background:
-        radial-gradient(1200px 700px at 20% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
-        radial-gradient(900px 600px at 80% 15%, rgba(52, 168, 83, 0.08), transparent 60%),
-        linear-gradient(180deg, var(--bg-deep), #07080c 55%, #0a0b10);
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep-mid) 58%, #0a0b10 100%);
       color: var(--hero-text);
+    }
+
+    .zone-dark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1000px 480px at 50% -8%, rgba(52, 168, 83, 0.10), transparent 68%),
+        radial-gradient(1200px 700px at 18% 0%, rgba(255, 255, 255, 0.035), transparent 58%);
+      pointer-events: none;
+    }
+
+    .zone-dark::after {
+      content: '';
+      position: absolute;
+      left: -10%;
+      right: -10%;
+      top: 28%;
+      bottom: -20%;
+      background:
+        radial-gradient(600px 600px at 15% 40%, rgba(127, 232, 196, 0.10), transparent 62%),
+        radial-gradient(700px 700px at 85% 45%, rgba(52, 168, 83, 0.07), transparent 62%);
+      pointer-events: none;
     }
 
     h1 {
@@ -94,32 +116,9 @@
     }
 
     .hero {
-      padding: 120px 0 72px;
+      padding: 32px 0 72px;
       position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -40%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 900px;
-      height: 900px;
-      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 68%);
-      pointer-events: none;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      inset: -30% -10%;
-      background:
-        radial-gradient(600px 600px at 15% 20%, var(--primary-glow-2), transparent 60%),
-        radial-gradient(700px 700px at 85% 35%, rgba(52, 168, 83, 0.10), transparent 60%);
-      pointer-events: none;
-      opacity: 0.95;
+      z-index: 1;
     }
 
     .hero .container { position: relative; z-index: 1; }
@@ -337,15 +336,12 @@
     }
 
     .navbar {
-      position: fixed;
+      position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      background: #161618;
-      border-bottom: 1px solid #2A2A2D;
+      z-index: 2;
       padding: 0 32px;
-      backdrop-filter: blur(10px);
+      background: transparent;
+      border: none;
     }
 
     .navbar-inner {
@@ -387,7 +383,12 @@
       transition: color 0.2s;
     }
 
-    .navbar-links a:hover { color: var(--hero-text); }
+    .navbar-links a:not(.btn):hover { color: var(--hero-text); }
+
+    .navbar-links a.btn-primary {
+      color: #fff;
+    }
+
     .navbar-links .btn { padding: 8px 20px; font-size: 13px; border-radius: 10px; }
 
     .zone-light footer {
@@ -407,7 +408,7 @@
     }
 
     @media (max-width: 768px) {
-      .hero { padding: 84px 0 48px; }
+      .hero { padding: 28px 0 48px; }
       .zone-light section { padding: 64px 0; }
       .zone-light section.screenshot-section { padding-top: 40px; }
       .navbar-brand span { display: none; }
@@ -424,22 +425,20 @@
 </head>
 
 <body>
-  <!-- ── Navbar (dark, fixed) ── -->
-  <header class="navbar">
-    <div class="navbar-inner">
-      <a href="#" class="navbar-brand">
-        <img src="assets/pure-pixel/PurePixel_Logo.png" alt="PurePixel logo" />
-        <span>PurePixel</span>
-      </a>
-      <nav class="navbar-links">
-        <a class="nav-text" href="https://apps.microsoft.com/detail/9NR9QKWJ6QJQ">Microsoft Store</a>
-        <a href="https://apps.microsoft.com/detail/9NR9QKWJ6QJQ" class="btn btn-primary">Get on Microsoft Store</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- ── Hero (dark) ── -->
   <div class="zone-dark">
+    <header class="navbar">
+      <div class="navbar-inner">
+        <a href="#" class="navbar-brand">
+          <img src="assets/pure-pixel/PurePixel_Logo.png" alt="PurePixel logo" />
+          <span>PurePixel</span>
+        </a>
+        <nav class="navbar-links">
+          <a class="nav-text" href="https://apps.microsoft.com/detail/9NR9QKWJ6QJQ">Microsoft Store</a>
+          <a href="https://apps.microsoft.com/detail/9NR9QKWJ6QJQ" class="btn btn-primary">Get on Microsoft Store</a>
+        </nav>
+      </div>
+    </header>
+
     <section class="hero">
       <div class="container center">
         <div class="container-narrow">
