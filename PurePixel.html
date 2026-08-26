@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="icon" href="./assets/PurePixel_Logo.ico">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
     :root {
       --primary: #34A853;
@@ -20,23 +20,28 @@
       --primary-hover: #3BC25D;
 
       --bg-deep: #08080C;
-      --bg-section: #0E0E14;
-      --bg-card: rgba(255, 255, 255, 0.04);
-      --bg-card-hover: rgba(255, 255, 255, 0.07);
-      --border-card: rgba(255, 255, 255, 0.08);
-      --border-card-hover: rgba(52, 168, 83, 0.45);
-      --text: #F5F5F7;
+      --hero-text: #F5F5F7;
       --text-secondary: #A1A1A6;
       --text-muted: #6E6E73;
       --green: #34A853;
+
+      --light-bg: #ffffff;
+      --light-bg-subtle: #f5f5f7;
+      --light-text: #1d1d1f;
+      --light-muted: #6e6e73;
+      --light-muted-2: #86868b;
+      --light-stroke: rgba(0, 0, 0, 0.08);
+      --light-card: #ffffff;
+      --light-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+      --border-card-hover: rgba(52, 168, 83, 0.45);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: var(--text);
-      background: var(--bg-deep);
+      color: var(--light-text);
+      background: var(--light-bg);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       padding-top: 64px;
@@ -53,14 +58,16 @@
       margin: 0 auto;
     }
 
-    section {
-      padding: 100px 0;
-      position: relative;
-    }
-
-    section + section { border-top: 1px solid rgba(255,255,255,0.05); }
-    .section-alt { background: #111116; }
     .center { text-align: center; }
+
+    /* ── Dark hero zone ── */
+    .zone-dark {
+      background:
+        radial-gradient(1200px 700px at 20% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
+        radial-gradient(900px 600px at 80% 15%, rgba(52, 168, 83, 0.08), transparent 60%),
+        linear-gradient(180deg, var(--bg-deep), #07080c 55%, #0a0b10);
+      color: var(--hero-text);
+    }
 
     h1 {
       font-size: clamp(36px, 4.8vw, 56px);
@@ -69,6 +76,7 @@
       line-height: 1.2;
       margin-bottom: 0;
       white-space: nowrap;
+      color: var(--hero-text);
     }
 
     h1 .accent {
@@ -85,33 +93,8 @@
       margin: 6px 0 0;
     }
 
-    h2 {
-      font-size: clamp(28px, 3.5vw, 40px);
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 16px;
-    }
-
-    h3 {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      font-size: 18px;
-      color: var(--text-secondary);
-      max-width: 640px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
-      text-wrap: balance;
-    }
-
-    .subtitle.wide { max-width: 800px; }
-    .muted { color: var(--text-muted); }
-
     .hero {
-      padding: 120px 0 100px;
+      padding: 120px 0 72px;
       position: relative;
       overflow: hidden;
     }
@@ -134,9 +117,8 @@
       inset: -30% -10%;
       background:
         radial-gradient(600px 600px at 15% 20%, var(--primary-glow-2), transparent 60%),
-        radial-gradient(700px 700px at 85% 35%, rgba(52,168,83,0.10), transparent 60%);
+        radial-gradient(700px 700px at 85% 35%, rgba(52, 168, 83, 0.10), transparent 60%);
       pointer-events: none;
-      filter: blur(0px);
       opacity: 0.95;
     }
 
@@ -217,7 +199,7 @@
       color: #fff;
       box-shadow:
         0 0 18px rgba(52, 168, 83, 0.20),
-        0 12px 40px rgba(0,0,0,0.25);
+        0 12px 40px rgba(0, 0, 0, 0.25);
     }
 
     .btn-primary:hover {
@@ -225,41 +207,106 @@
       filter: brightness(1.03);
       box-shadow:
         0 0 28px rgba(52, 168, 83, 0.28),
-        0 18px 56px rgba(0,0,0,0.32);
+        0 18px 56px rgba(0, 0, 0, 0.32);
     }
 
     .btn-outline {
       background: transparent;
-      color: var(--text);
-      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--hero-text);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .btn-outline:hover {
-      border-color: rgba(255,255,255,0.3);
-      background: rgba(255,255,255,0.05);
+      border-color: rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.05);
       transform: translateY(-2px);
     }
+
+    .screenshot-hero {
+      margin-top: 0;
+      margin-bottom: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--light-stroke);
+      background: var(--light-card);
+      box-shadow: var(--light-shadow);
+    }
+
+    .screenshot-hero img { width: 100%; display: block; }
+
+    .screenshot-hero .caption {
+      padding: 16px 24px;
+      font-size: 14px;
+      color: var(--light-muted);
+      text-align: center;
+      background: var(--light-bg-subtle);
+    }
+
+    .zone-light section.screenshot-section {
+      padding: 56px 0 0;
+    }
+
+    /* ── Light content zone ── */
+    .zone-light {
+      background: var(--light-bg);
+      color: var(--light-text);
+    }
+
+    .zone-light section {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .zone-light section + section {
+      border-top: 1px solid var(--light-stroke);
+    }
+
+    .zone-light h2 {
+      font-size: clamp(28px, 3.5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+      color: var(--light-text);
+    }
+
+    .zone-light h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--light-text);
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: var(--light-muted);
+      max-width: 640px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+      text-wrap: balance;
+    }
+
+    .subtitle.wide { max-width: 800px; }
 
     .grid { display: grid; gap: 32px; }
     .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 320px)); justify-content: center; }
 
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
+    .zone-light .card {
+      background: var(--light-card);
+      border: 1px solid var(--light-stroke);
       padding: 32px;
       border-radius: 20px;
       transition: all 0.3s ease;
+      box-shadow: var(--light-shadow);
     }
 
-    .card:hover {
-      background: var(--bg-card-hover);
+    .zone-light .card:hover {
       border-color: var(--border-card-hover);
       transform: translateY(-4px);
-      box-shadow: 0 16px 40px rgba(0,0,0,0.2), 0 0 0 1px var(--border-card-hover);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--border-card-hover);
     }
 
-    .card .icon { font-size: 32px; margin-bottom: 16px; display: block; }
-    .card p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+    .zone-light .card .icon { font-size: 32px; margin-bottom: 16px; display: block; }
+    .zone-light .card p { color: var(--light-muted); font-size: 14px; line-height: 1.6; }
 
     .features-list {
       list-style: none;
@@ -275,10 +322,10 @@
       align-items: flex-start;
       gap: 12px;
       font-size: 15px;
-      color: var(--text-secondary);
+      color: var(--light-text);
       padding: 16px 20px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
+      background: var(--light-bg-subtle);
+      border: 1px solid var(--light-stroke);
       border-radius: 12px;
     }
 
@@ -287,26 +334,6 @@
       font-weight: 800;
       flex-shrink: 0;
       margin-top: 1px;
-    }
-
-    .screenshot-hero {
-      margin-top: 48px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: var(--bg-card);
-      box-shadow:
-        0 24px 80px rgba(0,0,0,0.5),
-        0 8px 24px rgba(0,0,0,0.4),
-        0 0 60px rgba(52, 168, 83, 0.08);
-    }
-
-    .screenshot-hero img { width: 100%; display: block; }
-    .screenshot-hero .caption {
-      padding: 16px 24px;
-      font-size: 14px;
-      color: var(--text-secondary);
-      text-align: center;
     }
 
     .navbar {
@@ -335,14 +362,14 @@
       align-items: center;
       gap: 10px;
       text-decoration: none;
-      color: var(--text);
+      color: var(--hero-text);
       font-weight: 700;
       font-size: 15px;
     }
 
     .navbar-brand img {
-      width: 48px;
-      height: 48px;
+      width: 28px;
+      height: 28px;
       border-radius: 6px;
     }
 
@@ -360,28 +387,29 @@
       transition: color 0.2s;
     }
 
-    .navbar-links a:hover { color: var(--text); }
+    .navbar-links a:hover { color: var(--hero-text); }
     .navbar-links .btn { padding: 8px 20px; font-size: 13px; border-radius: 10px; }
 
-    footer {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 64px 0 0;
+    .zone-light footer {
+      border-top: 1px solid var(--light-stroke);
+      padding: 0;
       font-size: 13px;
-      color: var(--text-muted);
-      background: var(--bg-deep);
+      color: var(--light-muted-2);
+      background: var(--light-bg);
     }
 
     .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 20px 0;
+      border-top: 1px solid var(--light-stroke);
+      padding: 20px 0 64px;
       text-align: center;
-      color: var(--text-muted);
+      color: var(--light-muted-2);
       font-size: 12px;
     }
 
     @media (max-width: 768px) {
-      .hero { padding: 84px 0 60px; }
-      section { padding: 64px 0; }
+      .hero { padding: 84px 0 48px; }
+      .zone-light section { padding: 64px 0; }
+      .zone-light section.screenshot-section { padding-top: 40px; }
       .navbar-brand span { display: none; }
     }
 
@@ -396,7 +424,7 @@
 </head>
 
 <body>
-  <!-- ── Navbar ── -->
+  <!-- ── Navbar (dark, fixed) ── -->
   <header class="navbar">
     <div class="navbar-inner">
       <a href="#" class="navbar-brand">
@@ -404,103 +432,107 @@
         <span>PurePixel</span>
       </a>
       <nav class="navbar-links">
-        <a class="nav-text" href="https://apps.microsoft.com/detail/9NBLH2HHHKT3">Microsoft Store</a>
-        <a href="https://apps.microsoft.com/detail/9NBLH2HHHKT3" class="btn btn-primary">Get on Microsoft Store</a>
+        <a class="nav-text" href="https://apps.microsoft.com/detail/9NR9QKWJ6QJQ">Microsoft Store</a>
+        <a href="https://apps.microsoft.com/detail/9NR9QKWJ6QJQ" class="btn btn-primary">Get on Microsoft Store</a>
       </nav>
     </div>
   </header>
 
-  <!-- ── Hero ── -->
-  <section class="hero">
-    <div class="container center">
-      <div class="container-narrow">
-        <span class="tagline">Convert · Resize · Protect</span>
-        <h1><span class="accent">PurePixel</span></h1>
-        <p class="hero-sub">Batch Convert, Resize & Watermark Images — 100% Offline</p>
-        <p class="lead">
-          Process hundreds of images locally in seconds.<br/>No uploads. No accounts. No tracking.
-        </p>
+  <!-- ── Hero (dark) ── -->
+  <div class="zone-dark">
+    <section class="hero">
+      <div class="container center">
+        <div class="container-narrow">
+          <span class="tagline">Convert · Resize · Protect</span>
+          <h1><span class="accent">PurePixel</span></h1>
+          <p class="hero-sub">Convert · Resize · Protect — 100% Offline</p>
+          <p class="lead">
+            A privacy-first desktop image toolkit. No uploads. No accounts. Just fast batch processing — fully on your device.
+          </p>
 
-        <div class="workflow" aria-label="Workflow">
-          <span>Convert</span>
-          <span class="arrow">&rarr;</span>
-          <span>Resize</span>
-          <span class="arrow">&rarr;</span>
-          <span>Watermark</span>
-        </div>
+          <div class="workflow" aria-label="Workflow">
+            <span>Convert</span>
+            <span class="arrow">&rarr;</span>
+            <span>Resize</span>
+            <span class="arrow">&rarr;</span>
+            <span>Protect</span>
+          </div>
 
-        <div class="cta">
-          <a href="https://apps.microsoft.com/detail/9NBLH2HHHKT3" class="btn btn-primary">Download for Windows — Free & Offline</a>
-          <a href="#features" class="btn btn-outline">See Features</a>
-        </div>
+          <div class="cta">
+            <a href="https://apps.microsoft.com/detail/9NR9QKWJ6QJQ" class="btn btn-primary">Get on Microsoft Store</a>
+            <a href="#features" class="btn btn-outline">See Features</a>
+          </div>
 
-        <div class="hero-trust">
-          <span>✔ 100% Offline</span>
-          <span>✔ Batch Processing</span>
-          <span>✔ No Uploads</span>
-          <span>✔ AVIF / HEIC Ready</span>
-        </div>
-      </div>
-
-      <div class="screenshot-hero">
-        <img src="assets/pure-pixel/PurePixel_Offline_Hero.jpg" alt="PurePixel marketing screenshot with 100% Offline badge" />
-        <div class="caption">Batch Convert & Resize Images — 100% Offline</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Features ── -->
-  <section id="features">
-    <div class="container">
-      <h2 class="center">Built for speed, designed for privacy</h2>
-      <p class="subtitle center">Professional-grade batch conversion without the cloud.</p>
-
-      <div class="grid grid-3">
-        <div class="card">
-          <span class="icon">🖼️</span>
-          <h3>Fast Batch Processing</h3>
-          <p>Convert hundreds of images in seconds.<br/>No lag. No waiting.</p>
-        </div>
-        <div class="card">
-          <span class="icon">🔒</span>
-          <h3>100% Offline — No Cloud Involved</h3>
-          <p>Your images never leave your device.<br/>No uploads. No hidden connections.</p>
-        </div>
-        <div class="card">
-          <span class="icon">⚡</span>
-          <h3>Lightweight & Native</h3>
-          <p>Runs smoothly on Windows 11.<br/>Clean UI. No bloated dependencies.</p>
+          <div class="hero-trust">
+            <span>✔ 100% Offline</span>
+            <span>✔ Multi-threaded</span>
+            <span>✔ Privacy-first</span>
+            <span>✔ AVIF/HEIC</span>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <!-- ── Details ── -->
-  <section class="section-alt">
-    <div class="container">
-      <h2 class="center">Handle Your Entire Image Workflow Locally</h2>
-      <p class="subtitle center">Convert, resize, watermark, and export — all offline.</p>
-
-      <ul class="features-list">
-        <li><span class="check">✓</span>Convert large image sets to JPG, PNG, WebP, or AVIF</li>
-        <li><span class="check">✓</span>Resize images with precise control and aspect ratio lock</li>
-        <li><span class="check">✓</span>Apply text or image watermarks in batch</li>
-        <li><span class="check">✓</span>Export to multiple formats including PDF and ICO</li>
-        <li><span class="check">✓</span>100% Private: No cloud, no uploads, strictly offline</li>
-        <li><span class="check">✓</span>Modern Formats: Full HEIC, AVIF, and WebP support</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ── Footer ── -->
-  <footer>
-    <div class="container">
-      <div class="footer-bottom">
-        &copy; 2026 PlainBytes Studio. All rights reserved.
+  <!-- ── Screenshot & content (white) ── -->
+  <div class="zone-light">
+    <section class="screenshot-section">
+      <div class="container center">
+        <div class="screenshot-hero">
+          <img src="assets/pure-pixel/PurePixel_Offline_Hero.png" alt="PurePixel marketing screenshot with 100% Offline badge" />
+          <div class="caption">Convert · Resize · Protect — 100% Offline</div>
+        </div>
       </div>
-    </div>
-  </footer>
+    </section>
+    <section id="features">
+      <div class="container">
+        <h2 class="center">Built for speed, designed for privacy</h2>
+        <p class="subtitle center">Professional-grade batch conversion without the cloud.</p>
+
+        <div class="grid grid-3">
+          <div class="card">
+            <span class="icon">🖼️</span>
+            <h3>Blazing Fast Concurrent Engine</h3>
+            <p>Powered by .NET 8, convert hundreds of images in seconds using multi-threaded technology.</p>
+          </div>
+          <div class="card">
+            <span class="icon">🔒</span>
+            <h3>Zero Cloud, 100% Offline</h3>
+            <p>Your sensitive data never leaves your device. No uploads, no accounts, no tracking.</p>
+          </div>
+          <div class="card">
+            <span class="icon">⚡</span>
+            <h3>Lightweight & Native</h3>
+            <p>A seamless Windows 11 experience with Mica effects and zero bloatware.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2 class="center">Everything you need</h2>
+        <p class="subtitle center">Convert, resize, watermark, and export — all offline.</p>
+
+        <ul class="features-list">
+          <li><span class="check">✓</span>Batch convert with consistent naming</li>
+          <li><span class="check">✓</span>Resize with high-quality sampling</li>
+          <li><span class="check">✓</span>Watermark and protect assets locally</li>
+          <li><span class="check">✓</span>Export to JPG / PNG / WebP / BMP / TIFF / ICO / PDF</li>
+          <li><span class="check">✓</span>100% Private: No cloud, no uploads, strictly offline</li>
+          <li><span class="check">✓</span>Modern Formats: Full HEIC, AVIF, and WebP support</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="footer-bottom">
+          &copy; 2026 PurePixel. Convert · Resize · Protect — 100% Offline.
+        </div>
+      </div>
+    </footer>
+  </div>
 </body>
 
 </html>
-
